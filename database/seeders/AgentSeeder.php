@@ -23,7 +23,7 @@ class AgentSeeder extends Seeder
                 'email' => 'agent@example.com',
                 'phone' => '1234567894',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => Hash::make('123456'),
                 'type' => 'agent',
                 'origin_id' => $origin->id,
                 'national_id' => null,

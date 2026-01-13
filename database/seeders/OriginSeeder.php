@@ -19,7 +19,7 @@ class OriginSeeder extends Seeder
             'email' => 'origin@example.com',
             'phone' => '1234567893',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123456'),
             'type' => 'origin',
             'origin_id' => null,
             'national_id' => null,

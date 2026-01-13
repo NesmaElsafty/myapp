@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('f_name');
             $table->string('l_name');
-            $table->string('email')->unique();
-            $table->string('phone')->unique();
+            $table->string('email');
+            $table->string('phone');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('type', ['user', 'admin','individual', 'agent','origin'])->nullable();
@@ -29,6 +29,10 @@ return new class extends Migration
 
             $table->rememberToken();
             $table->timestamps();
+
+            // Composite unique indexes: email and phone must be unique per user type
+            $table->unique(['email', 'type']);
+            $table->unique(['phone', 'type']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

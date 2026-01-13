@@ -19,7 +19,7 @@ class AdminSeeder extends Seeder
             'email' => 'admin@example.com',
             'phone' => '1234567891',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123456'),
             'type' => 'admin',
             'origin_id' => null,
             'national_id' => null,

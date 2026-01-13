@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'email' => 'user@example.com',
             'phone' => '1234567890',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123456'),
             'type' => 'user',
             'origin_id' => null,
             'national_id' => null,

@@ -19,7 +19,7 @@ class IndividualSeeder extends Seeder
             'email' => 'individual@example.com',
             'phone' => '1234567892',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123456'),
             'type' => 'individual',
             'origin_id' => null,
             'national_id' => '12345678901234',
