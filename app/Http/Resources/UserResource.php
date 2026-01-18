@@ -21,9 +21,13 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'type' => $this->type,
-            'email_verified_at' => $this->email_verified_at,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'is_active' => filter_var($this->is_active, FILTER_VALIDATE_BOOLEAN),
+            'origin_id' => $this->origin_id,
+            'national_id' => $this->national_id,
+            'commercial_number' => $this->commercial_number,
+            'email_verified_at' => $this->email_verified_at?->toDateTimeString(),
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 }

@@ -18,10 +18,11 @@ class AgentSeeder extends Seeder
 
         if ($origin) {
             User::create([
-                'f_name' => 'Agent',
-                'l_name' => 'One',
+                'f_name' => 'خالد',
+                'l_name' => 'العتيبي',
                 'email' => 'agent@example.com',
-                'phone' => '1234567894',
+                'phone' => '0501234571',
+                'location' => 'الخبر',
                 'email_verified_at' => now(),
                 'password' => Hash::make('123456'),
                 'type' => 'agent',
@@ -32,7 +33,7 @@ class AgentSeeder extends Seeder
 
             // Create additional agent users
             $origins = User::where('type', 'origin')->pluck('id');
-            for ($i = 0; $i < 5; $i++) {
+            for ($i = 0; $i < 20; $i++) {
                 User::factory()->create([
                     'type' => 'agent',
                     'origin_id' => $origins->random(),

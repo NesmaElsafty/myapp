@@ -14,10 +14,11 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'f_name' => 'John',
-            'l_name' => 'Doe',
+            'f_name' => 'محمد',
+            'l_name' => 'الخالدي',
             'email' => 'user@example.com',
-            'phone' => '1234567890',
+            'phone' => '0501234567',
+            'location' => 'الرياض',
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
             'type' => 'user',
@@ -27,7 +28,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Create additional regular users
-        User::factory()->count(5)->create([
+        User::factory()->count(20)->create([
             'type' => 'user',
             'origin_id' => null,
             'national_id' => null,

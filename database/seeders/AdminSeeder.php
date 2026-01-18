@@ -14,10 +14,11 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'f_name' => 'Admin',
-            'l_name' => 'User',
+            'f_name' => 'أحمد',
+            'l_name' => 'السالم',
             'email' => 'admin@example.com',
-            'phone' => '1234567891',
+            'phone' => '0501234568',
+            'location' => 'الرياض',
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
             'type' => 'admin',
@@ -27,7 +28,7 @@ class AdminSeeder extends Seeder
         ]);
 
         // Create additional admin users
-        User::factory()->count(2)->create([
+        User::factory()->count(20)->create([
             'type' => 'admin',
             'origin_id' => null,
             'national_id' => null,

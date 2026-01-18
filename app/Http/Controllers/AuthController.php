@@ -7,17 +7,21 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\AdminResource;
+use App\Http\Resources\IndividualResource;
+use App\Http\Resources\AgentResource;
+use App\Http\Resources\OriginResource;
+use App\Http\Resources\UserResource;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
-    public function __construct(
-        protected AuthService $authService
-    ) {}
+    protected AuthService $authService;
+    public function __construct(AuthService $authService) {
+        $this->authService = $authService;
+    }
 
-    /**
-     * Register a new user
-     */
-    public function register(Request $request): JsonResponse
+    public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'f_name' => 'required|string|max:255',
@@ -27,7 +31,7 @@ class AuthController extends Controller
                 'string',
                 'email',
                 'max:255',
-                \Illuminate\Validation\Rule::unique('users')->where(function ($query) use ($request) {
+                Rule::unique('users')->where(function ($query) use ($request) {
                     return $query->where('type', $request->type);
                 })
             ],
@@ -35,7 +39,7 @@ class AuthController extends Controller
                 'required',
                 'string',
                 'max:20',
-                \Illuminate\Validation\Rule::unique('users')->where(function ($query) use ($request) {
+                Rule::unique('users')->where(function ($query) use ($request) {
                     return $query->where('type', $request->type);
                 })
             ],
@@ -85,7 +89,7 @@ class AuthController extends Controller
     /**
      * Login user
      */
-    public function login(Request $request): JsonResponse
+    public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
@@ -132,7 +136,7 @@ class AuthController extends Controller
     /**
      * Logout user
      */
-    public function logout(Request $request): JsonResponse
+    public function logout(Request $request)
     {
         try {
             $tokenId = $request->user()->currentAccessToken()->id ?? null;
@@ -152,7 +156,7 @@ class AuthController extends Controller
     /**
      * Get authenticated user
      */
-    public function me(Request $request): JsonResponse
+    public function me(Request $request)
     {
         $user = $request->user();
 
@@ -175,11 +179,11 @@ class AuthController extends Controller
     protected function getResourceClass(string $type): string
     {
         return match ($type) {
-            'admin' => \App\Http\Resources\AdminResource::class,
-            'individual' => \App\Http\Resources\IndividualResource::class,
-            'agent' => \App\Http\Resources\AgentResource::class,
-            'origin' => \App\Http\Resources\OriginResource::class,
-            default => \App\Http\Resources\UserResource::class,
+            'admin' => AdminResource::class,
+            'individual' => IndividualResource::class,
+            'agent' => AgentResource::class,
+            'origin' => OriginResource::class,
+            default => UserResource::class,
         };
     }
 }

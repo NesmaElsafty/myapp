@@ -14,10 +14,11 @@ class OriginSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'f_name' => 'Origin',
-            'l_name' => 'Company',
+            'f_name' => 'شركة',
+            'l_name' => 'النجاح',
             'email' => 'origin@example.com',
-            'phone' => '1234567893',
+            'phone' => '0501234570',
+            'location' => 'الدمام',
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
             'type' => 'origin',
@@ -27,7 +28,7 @@ class OriginSeeder extends Seeder
         ]);
 
         // Create additional origin users
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             User::factory()->create([
                 'type' => 'origin',
                 'origin_id' => null,

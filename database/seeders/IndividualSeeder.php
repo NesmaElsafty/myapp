@@ -14,10 +14,11 @@ class IndividualSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'f_name' => 'Jane',
-            'l_name' => 'Smith',
+            'f_name' => 'فاطمة',
+            'l_name' => 'الغامدي',
             'email' => 'individual@example.com',
-            'phone' => '1234567892',
+            'phone' => '0501234569',
+            'location' => 'جدة',
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
             'type' => 'individual',
@@ -27,7 +28,7 @@ class IndividualSeeder extends Seeder
         ]);
 
         // Create additional individual users
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             User::factory()->create([
                 'type' => 'individual',
                 'origin_id' => null,
