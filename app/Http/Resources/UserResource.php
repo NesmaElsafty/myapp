@@ -14,6 +14,12 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
+        $role = null;
+        if($this->type == 'admin') {
+            $role = $this->role;
+        }
+
         return [
             'id' => $this->id,
             'f_name' => $this->f_name,
@@ -25,6 +31,7 @@ class UserResource extends JsonResource
             'origin_id' => $this->origin_id,
             'national_id' => $this->national_id,
             'commercial_number' => $this->commercial_number,
+            'role' => $role ? new RoleResource($role) : null,
             'email_verified_at' => $this->email_verified_at?->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),

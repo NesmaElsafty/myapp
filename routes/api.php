@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -21,4 +22,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::apiResource('users', UserController::class);
     Route::post('UserbulkActions', [UserController::class, 'bulkActions']);
     Route::get('blocklist', [UserController::class, 'blocklist']);
+    Route::apiResource('roles', RoleController::class);
+    Route::get('permissions', [RoleController::class, 'permissions']);
+    Route::get('exportRoles', [RoleController::class, 'export']);
 });

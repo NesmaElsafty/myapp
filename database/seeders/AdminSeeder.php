@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +14,8 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        $roles = Role::all();
+        
         User::create([
             'f_name' => 'أحمد',
             'l_name' => 'السالم',
@@ -25,14 +28,24 @@ class AdminSeeder extends Seeder
             'origin_id' => null,
             'national_id' => null,
             'commercial_number' => null,
+            'role_id' => $roles->isNotEmpty() ? $roles->random()->id : null,
         ]);
 
         // Create additional admin users
-        User::factory()->count(20)->create([
+        $adminUsers = User::factory()->count(20)->create([
             'type' => 'admin',
             'origin_id' => null,
             'national_id' => null,
             'commercial_number' => null,
         ]);
+
+        // Assign random roles to admin users
+        if ($roles->isNotEmpty()) {
+            foreach ($adminUsers as $adminUser) {
+                $adminUser->update([
+                    'role_id' => $roles->random()->id,
+                ]);
+            }
+        }
     }
 }

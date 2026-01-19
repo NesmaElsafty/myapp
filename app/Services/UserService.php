@@ -48,6 +48,9 @@ class UserService
             $query->where('is_active', $data['is_active']);
         }
 
+        if(isset($data['role_id']) && $data['role_id'] !== 'all') {
+            $query->where('role_id', $data['role_id']);
+        }
         return $query;
     }
 
@@ -67,6 +70,7 @@ class UserService
             'location' => $data['location'] ?? null,
             'is_active' => $data['is_active'],
             'password' => Hash::make('123456'),
+            'role_id' => $data['role_id'] ?? null,
         ];
 
         return User::create($userData);
@@ -74,7 +78,13 @@ class UserService
 
     public function update($id, $data)
     {
-        $user = User::findOrFail($id);
+        // dd($data);
+        $user = User::find($id);
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'user' => ['User not found'],
+            ]);
+        }
 
         // Validate type-specific fields if type is being changed
         if (isset($data['type']) && $data['type'] !== $user->type) {
@@ -127,9 +137,13 @@ class UserService
             $updateData['email_verified_at'] = $data['email_verified_at'];
         }
 
+        if (isset($data['role_id'])) {
+            $updateData['role_id'] = $data['role_id'];
+        }
+
         $user->update($updateData);
 
-        return $user->fresh(['origin']);
+        return $user;
     }
 
     public function delete($id)

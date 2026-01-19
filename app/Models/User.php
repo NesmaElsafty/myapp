@@ -21,20 +21,7 @@ class User extends Authenticatable implements HasMedia
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'f_name',
-        'l_name',
-        'email',
-        'phone',
-        'location',
-        'email_verified_at',
-        'password',
-        'is_active',
-        'type',
-        'origin_id',
-        'national_id',
-        'commercial_number',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -73,5 +60,13 @@ class User extends Authenticatable implements HasMedia
     public function agents()
     {
         return $this->hasMany(User::class, 'origin_id')->where('type', 'agent');
+    }
+
+    /**
+     * Get the role that belongs to the user.
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -34,5 +35,16 @@ class UserSeeder extends Seeder
             'national_id' => null,
             'commercial_number' => null,
         ]);
+
+        // Assign random roles to admin users
+        $roles = Role::all();
+        if ($roles->isNotEmpty()) {
+            $adminUsers = User::where('type', 'admin')->get();
+            foreach ($adminUsers as $adminUser) {
+                $adminUser->update([
+                    'role_id' => $roles->random()->id,
+                ]);
+            }
+        }
     }
 }

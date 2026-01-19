@@ -28,6 +28,7 @@ class UserController extends Controller
         $request->validate([
             'type' => 'required|in:user,admin,individual,origin',
             'search' => 'nullable|string|max:255',
+            'role_id' => 'nullable|exists:roles,id',
             'sorted_by' => 'nullable|string|in:name,newest,oldest,all',
             'is_active' => 'nullable|string|in:1,0,all',
         ]);
@@ -118,19 +119,24 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // dd($request->all());
             $request->validate([
-                'f_name' => 'sometimes|required|string|max:255',
-                'l_name' => 'sometimes|required|string|max:255',
+                'f_name' => 'string|max:255',
+                'l_name' => 'string|max:255',
                 'email' => [
-                'sometimes|required|string|email|max:255|unique:users,email,' . $id . ',id,type,' . $request->type,
-            ],
-            'phone' => [
-                'sometimes|required|string|max:20|unique:users,phone,' . $id . ',id,type,' . $request->type,
-            ],
-
-            'type' => 'sometimes|required|in:user,admin',
-            'location' => 'nullable|string|max:255',    
-            'is_active' => 'nullable|boolean|in:1,0',
+                    'string',
+                    'email',
+                    'unique:users,email,' . $id . ',id,type,' . $request->type,
+                ],
+                'phone' => [
+                    'string',
+                    'max:20',
+                    'unique:users,phone,' . $id . ',id,type,' . $request->type,
+                ],
+            'role_id' => 'exists:roles,id',
+            'type' => 'in:user,admin',
+            'location' => 'string|max:255',    
+            'is_active' => 'boolean|in:1,0',
         ]);
 
             $user = $this->userService->update($id, $request->all());
