@@ -21,6 +21,18 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
         ]);
 
+        // Seed cities and regions
+        $this->call([
+            CitySeeder::class,
+            RegionSeeder::class, // Must be after CitySeeder
+        ]);
+
+        // Seed contact info and social media
+        $this->call([
+            ContactInfoSeeder::class,
+            SocialMediaSeeder::class,
+        ]);
+
         // Seed users in order: origin first (needed for agents), then others
         $this->call([
             OriginSeeder::class,

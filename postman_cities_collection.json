@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "cities-crud-collection",
+		"name": "Cities CRUD",
+		"description": "Complete CRUD operations for Cities management. Requires admin authentication.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Cities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has cities data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('pagination');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities?search=&sorted_by=all",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "",
+							"description": "Search by name_en or name_ar"
+						},
+						{
+							"key": "sorted_by",
+							"value": "all",
+							"description": "Sort by: name, newest, oldest, all"
+						}
+					]
+				},
+				"description": "Get all cities with pagination. Requires admin authentication."
+			}
+		},
+		{
+			"name": "Get City by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has city data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('id');",
+							"    pm.expect(jsonData.data).to.have.property('name_en');",
+							"    pm.expect(jsonData.data).to.have.property('name_ar');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities/{{city_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities",
+						"{{city_id}}"
+					]
+				},
+				"description": "Get a specific city by ID. Requires admin authentication. Note: Set city_id variable from Create City response."
+			}
+		},
+		{
+			"name": "Create City",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    const jsonData = pm.response.json();",
+							"    pm.environment.set('city_id', jsonData.data.id);",
+							"}",
+							"",
+							"pm.test(\"Response has city data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('name_en');",
+							"    pm.expect(jsonData.data).to.have.property('name_ar');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name_en\": \"Riyadh\",\n    \"name_ar\": \"الرياض\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities"
+					]
+				},
+				"description": "Create a new city. Requires admin authentication. Automatically saves city_id to environment."
+			}
+		},
+		{
+			"name": "Update City",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has updated city data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('name_en');",
+							"    pm.expect(jsonData.data).to.have.property('name_ar');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name_en\": \"Riyadh Updated\",\n    \"name_ar\": \"الرياض المحدثة\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities/{{city_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities",
+						"{{city_id}}"
+					]
+				},
+				"description": "Update a city. Requires admin authentication. Note: Set city_id variable from Create City response."
+			}
+		},
+		{
+			"name": "Delete City",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has success message\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities/{{city_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities",
+						"{{city_id}}"
+					]
+				},
+				"description": "Delete a city. Requires admin authentication. Note: Cannot delete city if it has regions. Set city_id variable from Create City response."
+			}
+		},
+		{
+			"name": "Search Cities",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities?search=riyadh&sorted_by=name",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "riyadh",
+							"description": "Search term (searches in name_en and name_ar)"
+						},
+						{
+							"key": "sorted_by",
+							"value": "name",
+							"description": "Sort by: name, newest, oldest, all"
+						}
+					]
+				},
+				"description": "Search cities by name. Requires admin authentication."
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

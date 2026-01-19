@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "contact-info-collection",
+		"name": "Contact Info CRUD",
+		"description": "Complete CRUD operations for Contact Info and Social Media management. Index is public, store requires admin authentication.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Contact Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has contact info data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('contact_info');",
+							"    pm.expect(jsonData.data).to.have.property('social_media');",
+							"});",
+							"",
+							"pm.test(\"Contact info has required fields\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    if (jsonData.data.contact_info) {",
+							"        pm.expect(jsonData.data.contact_info).to.have.property('id');",
+							"        pm.expect(jsonData.data.contact_info).to.have.property('phone');",
+							"        pm.expect(jsonData.data.contact_info).to.have.property('email');",
+							"        pm.expect(jsonData.data.contact_info).to.have.property('copyright');",
+							"    }",
+							"});",
+							"",
+							"pm.test(\"Social media is an array\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.social_media).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/contact-info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"contact-info"
+					]
+				},
+				"description": "Get contact info and social media. This is a public endpoint and does not require authentication."
+			}
+		},
+		{
+			"name": "Update or Create Contact Info (Single Social Media)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has contact info data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('id');",
+							"    pm.expect(jsonData.data).to.have.property('phone');",
+							"    pm.expect(jsonData.data).to.have.property('email');",
+							"    pm.expect(jsonData.data).to.have.property('copyright');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\": \"+966501234567\",\n    \"email\": \"info@example.com\",\n    \"copyright\": \"© 2026 All Rights Reserved\",\n    \"social_media\": {\n        \"platform\": \"Facebook\",\n        \"url\": \"https://www.facebook.com/example\"\n    }\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/contact-info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"contact-info"
+					]
+				},
+				"description": "Update or create contact info with a single social media entry. Requires admin authentication. Note: The current implementation only handles one social media entry."
+			}
+		},
+		{
+			"name": "Update or Create Contact Info (Multiple Social Media)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has contact info data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\": \"+966501234567\",\n    \"email\": \"info@example.com\",\n    \"copyright\": \"© 2026 All Rights Reserved\",\n    \"social_media\": [\n        {\n            \"platform\": \"Facebook\",\n            \"url\": \"https://www.facebook.com/example\"\n        },\n        {\n            \"platform\": \"Twitter\",\n            \"url\": \"https://www.twitter.com/example\"\n        },\n        {\n            \"platform\": \"Instagram\",\n            \"url\": \"https://www.instagram.com/example\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/contact-info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"contact-info"
+					]
+				},
+				"description": "Update or create contact info with multiple social media entries. Requires admin authentication. Note: The current implementation may only handle one social media entry, but this request shows the expected format for multiple entries."
+			}
+		},
+		{
+			"name": "Update or Create Contact Info (Without Social Media)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has contact info data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('phone');",
+							"    pm.expect(jsonData.data).to.have.property('email');",
+							"    pm.expect(jsonData.data).to.have.property('copyright');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\": \"+966501234567\",\n    \"email\": \"info@example.com\",\n    \"copyright\": \"© 2026 All Rights Reserved\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/contact-info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"contact-info"
+					]
+				},
+				"description": "Update or create contact info without social media. Requires admin authentication."
+			}
+		},
+		{
+			"name": "Update Contact Info - Validation Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422 or 400\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);",
+							"});",
+							"",
+							"pm.test(\"Response has validation errors\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('errors');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\": \"\",\n    \"email\": \"invalid-email\",\n    \"copyright\": \"\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/contact-info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"contact-info"
+					]
+				},
+				"description": "Test validation errors. This request should fail validation. Requires admin authentication."
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}
