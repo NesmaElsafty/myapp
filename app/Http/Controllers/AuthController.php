@@ -13,6 +13,7 @@ use App\Http\Resources\AgentResource;
 use App\Http\Resources\OriginResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -185,5 +186,66 @@ class AuthController extends Controller
             'origin' => OriginResource::class,
             default => UserResource::class,
         };
+    }
+
+    // update user
+    public function updateProfile(Request $request)
+    {
+        try {
+        $user = auth()->user();
+        $request->validate([
+            'email' => 'nullable|string|email|max:255|unique:users,email,' . $user->id . ',id,type,' . $user->type,
+            'phone' => 'nullable|string|max:20|unique:users,phone,' . $user->id . ',id,type,' . $user->type,
+        ]);
+        
+        $user = $this->authService->updateProfile($request->all());
+
+        // if ahs image, update it
+        if ($request->hasFile('image')) {
+            // update using spatie media library
+            $user->addMediaFromRequest('image')->toMediaCollection('profile');
+        }
+
+        $resourceClass = $this->getResourceClass($user->type);
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => new $resourceClass($user),
+        ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update profile',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // change password
+    public function changePassword(Request $request)
+    {
+        try {
+            $request->validate([
+                'old_password' => 'required|string',
+                'new_password' => 'required|string',
+            ]);
+
+            $user = auth()->user();
+            if (!Hash::check($request->old_password, $user->password)) {
+                return response()->json([
+                    'message' => 'Old password is incorrect',
+                ], 401);
+            }
+
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            return response()->json([
+                'message' => 'Password changed successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to change password',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

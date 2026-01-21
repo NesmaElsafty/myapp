@@ -14,6 +14,11 @@ class AdminResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $image = null;
+        if($this->hasMedia('profile')) {
+            $image = str_replace('public/', '', $this->getFirstMediaUrl('profile'));
+        }
+
         return [
             'id' => $this->id,
             'f_name' => $this->f_name,
@@ -21,6 +26,7 @@ class AdminResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'type' => $this->type,
+            'image' => $image,
             'email_verified_at' => $this->email_verified_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

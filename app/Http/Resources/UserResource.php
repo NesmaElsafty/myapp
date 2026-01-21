@@ -20,6 +20,11 @@ class UserResource extends JsonResource
             $role = $this->role;
         }
 
+        $image = null;
+        if($this->hasMedia('profile')) {
+            $image = str_replace('public/', '', $this->getFirstMediaUrl('profile'));
+        }
+
         return [
             'id' => $this->id,
             'f_name' => $this->f_name,
@@ -35,6 +40,7 @@ class UserResource extends JsonResource
             'email_verified_at' => $this->email_verified_at?->toDateTimeString(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
+            'image' => $image,
         ];
     }
 }

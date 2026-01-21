@@ -135,4 +135,16 @@ class AuthService
             }
         }
     }
+
+    // update profile
+    public function updateProfile($data)
+    {
+        $user = auth()->user();
+        $user->f_name = $data['f_name'] ?? $user->f_name;
+        $user->l_name = $data['l_name'] ?? $user->l_name;
+        $user->email = $data['email'] ?? $user->email;
+        $user->phone = $data['phone'] ?? $user->phone;
+        $user->save();
+        return $user;
+    }
 }
