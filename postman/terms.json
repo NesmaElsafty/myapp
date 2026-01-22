@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "terms-crud-collection",
+		"name": "Terms CRUD",
+		"description": "Complete CRUD operations for Terms management. Public endpoints for viewing, admin endpoints for management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public Endpoints",
+			"item": [
+				{
+					"name": "Get All Terms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Terms data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/terms?search=&type=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"terms"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by title_en, title_ar, content_en, or content_ar",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"description": "Filter by type: terms or privacy",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all Terms with pagination. Public endpoint, no authentication required."
+					}
+				},
+				{
+					"name": "Get All Terms - With Filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Terms data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/terms?search=&type=terms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"terms"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by title_en, title_ar, content_en, or content_ar",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "terms",
+									"description": "Filter by type: terms, privacy, or policy"
+								}
+							]
+						},
+						"description": "Get all Terms with filters applied. Example: Terms filtered by type 'terms'."
+					}
+				},
+				{
+					"name": "Get Term by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Term data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('id');",
+									"    pm.expect(jsonData.data).to.have.property('title_en');",
+									"    pm.expect(jsonData.data).to.have.property('title_ar');",
+									"    pm.expect(jsonData.data).to.have.property('content_en');",
+									"    pm.expect(jsonData.data).to.have.property('content_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/terms/{{term_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"terms",
+								"{{term_id}}"
+							]
+						},
+						"description": "Get a specific Term by ID. Public endpoint, no authentication required. Note: Set term_id variable from Create Term response."
+					}
+				},
+				{
+					"name": "Search Terms",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/terms?search=privacy&type=privacy",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"terms"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "privacy",
+									"description": "Search term (searches in title_en, title_ar, content_en, content_ar)"
+								},
+								{
+									"key": "type",
+									"value": "privacy",
+									"description": "Filter by type: terms, privacy, or policy"
+								}
+							]
+						},
+						"description": "Search Terms by title or content. Public endpoint, no authentication required."
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Endpoints",
+			"item": [
+				{
+					"name": "Create Term",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('term_id', jsonData.data.id);",
+									"}",
+									"",
+									"pm.test(\"Response has Term data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('title_en');",
+									"    pm.expect(jsonData.data).to.have.property('title_ar');",
+									"    pm.expect(jsonData.data).to.have.property('content_en');",
+									"    pm.expect(jsonData.data).to.have.property('content_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title_en\": \"Terms and Conditions\",\n    \"title_ar\": \"الشروط والأحكام\",\n    \"content_en\": \"These terms and conditions outline the rules and regulations for the use of our service.\",\n    \"content_ar\": \"تحدد هذه الشروط والأحكام القواعد واللوائح لاستخدام خدمتنا.\",\n    \"type\": \"terms\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/terms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"terms"
+							]
+						},
+						"description": "Create a new Term. Requires admin authentication. Automatically saves term_id to environment."
+					}
+				},
+				{
+					"name": "Update Term",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated Term data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('title_en');",
+									"    pm.expect(jsonData.data).to.have.property('title_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title_en\": \"Updated Terms and Conditions\",\n    \"title_ar\": \"الشروط والأحكام المحدثة\",\n    \"content_en\": \"These updated terms and conditions outline the rules and regulations for the use of our service.\",\n    \"content_ar\": \"تحدد هذه الشروط والأحكام المحدثة القواعد واللوائح لاستخدام خدمتنا.\",\n    \"type\": \"terms\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/terms/{{term_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"terms",
+								"{{term_id}}"
+							]
+						},
+						"description": "Update a Term. Requires admin authentication. All fields are optional. Note: Set term_id variable from Create Term response."
+					}
+				},
+				{
+					"name": "Update Term - Partial Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated Term data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/terms/{{term_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"terms",
+								"{{term_id}}"
+							]
+						},
+						"description": "Update Term with partial data. All fields are optional. You can update just one field or multiple fields."
+					}
+				},
+				{
+					"name": "Delete Term",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has success message\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/terms/{{term_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"terms",
+								"{{term_id}}"
+							]
+						},
+						"description": "Delete a Term. Requires admin authentication. Note: Set term_id variable from Create Term response."
+					}
+				},
+				{
+					"name": "Bulk Actions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has success message\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"toggleActive\",\n    \"term_ids\": [1, 2, 3]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/termsBulkActions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"termsBulkActions"
+							]
+						},
+						"description": "Perform bulk actions on Terms. Actions: toggleActive, delete, export. If term_ids is empty, applies to all Terms."
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

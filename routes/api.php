@@ -10,6 +10,7 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\TermController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -60,6 +61,12 @@ Route::prefix('faqs')->group(function () {
     Route::get('/{id}', [FaqController::class, 'show']);
 });
 
+// Public Terms routes (index and show)
+Route::prefix('terms')->group(function () {
+    Route::get('/', [TermController::class, 'index']);
+    Route::get('/{id}', [TermController::class, 'show']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -91,4 +98,9 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::put('faqs/{id}', [FaqController::class, 'update']);
     Route::delete('faqs/{id}', [FaqController::class, 'destroy']);
     Route::post('faqsBulkActions', [FaqController::class, 'bulkActions']);
+    // Protected Terms routes (store, update, destroy)
+    Route::post('terms', [TermController::class, 'store']);
+    Route::put('terms/{id}', [TermController::class, 'update']);
+    Route::delete('terms/{id}', [TermController::class, 'destroy']);
+    Route::post('termsBulkActions', [TermController::class, 'bulkActions']);
 });

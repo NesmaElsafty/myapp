@@ -19,12 +19,14 @@ class BlogResource extends JsonResource
             $image = str_replace('public/', '', $this->getFirstMediaUrl('image'));
         }
 
+        $lang = $request->header('lang') ?? 'ar';
+        $title = $lang == 'ar' ? $this->title_ar : $this->title_en;
+        $description = $lang == 'ar' ? $this->description_ar : $this->description_en;
+
         return [
             'id' => $this->id,
-            'title_en' => $this->title_en,
-            'title_ar' => $this->title_ar,
-            'description_en' => $this->description_en,
-            'description_ar' => $this->description_ar,
+            'title' => $title,
+            'description' => $description,
             'is_active' => (bool) $this->is_active,
             'image' => $image,
             'created_at' => $this->created_at,

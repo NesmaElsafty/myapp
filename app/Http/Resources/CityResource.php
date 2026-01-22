@@ -14,10 +14,12 @@ class CityResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $lang = $request->header('lang') ?? 'ar';
+        $name = $lang == 'ar' ? $this->name_ar : $this->name_en;
+
         return [
             'id' => $this->id,
-            'name_en' => $this->name_en,
-            'name_ar' => $this->name_ar,
+            'name' => $name,
             'regions' => $this->whenLoaded('regions', function () {
                 return RegionResource::collection($this->regions);
             }),

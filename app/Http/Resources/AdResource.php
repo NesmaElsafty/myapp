@@ -19,15 +19,17 @@ class AdResource extends JsonResource
             $image = str_replace('public/', '', $this->getFirstMediaUrl('image'));
         }
 
+        $lang = $request->header('lang') ?? 'ar';
+        $title = $lang == 'ar' ? $this->title_ar : $this->title_en;
+        $description = $lang == 'ar' ? $this->description_ar : $this->description_en;
+        $btn_text = $lang == 'ar' ? $this->btn_text_ar : $this->btn_text_en;
+        
         return [
             'id' => $this->id,
-            'title_en' => $this->title_en,
-            'title_ar' => $this->title_ar,
-            'description_en' => $this->description_en,
-            'description_ar' => $this->description_ar,
+            'title' => $title,
+            'description' => $description,
             'is_active' => (bool) $this->is_active,
-            'btn_text_en' => $this->btn_text_en,
-            'btn_text_ar' => $this->btn_text_ar,
+            'btn_text' => $btn_text,
             'btn_link' => $this->btn_link,
             'btn_is_active' => (bool) $this->btn_is_active,
             'type' => $this->type,

@@ -14,12 +14,14 @@ class FaqResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $lang = $request->header('lang') ?? 'ar';
+        $question = $lang == 'ar' ? $this->question_ar : $this->question_en;
+        $answer = $lang == 'ar' ? $this->answer_ar : $this->answer_en;
+
         return [
             'id' => $this->id,
-            'question_en' => $this->question_en,
-            'question_ar' => $this->question_ar,
-            'answer_en' => $this->answer_en,
-            'answer_ar' => $this->answer_ar,
+            'question' => $question,
+            'answer' => $answer,
             'segment' => $this->segment,
             'is_active' => (bool) $this->is_active,
             'created_at' => $this->created_at,

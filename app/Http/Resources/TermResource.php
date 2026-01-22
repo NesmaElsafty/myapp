@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RegionResource extends JsonResource
+class TermResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,17 +15,15 @@ class RegionResource extends JsonResource
     public function toArray(Request $request): array
     {
         $lang = $request->header('lang') ?? 'ar';
-        $name = $lang == 'ar' ? $this->name_ar : $this->name_en;
-        $district = $lang == 'ar' ? $this->district_ar : $this->district_en;
-
+        $title = $lang == 'ar' ? $this->title_ar : $this->title_en;
+        $content = $lang == 'ar' ? $this->content_ar : $this->content_en;
+        
         return [
             'id' => $this->id,
-            'name' => $name,
-            'district' => $district,
-            'city_id' => $this->city_id,
-            'city' => $this->whenLoaded('city', function () {
-                return new CityResource($this->city);
-            }),
+            'title' => $title,
+            'content' => $content,
+            'type' => $this->type,
+            'is_active' => (bool) $this->is_active,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
