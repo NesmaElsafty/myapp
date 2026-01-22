@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ContactInfoController;
+use App\Http\Controllers\BlogController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -46,6 +47,12 @@ Route::prefix('ads')->group(function () {
     Route::get('/{id}', [AdController::class, 'show']);
 });
 
+// Public blogs routes (index and show)
+Route::prefix('blogs')->group(function () {
+    Route::get('/', [BlogController::class, 'index']);
+    Route::get('/{id}', [BlogController::class, 'show']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -68,4 +75,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('ads', [AdController::class, 'store']);
     Route::put('ads/{id}', [AdController::class, 'update']);
     Route::delete('ads/{id}', [AdController::class, 'destroy']);
+    // Protected blogs routes (store, update, destroy)
+    Route::post('blogs', [BlogController::class, 'store']);
+    Route::put('blogs/{id}', [BlogController::class, 'update']);
+    Route::delete('blogs/{id}', [BlogController::class, 'destroy']);
 });
