@@ -20,6 +20,12 @@ class TermResource extends JsonResource
         
         return [
             'id' => $this->id,
+
+            'title_en' => $this->title_en,
+            'title_ar' => $this->title_ar,
+            'content_en' => $this->content_en,
+            'content_ar' => $this->content_ar,
+
             'title' => $title,
             'content' => $content,
             'type' => $this->type,

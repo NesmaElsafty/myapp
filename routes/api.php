@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TermController;
+use App\Http\Controllers\SupportController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -67,6 +68,11 @@ Route::prefix('terms')->group(function () {
     Route::get('/{id}', [TermController::class, 'show']);
 });
 
+// Public Support routes (create support ticket)
+Route::prefix('supports')->group(function () {
+    Route::post('/', [SupportController::class, 'store']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -103,4 +109,11 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::put('terms/{id}', [TermController::class, 'update']);
     Route::delete('terms/{id}', [TermController::class, 'destroy']);
     Route::post('termsBulkActions', [TermController::class, 'bulkActions']);
+    // Protected Support routes (index, show, update, reply, destroy)
+    Route::get('supports', [SupportController::class, 'index']);
+    Route::get('supports/{id}', [SupportController::class, 'show']);
+    Route::put('supports/{id}', [SupportController::class, 'update']);
+    Route::post('supports/{id}/reply', [SupportController::class, 'reply']);
+    Route::delete('supports/{id}', [SupportController::class, 'destroy']);
+    Route::post('supportsBulkActions', [SupportController::class, 'bulkActions']);
 });

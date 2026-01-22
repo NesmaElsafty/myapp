@@ -33,12 +33,13 @@ class DatabaseSeeder extends Seeder
             SocialMediaSeeder::class,
         ]);
 
-        // Seed ads, blogs, FAQs, and Terms
+        // Seed ads, blogs, FAQs, Terms, and Supports
         $this->call([
             AdSeeder::class,
             BlogSeeder::class,
             FaqSeeder::class,
             TermSeeder::class,
+            SupportSeeder::class,
         ]);
 
         // Seed users in order: origin first (needed for agents), then others

@@ -27,6 +27,13 @@ class BlogResource extends JsonResource
             'id' => $this->id,
             'title' => $title,
             'description' => $description,
+
+            'title_en' => $this->title_en,
+            'title_ar' => $this->title_ar,
+            'description_en' => $this->description_en,
+            'description_ar' => $this->description_ar,
+
+            
             'is_active' => (bool) $this->is_active,
             'image' => $image,
             'created_at' => $this->created_at,
