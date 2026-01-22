@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,12 @@ Route::prefix('contact-info')->group(function () {
     Route::get('/', [ContactInfoController::class, 'index']);
 });
 
+// Public ads routes (index and show)
+Route::prefix('ads')->group(function () {
+    Route::get('/', [AdController::class, 'index']);
+    Route::get('/{id}', [AdController::class, 'show']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -57,4 +64,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::delete('regions/{id}', [RegionController::class, 'destroy']);
     // Protected contact info routes (store, update)
     Route::post('contact-info', [ContactInfoController::class, 'store']);
+    // Protected ads routes (store, update, destroy)
+    Route::post('ads', [AdController::class, 'store']);
+    Route::put('ads/{id}', [AdController::class, 'update']);
+    Route::delete('ads/{id}', [AdController::class, 'destroy']);
 });

@@ -1,0 +1,590 @@
+{
+	"info": {
+		"_postman_id": "ads-crud-collection",
+		"name": "Ads CRUD",
+		"description": "Complete CRUD operations for Ads management. Public endpoints for viewing, admin endpoints for management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public Endpoints",
+			"item": [
+				{
+					"name": "Get All Ads",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has ads data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/ads?search=&type=&is_active=&sorted_by=all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ads"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by title_en or title_ar",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "",
+									"description": "Filter by type: promotion or interface",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "",
+									"description": "Filter by active status: true or false",
+									"disabled": true
+								},
+								{
+									"key": "sorted_by",
+									"value": "all",
+									"description": "Sort by: title, newest, oldest, all"
+								}
+							]
+						},
+						"description": "Get all ads with pagination. Public endpoint, no authentication required."
+					}
+				},
+				{
+					"name": "Get All Ads - With Filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has ads data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/ads?search=&type=promotion&is_active=true&sorted_by=newest",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ads"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by title_en or title_ar",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "promotion",
+									"description": "Filter by type: promotion or interface"
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"description": "Filter by active status: true or false"
+								},
+								{
+									"key": "sorted_by",
+									"value": "newest",
+									"description": "Sort by: title, newest, oldest, all"
+								}
+							]
+						},
+						"description": "Get all ads with filters applied. Example: active promotion ads sorted by newest."
+					}
+				},
+				{
+					"name": "Get Ad by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has ad data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('id');",
+									"    pm.expect(jsonData.data).to.have.property('title_en');",
+									"    pm.expect(jsonData.data).to.have.property('title_ar');",
+									"    pm.expect(jsonData.data).to.have.property('description_en');",
+									"    pm.expect(jsonData.data).to.have.property('description_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/ads/{{ad_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ads",
+								"{{ad_id}}"
+							]
+						},
+						"description": "Get a specific ad by ID. Public endpoint, no authentication required. Note: Set ad_id variable from Create Ad response."
+					}
+				},
+				{
+					"name": "Search Ads",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/ads?search=promotion&sorted_by=title",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"ads"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "promotion",
+									"description": "Search term (searches in title_en and title_ar)"
+								},
+								{
+									"key": "sorted_by",
+									"value": "title",
+									"description": "Sort by: title, newest, oldest, all"
+								}
+							]
+						},
+						"description": "Search ads by title. Public endpoint, no authentication required."
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Endpoints",
+			"item": [
+				{
+					"name": "Create Ad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('ad_id', jsonData.data.id);",
+									"}",
+									"",
+									"pm.test(\"Response has ad data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('title_en');",
+									"    pm.expect(jsonData.data).to.have.property('title_ar');",
+									"    pm.expect(jsonData.data).to.have.property('description_en');",
+									"    pm.expect(jsonData.data).to.have.property('description_ar');",
+									"    pm.expect(jsonData.data).to.have.property('type');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title_en",
+									"value": "Summer Sale",
+									"type": "text"
+								},
+								{
+									"key": "title_ar",
+									"value": "تخفيضات الصيف",
+									"type": "text"
+								},
+								{
+									"key": "description_en",
+									"value": "Get amazing discounts on all products this summer!",
+									"type": "text"
+								},
+								{
+									"key": "description_ar",
+									"value": "احصل على خصومات رائعة على جميع المنتجات هذا الصيف!",
+									"type": "text"
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "btn_text_en",
+									"value": "Shop Now",
+									"type": "text"
+								},
+								{
+									"key": "btn_text_ar",
+									"value": "تسوق الآن",
+									"type": "text"
+								},
+								{
+									"key": "btn_link",
+									"value": "https://example.com/shop",
+									"type": "text"
+								},
+								{
+									"key": "btn_is_active",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "promotion",
+									"type": "text",
+									"description": "promotion or interface"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": [],
+									"description": "Image file (jpeg, png, jpg, gif, webp, max 5MB)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/ads",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"ads"
+							]
+						},
+						"description": "Create a new ad. Requires admin authentication. Automatically saves ad_id to environment. Note: Image file is required. Select an image file in the form-data."
+					}
+				},
+				{
+					"name": "Update Ad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated ad data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('title_en');",
+									"    pm.expect(jsonData.data).to.have.property('title_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title_en",
+									"value": "Summer Sale Updated",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "title_ar",
+									"value": "تخفيضات الصيف المحدثة",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description_en",
+									"value": "Updated description",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description_ar",
+									"value": "الوصف المحدث",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "btn_text_en",
+									"value": "Buy Now",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "btn_text_ar",
+									"value": "اشتري الآن",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "btn_link",
+									"value": "https://example.com/buy",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "btn_is_active",
+									"value": "false",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "interface",
+									"type": "text",
+									"description": "promotion or interface",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": [],
+									"description": "Image file (optional, only if updating image)",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/ads/{{ad_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"ads",
+								"{{ad_id}}"
+							]
+						},
+						"description": "Update an ad. Requires admin authentication. All fields are optional. Note: Set ad_id variable from Create Ad response. Enable the fields you want to update. Image is optional - only include if you want to update the image."
+					}
+				},
+				{
+					"name": "Update Ad - Text Only (No Image)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated ad data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title_en",
+									"value": "Updated Title",
+									"type": "text"
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/ads/{{ad_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"ads",
+								"{{ad_id}}"
+							]
+						},
+						"description": "Update ad text fields only (without updating image). All fields are optional. You can update just one field or multiple fields."
+					}
+				},
+				{
+					"name": "Delete Ad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has success message\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/ads/{{ad_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"ads",
+								"{{ad_id}}"
+							]
+						},
+						"description": "Delete an ad. Requires admin authentication. Note: Set ad_id variable from Create Ad response."
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}
