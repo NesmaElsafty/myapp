@@ -1,0 +1,457 @@
+{
+	"info": {
+		"_postman_id": "faqs-crud-collection",
+		"name": "FAQs CRUD",
+		"description": "Complete CRUD operations for FAQs management. Public endpoints for viewing, admin endpoints for management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public Endpoints",
+			"item": [
+				{
+					"name": "Get All FAQs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has FAQs data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/faqs?search=&segment=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"faqs"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by question_en, question_ar, answer_en, or answer_ar",
+									"disabled": true
+								},
+								{
+									"key": "segment",
+									"value": "",
+									"description": "Filter by segment: user, origin, or individual",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all FAQs with pagination. Public endpoint, no authentication required."
+					}
+				},
+				{
+					"name": "Get All FAQs - With Filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has FAQs data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/faqs?search=&segment=user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"faqs"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by question_en, question_ar, answer_en, or answer_ar",
+									"disabled": true
+								},
+								{
+									"key": "segment",
+									"value": "user",
+									"description": "Filter by segment: user, origin, or individual"
+								}
+							]
+						},
+						"description": "Get all FAQs with filters applied. Example: FAQs filtered by segment 'user'."
+					}
+				},
+				{
+					"name": "Get FAQ by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has FAQ data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('id');",
+									"    pm.expect(jsonData.data).to.have.property('question_en');",
+									"    pm.expect(jsonData.data).to.have.property('question_ar');",
+									"    pm.expect(jsonData.data).to.have.property('answer_en');",
+									"    pm.expect(jsonData.data).to.have.property('answer_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/faqs/{{faq_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"faqs",
+								"{{faq_id}}"
+							]
+						},
+						"description": "Get a specific FAQ by ID. Public endpoint, no authentication required. Note: Set faq_id variable from Create FAQ response."
+					}
+				},
+				{
+					"name": "Search FAQs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/faqs?search=payment&segment=user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"faqs"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "payment",
+									"description": "Search term (searches in question_en, question_ar, answer_en, answer_ar)"
+								},
+								{
+									"key": "segment",
+									"value": "user",
+									"description": "Filter by segment: user, origin, or individual"
+								}
+							]
+						},
+						"description": "Search FAQs by question or answer. Public endpoint, no authentication required."
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Endpoints",
+			"item": [
+				{
+					"name": "Create FAQ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('faq_id', jsonData.data.id);",
+									"}",
+									"",
+									"pm.test(\"Response has FAQ data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('question_en');",
+									"    pm.expect(jsonData.data).to.have.property('question_ar');",
+									"    pm.expect(jsonData.data).to.have.property('answer_en');",
+									"    pm.expect(jsonData.data).to.have.property('answer_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question_en\": \"How do I create an account?\",\n    \"question_ar\": \"كيف يمكنني إنشاء حساب؟\",\n    \"answer_en\": \"To create an account, click on the Register button and fill in your details.\",\n    \"answer_ar\": \"لإنشاء حساب، انقر على زر التسجيل واملأ بياناتك.\",\n    \"segment\": \"user\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/faqs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"faqs"
+							]
+						},
+						"description": "Create a new FAQ. Requires admin authentication. Automatically saves faq_id to environment."
+					}
+				},
+				{
+					"name": "Update FAQ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated FAQ data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('question_en');",
+									"    pm.expect(jsonData.data).to.have.property('question_ar');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"question_en\": \"How do I update my account?\",\n    \"question_ar\": \"كيف يمكنني تحديث حسابي؟\",\n    \"answer_en\": \"To update your account, go to your profile settings and make the necessary changes.\",\n    \"answer_ar\": \"لتحديث حسابك، انتقل إلى إعدادات ملفك الشخصي وقم بإجراء التغييرات اللازمة.\",\n    \"segment\": \"user\",\n    \"is_active\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/faqs/{{faq_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"faqs",
+								"{{faq_id}}"
+							]
+						},
+						"description": "Update a FAQ. Requires admin authentication. All fields are optional. Note: Set faq_id variable from Create FAQ response."
+					}
+				},
+				{
+					"name": "Update FAQ - Partial Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated FAQ data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/faqs/{{faq_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"faqs",
+								"{{faq_id}}"
+							]
+						},
+						"description": "Update FAQ with partial data. All fields are optional. You can update just one field or multiple fields."
+					}
+				},
+				{
+					"name": "Delete FAQ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has success message\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/faqs/{{faq_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"faqs",
+								"{{faq_id}}"
+							]
+						},
+						"description": "Delete a FAQ. Requires admin authentication. Note: Set faq_id variable from Create FAQ response."
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

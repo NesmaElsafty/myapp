@@ -27,8 +27,8 @@ class BlogResource extends JsonResource
             'description_ar' => $this->description_ar,
             'is_active' => (bool) $this->is_active,
             'image' => $image,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

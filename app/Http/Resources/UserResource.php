@@ -37,9 +37,9 @@ class UserResource extends JsonResource
             'national_id' => $this->national_id,
             'commercial_number' => $this->commercial_number,
             'role' => $role ? new RoleResource($role) : null,
-            'email_verified_at' => $this->email_verified_at?->toDateTimeString(),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'email_verified_at' => $this->email_verified_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'image' => $image,
         ];
     }

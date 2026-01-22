@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CityResource extends JsonResource
+class FaqResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,12 @@ class CityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name_en' => $this->name_en,
-            'name_ar' => $this->name_ar,
-            'regions' => $this->whenLoaded('regions', function () {
-                return RegionResource::collection($this->regions);
-            }),
-            'regions_count' => $this->when(isset($this->regions_count), $this->regions_count),
+            'question_en' => $this->question_en,
+            'question_ar' => $this->question_ar,
+            'answer_en' => $this->answer_en,
+            'answer_ar' => $this->answer_ar,
+            'segment' => $this->segment,
+            'is_active' => (bool) $this->is_active,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

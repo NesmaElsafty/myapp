@@ -9,6 +9,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\FaqController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -53,6 +54,12 @@ Route::prefix('blogs')->group(function () {
     Route::get('/{id}', [BlogController::class, 'show']);
 });
 
+// Public FAQs routes (index and show)
+Route::prefix('faqs')->group(function () {
+    Route::get('/', [FaqController::class, 'index']);
+    Route::get('/{id}', [FaqController::class, 'show']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -79,4 +86,9 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('blogs', [BlogController::class, 'store']);
     Route::put('blogs/{id}', [BlogController::class, 'update']);
     Route::delete('blogs/{id}', [BlogController::class, 'destroy']);
+    // Protected FAQs routes (store, update, destroy)
+    Route::post('faqs', [FaqController::class, 'store']);
+    Route::put('faqs/{id}', [FaqController::class, 'update']);
+    Route::delete('faqs/{id}', [FaqController::class, 'destroy']);
+    Route::post('faqsBulkActions', [FaqController::class, 'bulkActions']);
 });

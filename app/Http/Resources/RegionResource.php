@@ -24,8 +24,8 @@ class RegionResource extends JsonResource
             'city' => $this->whenLoaded('city', function () {
                 return new CityResource($this->city);
             }),
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

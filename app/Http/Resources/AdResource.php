@@ -32,8 +32,8 @@ class AdResource extends JsonResource
             'btn_is_active' => (bool) $this->btn_is_active,
             'type' => $this->type,
             'image' => $image,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
