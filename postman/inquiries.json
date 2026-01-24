@@ -1,0 +1,500 @@
+{
+	"info": {
+		"_postman_id": "inquiries-crud-collection",
+		"name": "Inquiries CRUD",
+		"description": "Complete CRUD operations for Inquiry tickets management. Public endpoint for creating inquiries, admin endpoints for management.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public Endpoints",
+			"item": [
+				{
+					"name": "Create Inquiry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"if (pm.response.code === 201) {",
+									"    const jsonData = pm.response.json();",
+									"    pm.environment.set('inquiry_id', jsonData.data.id);",
+									"}",
+									"",
+									"pm.test(\"Response has Inquiry data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('name');",
+									"    pm.expect(jsonData.data).to.have.property('email');",
+									"    pm.expect(jsonData.data).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"phone\": \"+1234567890\",\n    \"message\": \"I would like to inquire about your services.\",\n    \"account_type\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/inquiries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"inquiries"
+							]
+						},
+						"description": "Create a new inquiry. Public endpoint, no authentication required. Automatically saves inquiry_id to environment."
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin Endpoints",
+			"item": [
+				{
+					"name": "Get All Inquiries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Inquiries data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/inquiries?search=&account_type=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"inquiries"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name, email, phone, or message",
+									"disabled": true
+								},
+								{
+									"key": "account_type",
+									"value": "",
+									"description": "Filter by account type: user, individual, origin, or all",
+									"disabled": true
+								},
+								{
+									"key": "sorted_by",
+									"value": "newest",
+									"description": "Sort by: newest, oldest, all, name"
+								}
+							]
+						},
+						"description": "Get all inquiries with pagination. Requires admin authentication."
+					}
+				},
+				{
+					"name": "Get All Inquiries - With Filters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Inquiries data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/inquiries?search=&account_type=user&sorted_by=newest",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"inquiries"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search by name, email, phone, or message",
+									"disabled": true
+								},
+								{
+									"key": "account_type",
+									"value": "user",
+									"description": "Filter by account type: user, individual, origin, or all"
+								},
+								{
+									"key": "sorted_by",
+									"value": "newest",
+									"description": "Sort by: newest, oldest, all, name"
+								}
+							]
+						},
+						"description": "Get all inquiries with filters applied. Example: User inquiries sorted by newest."
+					}
+				},
+				{
+					"name": "Get Inquiry by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Inquiry data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('id');",
+									"    pm.expect(jsonData.data).to.have.property('name');",
+									"    pm.expect(jsonData.data).to.have.property('email');",
+									"    pm.expect(jsonData.data).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/inquiries/{{inquiry_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"inquiries",
+								"{{inquiry_id}}"
+							]
+						},
+						"description": "Get a specific inquiry by ID. Requires admin authentication. Note: Set inquiry_id variable from Create Inquiry response."
+					}
+				},
+				{
+					"name": "Update Inquiry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has updated Inquiry data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@example.com\",\n    \"phone\": \"+9876543210\",\n    \"message\": \"Updated message\",\n    \"account_type\": \"individual\",\n    \"is_replied\": true,\n    \"reply_message\": \"Thank you for your inquiry. We will get back to you soon.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/inquiries/{{inquiry_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"inquiries",
+								"{{inquiry_id}}"
+							]
+						},
+						"description": "Update an inquiry. Requires admin authentication. All fields are optional. Note: Set inquiry_id variable from Create Inquiry response."
+					}
+				},
+				{
+					"name": "Reply to Inquiry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has replied Inquiry data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('is_replied', true);",
+									"    pm.expect(jsonData.data).to.have.property('reply_message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reply_message\": \"Thank you for your inquiry. We have received your message and will get back to you within 24 hours. If you need immediate assistance, please contact our support team.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/inquiries/{{inquiry_id}}/reply",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"inquiries",
+								"{{inquiry_id}}",
+								"reply"
+							]
+						},
+						"description": "Reply to an inquiry. This automatically sets is_replied to true. Requires admin authentication. Note: Set inquiry_id variable from Create Inquiry response."
+					}
+				},
+				{
+					"name": "Delete Inquiry",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has success message\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/inquiries/{{inquiry_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"inquiries",
+								"{{inquiry_id}}"
+							]
+						},
+						"description": "Delete an inquiry. Requires admin authentication. Note: Set inquiry_id variable from Create Inquiry response."
+					}
+				},
+				{
+					"name": "Bulk Actions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has success message\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"delete\",\n    \"inquiry_ids\": [1, 2, 3]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/inquiriesBulkActions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"inquiriesBulkActions"
+							]
+						},
+						"description": "Perform bulk actions on Inquiries. Actions: delete, export. If inquiry_ids is empty, applies to all Inquiries."
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

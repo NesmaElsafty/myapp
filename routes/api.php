@@ -12,6 +12,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\InquiryController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -73,6 +74,11 @@ Route::prefix('supports')->group(function () {
     Route::post('/', [SupportController::class, 'store']);
 });
 
+// Public Inquiry routes (create inquiry)
+Route::prefix('inquiries')->group(function () {
+    Route::post('/', [InquiryController::class, 'store']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -116,4 +122,11 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('supports/{id}/reply', [SupportController::class, 'reply']);
     Route::delete('supports/{id}', [SupportController::class, 'destroy']);
     Route::post('supportsBulkActions', [SupportController::class, 'bulkActions']);
+    // Protected Inquiry routes (index, show, update, reply, destroy)
+    Route::get('inquiries', [InquiryController::class, 'index']);
+    Route::get('inquiries/{id}', [InquiryController::class, 'show']);
+    Route::put('inquiries/{id}', [InquiryController::class, 'update']);
+    Route::post('inquiries/{id}/reply', [InquiryController::class, 'reply']);
+    Route::delete('inquiries/{id}', [InquiryController::class, 'destroy']);
+    Route::post('inquiriesBulkActions', [InquiryController::class, 'bulkActions']);
 });
