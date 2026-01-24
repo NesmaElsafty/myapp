@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "system-settings-collection",
+		"name": "System Settings",
+		"description": "System Settings management endpoints. Admin-only access for managing application configuration.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All System Settings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has System Settings data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.be.an('array');",
+							"});",
+							"",
+							"if (pm.response.code === 200) {",
+							"    const jsonData = pm.response.json();",
+							"    if (jsonData.data.length > 0) {",
+							"        pm.environment.set('setting_id', jsonData.data[0].id);",
+							"        pm.environment.set('setting_key', jsonData.data[0].key);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/system-settings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"system-settings"
+					]
+				},
+				"description": "Get all system settings. Requires admin authentication. Automatically saves setting_id and setting_key from first setting."
+			}
+		},
+		{
+			"name": "Get System Setting by Key",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has System Setting data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('key');",
+							"    pm.expect(jsonData.data).to.have.property('value');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/system-settings/{{setting_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"system-settings",
+						"{{setting_key}}"
+					]
+				},
+				"description": "Get a specific system setting by key. Requires admin authentication. Note: Set setting_key variable from Get All System Settings response or use a specific key like 'platform_status'."
+			}
+		},
+		{
+			"name": "Get System Setting by Key - Example",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has System Setting data\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/system-settings/platform_status",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"system-settings",
+						"platform_status"
+					]
+				},
+				"description": "Example: Get platform_status setting. Requires admin authentication."
+			}
+		},
+		{
+			"name": "Update System Settings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has success message\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "setting[0][key]",
+							"value": "platform_status",
+							"type": "text"
+						},
+						{
+							"key": "setting[0][value]",
+							"value": "active",
+							"type": "text"
+						},
+						{
+							"key": "setting[1][key]",
+							"value": "required_points",
+							"type": "text"
+						},
+						{
+							"key": "setting[1][value]",
+							"value": "150",
+							"type": "text"
+						},
+						{
+							"key": "setting[2][key]",
+							"value": "platform_fees",
+							"type": "text"
+						},
+						{
+							"key": "setting[2][value]",
+							"value": "15",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/updateSettings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"updateSettings"
+					]
+				},
+				"description": "Update system settings. Requires admin authentication. You can update multiple settings at once by providing form-data. Each setting must have a valid key and value. Use format: setting[0][key], setting[0][value], etc."
+			}
+		},
+		{
+			"name": "Update System Settings - Single",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has success message\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "setting[0][key]",
+							"value": "platform_status",
+							"type": "text"
+						},
+						{
+							"key": "setting[0][value]",
+							"value": "inactive",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/updateSettings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"updateSettings"
+					]
+				},
+				"description": "Update a single system setting. Example: Update platform_status to inactive. Use form-data format."
+			}
+		},
+		{
+			"name": "Update System Settings - With Image",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has success message\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "setting[0][key]",
+							"value": "app_default_logo",
+							"type": "text"
+						},
+						{
+							"key": "setting[0][value]",
+							"value": "file",
+							"type": "text"
+						},
+						{
+							"key": "app_default_logo",
+							"type": "file",
+							"src": [],
+							"description": "Logo image file"
+						},
+						{
+							"key": "setting[1][key]",
+							"value": "platform_status",
+							"type": "text"
+						},
+						{
+							"key": "setting[1][value]",
+							"value": "active",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/updateSettings",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"updateSettings"
+					]
+				},
+				"description": "Update system settings with image upload. For settings with images (app_default_logo, post_default_image, app_default_background), include both the setting array and the file field. The file field key must match the setting key (e.g., 'app_default_logo')."
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

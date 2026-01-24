@@ -13,6 +13,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\TermController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\SystemSettingController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -129,4 +130,9 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('inquiries/{id}/reply', [InquiryController::class, 'reply']);
     Route::delete('inquiries/{id}', [InquiryController::class, 'destroy']);
     Route::post('inquiriesBulkActions', [InquiryController::class, 'bulkActions']);
+
+    // Protected System Setting routes (index, show, update)
+    Route::get('system-settings', [SystemSettingController::class, 'index']);
+    Route::get('system-settings/{key}', [SystemSettingController::class, 'show']);
+    Route::post('updateSettings', [SystemSettingController::class, 'update']);
 });

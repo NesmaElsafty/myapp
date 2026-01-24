@@ -51,5 +51,10 @@ class DatabaseSeeder extends Seeder
             IndividualSeeder::class,
             AgentSeeder::class, // Must be after OriginSeeder
         ]);
+
+        // Seed system settings
+        $this->call([
+            SystemSettingSeeder::class,
+        ]);
     }
 }
