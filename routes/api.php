@@ -15,6 +15,7 @@ use App\Http\Controllers\SupportController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AlertController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -27,6 +28,7 @@ Route::prefix('auth')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
         Route::post('/updateProfile', [AuthController::class, 'updateProfile']);
         Route::post('/changePassword', [AuthController::class, 'changePassword']);
+        Route::post('/markAsRead', [AlertController::class, 'markAsRead']);
     });
 });
 
@@ -145,4 +147,5 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::delete('notifications/{id}', [NotificationController::class, 'destroy']);
     Route::post('notifications/{id}/updateStatus', [NotificationController::class, 'updateStatus']);
     Route::post('notificationsBulkActions', [NotificationController::class, 'bulkActions']);
+    Route::post('notify', [NotificationController::class, 'notify']);
 });

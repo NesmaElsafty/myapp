@@ -69,4 +69,12 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->belongsTo(Role::class);
     }
+
+    /**
+     * Get the alerts that belongs to the user.
+     */
+    public function alerts()
+    {
+        return $this->hasMany(Alert::class);
+    }
 }

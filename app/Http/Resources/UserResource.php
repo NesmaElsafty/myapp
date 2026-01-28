@@ -19,6 +19,10 @@ class UserResource extends JsonResource
         if($this->type == 'admin') {
             $role = $this->role;
         }
+        $alerts = [];
+        if($this->id == auth()->user()->id) {
+            $alerts = AlertResource::collection($this->alerts);
+        }
 
         $image = null;
         if($this->hasMedia('profile')) {
@@ -41,6 +45,7 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'image' => $image,
+            'alerts' => $alerts,
         ];
     }
 }

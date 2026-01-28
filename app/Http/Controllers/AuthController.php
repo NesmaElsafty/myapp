@@ -87,9 +87,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Login user
-     */
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -114,7 +111,7 @@ class AuthController extends Controller
             }
 
             $resourceClass = $this->getResourceClass($result['user']->type);
-            $userResource = new $resourceClass($result['user']);
+            $userResource = new $resourceClass($result['user']->load('alerts'));
 
             return response()->json([
                 'message' => 'Login successful',
@@ -134,9 +131,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Logout user
-     */
     public function logout(Request $request)
     {
         try {
@@ -154,9 +148,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Get authenticated user
-     */
     public function me(Request $request)
     {
         $user = $request->user();
@@ -174,9 +165,6 @@ class AuthController extends Controller
         ], 200);
     }
 
-    /**
-     * Get resource class based on user type
-     */
     protected function getResourceClass(string $type): string
     {
         return match ($type) {
@@ -188,7 +176,6 @@ class AuthController extends Controller
         };
     }
 
-    // update user
     public function updateProfile(Request $request)
     {
         try {
@@ -219,7 +206,6 @@ class AuthController extends Controller
         }
     }
 
-    // change password
     public function changePassword(Request $request)
     {
         try {

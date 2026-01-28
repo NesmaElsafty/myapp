@@ -28,6 +28,9 @@ class AdminResource extends JsonResource
             'type' => $this->type,
             'image' => $image,
             'email_verified_at' => $this->email_verified_at,
+            'alerts' => $this->whenLoaded('alerts', function () {
+                return AlertResource::collection($this->alerts);
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

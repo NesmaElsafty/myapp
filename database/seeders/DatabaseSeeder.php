@@ -53,6 +53,11 @@ class DatabaseSeeder extends Seeder
             AgentSeeder::class, // Must be after OriginSeeder
         ]);
 
+        // Seed alerts (must be after users)
+        $this->call([
+            AlertSeeder::class,
+        ]);
+
         // Seed system settings
         $this->call([
             SystemSettingSeeder::class,

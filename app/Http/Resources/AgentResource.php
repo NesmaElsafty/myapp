@@ -14,6 +14,10 @@ class AgentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $alerts = [];
+        if($this->id == auth()->user()->id) {
+            $alerts = AlertResource::collection($this->alerts);
+        }
         return [
             'id' => $this->id,
             'f_name' => $this->f_name,
@@ -26,6 +30,7 @@ class AgentResource extends JsonResource
                 return new OriginResource($this->origin);
             }),
             'email_verified_at' => $this->email_verified_at,
+            'alerts' => $alerts,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

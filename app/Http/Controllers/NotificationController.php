@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\NotificationResource;
+use App\Services\AlertService;
 use App\Services\NotificationService;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,10 +14,11 @@ use App\Models\Notification;
 class NotificationController extends Controller
 {
     protected $notificationService;
-
-    public function __construct(NotificationService $notificationService)
+    protected $alertService;
+    public function __construct(NotificationService $notificationService, AlertService $alertService)
     {
         $this->notificationService = $notificationService;
+        $this->alertService = $alertService;
     }
 
     public function index(Request $request)
@@ -55,12 +57,15 @@ class NotificationController extends Controller
                 'content_ar' => 'required|string',
                 'type' => 'required|in:reminder,alert,notification',
                 'target_type' => 'required|array|min:1|max:3',
-                'target_type.*' => 'required|in:user,individual,origin',
+                'target_type.*' => 'required|in:user,individual,origin,admin',
                 'status' => 'required|in:sent,scheduled,unsent',
             ]);
 
             $notification = $this->notificationService->create($request->all());
 
+            if($notification->status == 'sent') {
+                $this->alertService->create($request->all(), $notification->id);
+            }
             return response()->json([
                 'message' => 'Notification created successfully',
                 'data' => new NotificationResource($notification),
@@ -198,6 +203,28 @@ class NotificationController extends Controller
                 'message' => 'Failed to perform bulk action',
                 'error' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+    // notify
+    public function notify(Request $request)
+    {
+        try {
+            $request->validate([
+                'notification_id' => 'required|integer|exists:notifications,id',
+            ]);
+
+            $notification = $this->notificationService->getById($request->notification_id);
+            $alert = $this->alertService->create([], $request->notification_id);
+
+            return response()->json([
+                'message' => 'Alert created successfully',
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 422);
         }
     }
 }
