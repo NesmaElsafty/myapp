@@ -14,6 +14,7 @@ use App\Http\Controllers\TermController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\SystemSettingController;
+use App\Http\Controllers\NotificationController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -135,4 +136,13 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::get('system-settings', [SystemSettingController::class, 'index']);
     Route::get('system-settings/{key}', [SystemSettingController::class, 'show']);
     Route::post('updateSettings', [SystemSettingController::class, 'update']);
+    
+    // Protected Notification routes (CRUD, updateStatus, bulkActions)
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::get('notifications/{id}', [NotificationController::class, 'show']);
+    Route::post('notifications', [NotificationController::class, 'store']);
+    Route::put('notifications/{id}', [NotificationController::class, 'update']);
+    Route::delete('notifications/{id}', [NotificationController::class, 'destroy']);
+    Route::post('notifications/{id}/updateStatus', [NotificationController::class, 'updateStatus']);
+    Route::post('notificationsBulkActions', [NotificationController::class, 'bulkActions']);
 });

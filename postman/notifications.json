@@ -1,0 +1,544 @@
+{
+	"info": {
+		"name": "Notifications API",
+		"description": "Collection for testing Notifications CRUD operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Admin - Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has message, data, and pagination\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"    pm.expect(jsonData.data).to.be.an('array');",
+									"});",
+									"",
+									"// Store first notification ID for other requests",
+									"if (pm.response.json().data.length > 0) {",
+									"    pm.environment.set('notification_id', pm.response.json().data[0].id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "lang",
+								"value": "en",
+								"description": "Language: en or ar"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/notifications?sorted_by=newest",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "test",
+									"description": "Search in title or content",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "reminder",
+									"description": "Filter by type: reminder, alert, notification, all",
+									"disabled": true
+								},
+								{
+									"key": "target_type",
+									"value": "user",
+									"description": "Filter by target: user, individual, origin, all",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "sent",
+									"description": "Filter by status: sent, scheduled, unsent, all",
+									"disabled": true
+								},
+								{
+									"key": "sorted_by",
+									"value": "newest",
+									"description": "Sort by: title, newest, oldest, all"
+								}
+							]
+						},
+						"description": "Get a paginated list of all notifications (10 per page) with optional filters (search, type, target_type, status) and sorting. Filters accept 'all' to show all values."
+					}
+				},
+				{
+					"name": "Get Single Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has notification data\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "lang",
+								"value": "en",
+								"description": "Language: en or ar"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/notifications/{{notification_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notifications",
+								"{{notification_id}}"
+							]
+						},
+						"description": "Get a single notification by ID"
+					}
+				},
+				{
+					"name": "Create Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Notification was created\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData.data).to.have.property('id');",
+									"    ",
+									"    // Store the created notification ID",
+									"    pm.environment.set('notification_id', jsonData.data.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title_en\": \"System Maintenance Reminder\",\n    \"title_ar\": \"تذكير بصيانة النظام\",\n    \"content_en\": \"The system will be under maintenance on Sunday from 2 AM to 4 AM.\",\n    \"content_ar\": \"سيكون النظام قيد الصيانة يوم الأحد من الساعة 2 صباحًا حتى 4 صباحًا.\",\n    \"type\": \"reminder\",\n    \"target_type\": \"user\",\n    \"status\": \"scheduled\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/notifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notifications"
+							]
+						},
+						"description": "Create a new notification. Required fields: title_en, title_ar, content_en, content_ar, type (reminder/alert/notification), target_type (user/individual/origin), status (sent/scheduled/unsent)"
+					}
+				},
+				{
+					"name": "Update Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Notification was updated\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title_en\": \"Updated: System Maintenance Alert\",\n    \"title_ar\": \"محدث: تنبيه صيانة النظام\",\n    \"content_en\": \"The scheduled maintenance has been rescheduled to Monday from 3 AM to 5 AM.\",\n    \"content_ar\": \"تم إعادة جدولة الصيانة المجدولة إلى يوم الاثنين من الساعة 3 صباحًا حتى 5 صباحًا.\",\n    \"type\": \"alert\",\n    \"status\": \"sent\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/notifications/{{notification_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notifications",
+								"{{notification_id}}"
+							]
+						},
+						"description": "Update an existing notification. All fields are optional."
+					}
+				},
+				{
+					"name": "Update Notification Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status was updated\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"sent\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/notifications/{{notification_id}}/updateStatus",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notifications",
+								"{{notification_id}}",
+								"updateStatus"
+							]
+						},
+						"description": "Update notification status. Status options: sent, scheduled, unsent"
+					}
+				},
+				{
+					"name": "Delete Notification",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Notification was deleted\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/admin/notifications/{{notification_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notifications",
+								"{{notification_id}}"
+							]
+						},
+						"description": "Delete a notification by ID"
+					}
+				},
+				{
+					"name": "Bulk Actions - Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Bulk action completed\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"delete\",\n    \"ids\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/notificationsBulkActions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notificationsBulkActions"
+							]
+						},
+						"description": "Perform bulk delete action on multiple notifications"
+					}
+				},
+				{
+					"name": "Bulk Actions - Export",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Export data received\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"export\",\n    \"ids\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/notificationsBulkActions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notificationsBulkActions"
+							]
+						},
+						"description": "Export multiple notifications data"
+					}
+				},
+				{
+					"name": "Bulk Actions - Update Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status updated for all notifications\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"action\": \"updateStatus\",\n    \"ids\": [1, 2, 3],\n    \"status\": \"sent\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/admin/notificationsBulkActions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"notificationsBulkActions"
+							]
+						},
+						"description": "Update status for multiple notifications. Status options: sent, scheduled, unsent"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		}
+	]
+}

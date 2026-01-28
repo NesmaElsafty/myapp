@@ -341,14 +341,14 @@
 						},
 						{
 							"key": "setting[0][value]",
-							"value": "file",
+							"value": "default_logo.png",
 							"type": "text"
 						},
 						{
-							"key": "app_default_logo",
+							"key": "setting[0][image]",
 							"type": "file",
 							"src": [],
-							"description": "Logo image file"
+							"description": "Logo image file - use setting[index][image] format"
 						},
 						{
 							"key": "setting[1][key]",
@@ -373,7 +373,7 @@
 						"updateSettings"
 					]
 				},
-				"description": "Update system settings with image upload. For settings with images (app_default_logo, post_default_image, app_default_background), include both the setting array and the file field. The file field key must match the setting key (e.g., 'app_default_logo')."
+				"description": "Update system settings with image upload. For settings with images, use the format: setting[index][key], setting[index][value], and setting[index][image] for the file. The image field should follow the array index pattern (e.g., 'setting[0][image]' for the first setting with an image)."
 			}
 		}
 	],
