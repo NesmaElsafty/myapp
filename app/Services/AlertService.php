@@ -25,7 +25,7 @@ class AlertService
             $notification = Notification::find($notification_id);
             if($notification) {
                 $target_type = $notification->target_type;
-                $users = User::whereIn('type', $target_type)->pluck('id');
+                $users = User::whereIn('type', $target_type)->where('is_active', true)->pluck('id');
                 foreach($users as $user) {
                     Alert::create([
                         'user_id' => $user,
