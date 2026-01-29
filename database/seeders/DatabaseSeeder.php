@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             SocialMediaSeeder::class,
         ]);
 
-        // Seed ads, blogs, FAQs, Terms, Supports, Inquiries, and Notifications
+        // Seed ads, blogs, FAQs, Terms, Supports, Inquiries, Notifications, and Plans
         $this->call([
             AdSeeder::class,
             BlogSeeder::class,
@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             SupportSeeder::class,
             InquirySeeder::class,
             NotificationSeeder::class,
+            PlanSeeder::class,
         ]);
 
         // Seed users in order: origin first (needed for agents), then others
@@ -56,6 +57,11 @@ class DatabaseSeeder extends Seeder
         // Seed alerts (must be after users)
         $this->call([
             AlertSeeder::class,
+        ]);
+
+        // Seed features
+        $this->call([
+            FeatureSeeder::class,
         ]);
 
         // Seed system settings

@@ -16,6 +16,7 @@ use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\PlanController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -83,6 +84,13 @@ Route::prefix('inquiries')->group(function () {
     Route::post('/', [InquiryController::class, 'store']);
 });
 
+// Public plans routes (index and show)
+Route::prefix('plans')->group(function () {
+    Route::get('/', [PlanController::class, 'index']);
+    Route::get('/{id}', [PlanController::class, 'show']);
+});
+Route::get('/features', [PlanController::class, 'features']);
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -148,4 +156,11 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('notifications/{id}/updateStatus', [NotificationController::class, 'updateStatus']);
     Route::post('notificationsBulkActions', [NotificationController::class, 'bulkActions']);
     Route::post('notify', [NotificationController::class, 'notify']);
+
+    
+    // Protected Plans routes (store, update, destroy, bulkActions)
+    Route::post('plans', [PlanController::class, 'store']);
+    Route::put('plans/{id}', [PlanController::class, 'update']);
+    Route::delete('plans/{id}', [PlanController::class, 'destroy']);
+    Route::post('plansBulkActions', [PlanController::class, 'bulkActions']);
 });
