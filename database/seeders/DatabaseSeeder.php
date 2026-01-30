@@ -64,6 +64,11 @@ class DatabaseSeeder extends Seeder
             FeatureSeeder::class,
         ]);
 
+        // Seed categories
+        $this->call([
+            CategorySeeder::class,
+        ]);
+
         // Seed system settings
         $this->call([
             SystemSettingSeeder::class,

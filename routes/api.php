@@ -17,6 +17,7 @@ use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\CategoryController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -91,6 +92,12 @@ Route::prefix('plans')->group(function () {
 });
 Route::get('/features', [PlanController::class, 'features']);
 
+// Public categories routes (index and show)
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index']);
+    Route::get('/{id}', [CategoryController::class, 'show']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -163,4 +170,9 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::put('plans/{id}', [PlanController::class, 'update']);
     Route::delete('plans/{id}', [PlanController::class, 'destroy']);
     Route::post('plansBulkActions', [PlanController::class, 'bulkActions']);
+
+    // Protected Categories routes (store, update, destroy, bulkActions)
+    Route::post('categories', [CategoryController::class, 'store']);
+    Route::put('categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
 });
