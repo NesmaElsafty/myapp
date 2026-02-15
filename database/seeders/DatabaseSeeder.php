@@ -69,6 +69,11 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
         ]);
 
+        // Seed screens (must be after categories)
+        $this->call([
+            ScreenSeeder::class,
+        ]);
+
         // Seed system settings
         $this->call([
             SystemSettingSeeder::class,

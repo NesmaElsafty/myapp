@@ -26,6 +26,7 @@ class CategoryResource extends JsonResource
             'name_ar' => $this->name_ar,
             'is_active' => $this->is_active,
             'image' => $image,
+            'screens' => ScreenResource::collection($this->screens),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

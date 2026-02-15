@@ -18,6 +18,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ScreenController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -98,6 +99,12 @@ Route::prefix('categories')->group(function () {
     Route::get('/{id}', [CategoryController::class, 'show']);
 });
 
+// Public screens routes (index and show)
+Route::prefix('screens')->group(function () {
+    Route::get('/', [ScreenController::class, 'index']);
+    Route::get('/{id}', [ScreenController::class, 'show']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -175,4 +182,10 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('categories', [CategoryController::class, 'store']);
     Route::put('categories/{id}', [CategoryController::class, 'update']);
     Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
+
+    // Protected Screens routes (store, update, destroy, bulkActions)
+    Route::post('screens', [ScreenController::class, 'store']);
+    Route::put('screens/{id}', [ScreenController::class, 'update']);
+    Route::delete('screens/{id}', [ScreenController::class, 'destroy']);
+    Route::post('screensBulkActions', [ScreenController::class, 'bulkActions']);
 });

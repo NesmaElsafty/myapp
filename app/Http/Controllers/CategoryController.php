@@ -8,11 +8,13 @@ use App\Services\CategoryService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Services\ScreenService;
 
 class CategoryController extends Controller
 {
     public function __construct(
-        protected CategoryService $categoryService
+        protected CategoryService $categoryService,
+        protected ScreenService $screenService
     ) {}
 
     public function index(Request $request)
@@ -63,6 +65,11 @@ class CategoryController extends Controller
                 'name_ar' => 'required|string|unique:categories,name_ar,|max:255',
                 'is_active' => 'nullable|boolean',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'screens' => 'nullable|array',
+                'screens.*.name_en' => 'required|string|max:255',
+                'screens.*.name_ar' => 'required|string|max:255',
+                'screens.*.description_en' => 'nullable|string',
+                'screens.*.description_ar' => 'nullable|string',
             ]);
 
             $category = $this->categoryService->create($request->all());
@@ -71,10 +78,24 @@ class CategoryController extends Controller
                 $category->addMediaFromRequest('image')->toMediaCollection('image');
             }
 
+            // create screens for the category
+            if($request->has('screens')) {
+                $screens = $request->screens;
+                foreach($screens as $screen) {
+                    $this->screenService->create([
+                        'name_en' => $screen['name_en'],
+                        'name_ar' => $screen['name_ar'],
+                        'description_en' => $screen['description_en'] ?? null,
+                        'description_ar' => $screen['description_ar'] ?? null,
+                        'category_id' => $category->id,
+                    ]);
+                }
+            }
+
             return response()->json([
                 'message' => 'Category created successfully',
-                'data' => new CategoryResource($category),
-            ], 201);
+                'data' => new CategoryResource($category->load('screens')),
+            ], 201);    
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Validation failed',
@@ -91,6 +112,11 @@ class CategoryController extends Controller
                 'name_ar' => 'nullable|string|unique:categories,name_ar,' . $id . ',id|max:255',
                 'is_active' => 'nullable|boolean',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'screens' => 'nullable|array',
+                'screens.*.name_en' => 'nullable|string|max:255',
+                'screens.*.name_ar' => 'nullable|string|max:255',
+                'screens.*.description_en' => 'nullable|string',
+                'screens.*.description_ar' => 'nullable|string',
             ]);
 
             $category = $this->categoryService->update($id, $request->all());
@@ -100,9 +126,26 @@ class CategoryController extends Controller
                 $category->addMediaFromRequest('image')->toMediaCollection('image');
             }
 
+            // create screens for the category
+            if($request->has('screens')) {
+                $screens = $request->screens;
+                
+                foreach($screens as $screen) {
+                    $category->screens()->updateOrCreate(
+                        [
+                            'name_en' => $screen['name_en'],
+                            'name_ar' => $screen['name_ar'],
+                        ],
+                        [
+                            'description_en' => $screen['description_en'] ?? null,
+                            'description_ar' => $screen['description_ar'] ?? null,
+                        ]
+                    );
+                }
+            }
             return response()->json([
                 'message' => 'Category updated successfully',
-                'data' => new CategoryResource($category),
+                    'data' => new CategoryResource($category->load('screens')),
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([

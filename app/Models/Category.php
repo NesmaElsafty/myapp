@@ -18,4 +18,9 @@ class Category extends Model implements HasMedia
         ];
     }
 
+    public function screens()
+    {
+        return $this->hasMany(Screen::class);
+    }
+
 }
