@@ -29,13 +29,13 @@ class CityController extends Controller
             $cities = $this->cityService->getAll($request->all())->paginate(10);
 
             return response()->json([
-                'message' => 'Cities retrieved successfully',
+                'message' => __('messages.cities_retrieved_success'),
                 'data' => CityResource::collection($cities),
                 'pagination' => PaginationHelper::paginate($cities),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve cities',
+                'message' => __('messages.failed_retrieve_cities'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -67,12 +67,12 @@ class CityController extends Controller
             }
 
             return response()->json([
-                'message' => 'City created successfully',
+                'message' => __('messages.city_created_success'),
                 'data' => new CityResource($city->load('regions')),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create city',
+                'message' => __('messages.failed_create_city'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -85,17 +85,17 @@ class CityController extends Controller
 
             if (!$city) {
                 return response()->json([
-                    'message' => 'City not found',
+                    'message' => __('messages.city_not_found'),
                 ], 404);
             }
 
             return response()->json([
-                'message' => 'City retrieved successfully',
+                'message' => __('messages.city_retrieved_success'),
                 'data' => new CityResource($city),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve city',
+                'message' => __('messages.failed_retrieve_city'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -131,12 +131,12 @@ class CityController extends Controller
                 ]);
             }
             return response()->json([
-                'message' => 'City updated successfully',
+                'message' => __('messages.city_updated_success'),
                 'data' => new CityResource($city->load('regions')),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update city',
+                'message' => __('messages.failed_update_city'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -148,11 +148,11 @@ class CityController extends Controller
             $this->cityService->delete($id);
 
             return response()->json([
-                'message' => 'City deleted successfully',
+                'message' => __('messages.city_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete city',
+                'message' => __('messages.failed_delete_city'),
                 'error' => $e->getMessage(),
             ], 500);
         }

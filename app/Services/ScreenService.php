@@ -26,6 +26,17 @@ class ScreenService
         return $query;
     }
 
+    /**
+     * Get screens by category ID with inputs loaded.
+     */
+    public function getByCategoryId(int $categoryId)
+    {
+        return Screen::where('category_id', $categoryId)
+            ->with('inputs')
+            ->orderBy('id')
+            ->get();
+    }
+
     public function create($data)
     {
         $screen = new Screen();

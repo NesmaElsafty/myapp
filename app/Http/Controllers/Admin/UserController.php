@@ -37,14 +37,14 @@ class UserController extends Controller
         $stats = $this->userService->stats($request->type);
 
         return response()->json([
-            'message' => 'Users retrieved successfully',
+            'message' => __('messages.users_retrieved_success'),
             'users' => UserResource::collection($users),
             'pagination' => PaginationHelper::paginate($users),
             'stats' => $request->type !== 'admin' ? $stats : null,
         ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve users',
+                'message' => __('messages.failed_retrieve_users'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -81,12 +81,12 @@ class UserController extends Controller
             $user = $this->userService->create($request->all());
 
             return response()->json([
-                'message' => 'User created successfully',
+                'message' => __('messages.user_created_success'),
                 'data' => new UserResource($user),
             ], 201);
        } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create user',
+                'message' => __('messages.failed_create_user'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -99,18 +99,18 @@ class UserController extends Controller
 
             if (!$user) {
                 return response()->json([
-                    'message' => 'User not found',
+                    'message' => __('messages.user_not_found'),
                 ], 404);
             }
 
             return response()->json([
-                'message' => 'User retrieved successfully',
+                'message' => __('messages.user_retrieved_success'),
                 'data' => new UserResource($user),
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve user',
+                'message' => __('messages.failed_retrieve_user'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -142,13 +142,13 @@ class UserController extends Controller
             $user = $this->userService->update($id, $request->all());
 
             return response()->json([
-                'message' => 'User updated successfully',
+                'message' => __('messages.user_updated_success'),
                 'data' => new UserResource($user),
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to update user',
+                'message' => __('messages.failed_update_user'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -160,11 +160,11 @@ class UserController extends Controller
             $this->userService->delete($id);
 
             return response()->json([
-                'message' => 'User deleted successfully',
+                'message' => __('messages.user_deleted_success'),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete user',
+                'message' => __('messages.failed_delete_user'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -207,13 +207,13 @@ class UserController extends Controller
             }
             
             return response()->json([
-                'message' => 'Bulk actions performed successfully',
+                'message' => __('messages.bulk_actions_success'),
                 'data' => $result,
             ], 200);
             
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk actions',
+                'message' => __('messages.failed_bulk_actions'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -229,13 +229,13 @@ class UserController extends Controller
             $users = $this->userService->blocklist($request->all())->paginate(10);
 
             return response()->json([
-                'message' => 'Blocklist retrieved successfully',
+                'message' => __('messages.blocklist_retrieved_success'),
                 'data' => UserResource::collection($users),
                 'pagination' => PaginationHelper::paginate($users),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve blocklist',
+                'message' => __('messages.failed_retrieve_blocklist'),
                 'error' => $e->getMessage(),
             ], 500);
         }

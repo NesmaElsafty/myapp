@@ -27,13 +27,13 @@ class SupportController extends Controller
             $supports = $this->supportService->getAll($request->all(), $request->header('lang'))->paginate(10);
 
             return response()->json([
-                'message' => 'Support tickets retrieved successfully',
+                'message' => __('messages.support_tickets_retrieved_success'),
                 'data' => SupportResource::collection($supports),
                 'pagination' => PaginationHelper::paginate($supports),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve support tickets',
+                'message' => __('messages.failed_retrieve_support_tickets'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -60,12 +60,12 @@ class SupportController extends Controller
             }
 
             return response()->json([
-                'message' => 'Support ticket created successfully',
+                'message' => __('messages.support_ticket_created_success'),
                 'data' => new SupportResource($support),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create support ticket',
+                'message' => __('messages.failed_create_support_ticket'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -77,16 +77,16 @@ class SupportController extends Controller
             $support = $this->supportService->getById((int) $id);
 
             if (!$support) {
-                return response()->json(['message' => 'Support ticket not found'], 404);
+                return response()->json(['message' => __('messages.support_ticket_not_found')], 404);
             }
 
             return response()->json([
-                'message' => 'Support ticket retrieved successfully',
+                'message' => __('messages.support_ticket_retrieved_success'),
                 'data' => new SupportResource($support),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve support ticket',
+                'message' => __('messages.failed_retrieve_support_ticket'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -115,12 +115,12 @@ class SupportController extends Controller
             }
 
             return response()->json([
-                'message' => 'Support ticket updated successfully',
+                'message' => __('messages.support_ticket_updated_success'),
                 'data' => new SupportResource($support),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update support ticket',
+                'message' => __('messages.failed_update_support_ticket'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -136,12 +136,12 @@ class SupportController extends Controller
             $support = $this->supportService->reply($id, $request->reply_message);
 
             return response()->json([
-                'message' => 'Reply sent successfully',
+                'message' => __('messages.reply_sent_success'),
                 'data' => new SupportResource($support),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to send reply',
+                'message' => __('messages.failed_send_reply'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -153,11 +153,11 @@ class SupportController extends Controller
             $this->supportService->delete((int) $id);
 
             return response()->json([
-                'message' => 'Support ticket deleted successfully',
+                'message' => __('messages.support_ticket_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete support ticket',
+                'message' => __('messages.failed_delete_support_ticket'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -188,12 +188,12 @@ class SupportController extends Controller
             }
 
             return response()->json([
-                'message' => 'Bulk actions performed successfully',
+                'message' => __('messages.bulk_actions_success'),
                 'data' => $result,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk actions',
+                'message' => __('messages.failed_bulk_actions'),
                 'error' => $e->getMessage(),
             ], 500);
         }

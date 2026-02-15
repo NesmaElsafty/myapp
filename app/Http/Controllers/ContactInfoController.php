@@ -18,7 +18,7 @@ class ContactInfoController extends Controller
             $contactInfo = ContactInfo::first();
             $socialMedia = SocialMedia::all();
             return response()->json([
-                'message' => 'Contact info retrieved successfully',
+                'message' => __('messages.contact_info_retrieved_success'),
                 'data' => [
                     'contact_info' => new ContactInfoResource($contactInfo), 
                     'social_media' => SocialMediaResource::collection($socialMedia),
@@ -26,7 +26,7 @@ class ContactInfoController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve contact info',
+                'message' => __('messages.failed_retrieve_contact_info'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -67,7 +67,7 @@ class ContactInfoController extends Controller
             $socialMedia = SocialMedia::all();
             
         return response()->json([
-            'message' => 'Contact info updated successfully',
+            'message' => __('messages.contact_info_updated_success'),
             'data' => [
                 'contact_info' => new ContactInfoResource($contactInfo), 
                 'social_media' => SocialMediaResource::collection($socialMedia),

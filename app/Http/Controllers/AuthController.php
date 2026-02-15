@@ -53,7 +53,7 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Validation error',
+                'message' => __('messages.validation_error'),
                 'errors' => $validator->errors(),
             ], 422);
         }
@@ -70,18 +70,18 @@ class AuthController extends Controller
             $userResource = new $resourceClass($result['user']);
 
             return response()->json([
-                'message' => 'User registered successfully',
+                'message' => __('messages.user_registered_success'),
                 'user' => $userResource,
                 'token' => $result['token'],
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation error',
+                'message' => __('messages.validation_error'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Registration failed',
+                'message' => __('messages.registration_failed'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -97,7 +97,7 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'message' => 'Validation error',
+                'message' => __('messages.validation_error'),
                 'errors' => $validator->errors(),
             ], 422);
         }
@@ -114,18 +114,18 @@ class AuthController extends Controller
             $userResource = new $resourceClass($result['user']->load('alerts'));
 
             return response()->json([
-                'message' => 'Login successful',
+                'message' => __('messages.login_success'),
                 'user' => $userResource,
                 'token' => $result['token'],
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Invalid credentials',
+                'message' => __('messages.invalid_credentials'),
                 'errors' => $e->errors(),
             ], 401);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Login failed',
+                'message' => __('messages.login_failed'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -138,11 +138,11 @@ class AuthController extends Controller
             $this->authService->logout($request->user(), $tokenId);
 
             return response()->json([
-                'message' => 'Logged out successfully',
+                'message' => __('messages.logged_out_success'),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Logout failed',
+                'message' => __('messages.logout_failed'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -195,12 +195,12 @@ class AuthController extends Controller
 
         $resourceClass = $this->getResourceClass($user->type);
         return response()->json([
-            'message' => 'Profile updated successfully',
+            'message' => __('messages.profile_updated_success'),
             'user' => new $resourceClass($user),
         ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to update profile',
+                'message' => __('messages.failed_update_profile'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -217,7 +217,7 @@ class AuthController extends Controller
             $user = auth()->user();
             if (!Hash::check($request->old_password, $user->password)) {
                 return response()->json([
-                    'message' => 'Old password is incorrect',
+                    'message' => __('messages.old_password_incorrect'),
                 ], 401);
             }
 
@@ -225,11 +225,11 @@ class AuthController extends Controller
             $user->save();
 
             return response()->json([
-                'message' => 'Password changed successfully',
+                'message' => __('messages.password_changed_success'),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to change password',
+                'message' => __('messages.failed_change_password'),
                 'error' => $e->getMessage(),
             ], 500);
         }

@@ -35,13 +35,13 @@ class NotificationController extends Controller
             $notifications = $this->notificationService->getAll($request->all(), $request->header('lang'))->paginate(10);
 
             return response()->json([
-                'message' => 'Notifications retrieved successfully',
+                'message' => __('messages.notifications_retrieved_success'),
                 'data' => NotificationResource::collection($notifications),
                 'pagination' => PaginationHelper::paginate($notifications),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve notifications',
+                'message' => __('messages.failed_retrieve_notifications'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -67,17 +67,17 @@ class NotificationController extends Controller
                 $this->alertService->create($request->all(), $notification->id);
             }
             return response()->json([
-                'message' => 'Notification created successfully',
+                'message' => __('messages.notification_created_success'),
                 'data' => new NotificationResource($notification),
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create notification',
+                'message' => __('messages.failed_create_notification'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -89,7 +89,7 @@ class NotificationController extends Controller
             $notification = Notification::find($id);
             if (!$notification) {
                 return response()->json([
-                    'message' => 'Notification not found',
+                    'message' => __('messages.notification_not_found'),
                 ], 404);
             }
             return response()->json([
@@ -97,7 +97,7 @@ class NotificationController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Notification not found',
+                'message' => __('messages.notification_not_found'),
                 'error' => $e->getMessage(),
             ], 404);
         }
@@ -120,17 +120,17 @@ class NotificationController extends Controller
             $notification = $this->notificationService->update($id, $request->all());
 
             return response()->json([
-                'message' => 'Notification updated successfully',
+                'message' => __('messages.notification_updated_success'),
                 'data' => new NotificationResource($notification),
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update notification',
+                'message' => __('messages.failed_update_notification'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -141,11 +141,11 @@ class NotificationController extends Controller
         try {
             $this->notificationService->delete($id);
             return response()->json([
-                'message' => 'Notification deleted successfully',
+                'message' => __('messages.notification_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete notification',
+                'message' => __('messages.failed_delete_notification'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -161,17 +161,17 @@ class NotificationController extends Controller
             $notification = $this->notificationService->updateStatus($id, $request->status);
 
             return response()->json([
-                'message' => 'Notification status updated successfully',
+                'message' => __('messages.notification_status_updated_success'),
                 'data' => new NotificationResource($notification),
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update notification status',
+                'message' => __('messages.failed_update_notification_status'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -190,17 +190,17 @@ class NotificationController extends Controller
             $deleted = $this->notificationService->bulkDelete($request->ids);
 
             return response()->json([
-                'message' => 'Notifications deleted successfully',
+                'message' => __('messages.notifications_deleted_success'),
                 'deleted' => $deleted,
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk action',
+                'message' => __('messages.failed_bulk_action_notifications'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -218,11 +218,11 @@ class NotificationController extends Controller
             $alert = $this->alertService->create([], $request->notification_id);
 
             return response()->json([
-                'message' => 'Alert created successfully',
+                'message' => __('messages.alert_created_success'),
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         }

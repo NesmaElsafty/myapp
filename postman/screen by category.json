@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "screens-by-category-collection",
+		"name": "Screens by Category",
+		"description": "Test GET screens by category ID with inputs loaded. Set base_url to your API root (e.g. http://localhost:8000/api).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api"
+		},
+		{
+			"key": "category_id",
+			"value": "1"
+		}
+	],
+	"item": [
+		{
+			"name": "Get screens by category ID (with inputs)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status is 200', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test('Response has data array', function () {",
+							"    const json = pm.response.json();",
+							"    pm.expect(json).to.have.property('data');",
+							"    pm.expect(json.data).to.be.an('array');",
+							"});",
+							"pm.test('Screens have inputs when loaded', function () {",
+							"    const json = pm.response.json();",
+							"    if (json.data && json.data.length > 0) {",
+							"        pm.expect(json.data[0]).to.have.property('inputs');",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "lang",
+						"value": "ar",
+						"description": "Optional: ar or en for localized names/descriptions"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/categories/{{category_id}}/screens",
+					"host": ["{{base_url}}"],
+					"path": ["categories", "{{category_id}}", "screens"]
+				},
+				"description": "Returns all screens for the given category with their inputs loaded. Public endpoint."
+			}
+		}
+	]
+}

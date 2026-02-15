@@ -29,13 +29,13 @@ class TermController extends Controller
             $terms = $this->termService->getAll($request->all(), $request->header('lang'))->paginate(10);
 
             return response()->json([
-                'message' => 'Terms retrieved successfully',
+                'message' => __('messages.terms_retrieved_success'),
                 'data' => TermResource::collection($terms),
                 'pagination' => PaginationHelper::paginate($terms),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve terms',
+                'message' => __('messages.failed_retrieve_terms'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -56,12 +56,12 @@ class TermController extends Controller
             $term = $this->termService->create($request->all());
 
             return response()->json([
-                'message' => 'Term created successfully',
+                'message' => __('messages.term_created_success'),
                 'data' => new TermResource($term),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create term',
+                'message' => __('messages.failed_create_term'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -73,16 +73,16 @@ class TermController extends Controller
             $term = $this->termService->getById((int) $id);
 
             if (!$term) {
-                return response()->json(['message' => 'Term not found'], 404);
+                return response()->json(['message' => __('messages.term_not_found')], 404);
             }
 
             return response()->json([
-                'message' => 'Term retrieved successfully',
+                'message' => __('messages.term_retrieved_success'),
                 'data' => new TermResource($term),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve term',
+                'message' => __('messages.failed_retrieve_term'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -103,12 +103,12 @@ class TermController extends Controller
             $term = $this->termService->update($id, $request->all());
 
             return response()->json([
-                'message' => 'Term updated successfully',
+                'message' => __('messages.term_updated_success'),
                 'data' => new TermResource($term),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update term',
+                'message' => __('messages.failed_update_term'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -120,11 +120,11 @@ class TermController extends Controller
             $this->termService->delete((int) $id);
 
             return response()->json([
-                'message' => 'Term deleted successfully',
+                'message' => __('messages.term_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete term',
+                'message' => __('messages.failed_delete_term'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -158,12 +158,12 @@ class TermController extends Controller
             }
 
             return response()->json([
-                'message' => 'Bulk actions performed successfully',
+                'message' => __('messages.bulk_actions_success'),
                 'data' => $result,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk actions',
+                'message' => __('messages.failed_bulk_actions'),
                 'error' => $e->getMessage(),
             ], 500);
         }

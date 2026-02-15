@@ -25,13 +25,13 @@ class RoleController extends Controller
             }
             $roles = $roles->paginate(10);
             return response()->json([
-                'message' => 'Roles retrieved successfully',
+                'message' => __('messages.roles_retrieved_success'),
                 'roles' => RoleResource::collection($roles),
                 'pagination' => PaginationHelper::paginate($roles),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve roles',
+                'message' => __('messages.failed_retrieve_roles'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -43,18 +43,18 @@ class RoleController extends Controller
             $role = Role::with('permissions')->find($id);
             if (!$role) {
                 return response()->json([
-                    'message' => 'Role not found',
+                    'message' => __('messages.role_not_found'),
                 ], 404);
             }
 
             return response()->json([
-                'message' => 'Role retrieved successfully',
+                'message' => __('messages.role_retrieved_success'),
                 'role' => new RoleResource($role),
             ], 200);
 
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve role',
+                'message' => __('messages.failed_retrieve_role'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -85,12 +85,12 @@ class RoleController extends Controller
             // dd($role);
 
             return response()->json([
-                'message' => 'Role created successfully',
+                'message' => __('messages.role_created_success'),
                 'role' => new RoleResource($role),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create role',
+                'message' => __('messages.failed_create_role'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -111,7 +111,7 @@ class RoleController extends Controller
             $role = Role::find($id);
             if (!$role) {
                 return response()->json([
-                    'message' => 'Role not found',
+                    'message' => __('messages.role_not_found'),
                 ], 404);
             }
             
@@ -125,13 +125,13 @@ class RoleController extends Controller
             $permissions = Permission::whereIn('name', $request->permissions)->pluck('id')->toArray();
             $role->permissions()->sync($permissions);
             return response()->json([
-                'message' => 'Role updated successfully',
+                'message' => __('messages.role_updated_success'),
                 'role' => new RoleResource($role),
             ], 200);
         }
         catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update role',
+                'message' => __('messages.failed_update_role'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -143,23 +143,23 @@ class RoleController extends Controller
             $role = Role::find($id);
             if (!$role) {
                 return response()->json([
-                    'message' => 'Role not found',
+                    'message' => __('messages.role_not_found'),
                 ], 404);
             }
             if ($role->users->count() > 0) {
                 return response()->json([
-                    'message' => 'Role has users',
+                    'message' => __('messages.role_has_users'),
                 ], 400);
             }
             $role->permissions()->detach();
             $role->delete();
             return response()->json([
-                'message' => 'Role deleted successfully',
+                'message' => __('messages.role_deleted_success'),
             ], 200);
         }
         catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete role',
+                'message' => __('messages.failed_delete_role'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -171,13 +171,13 @@ class RoleController extends Controller
         try {
             $permissions = Permission::all();
             return response()->json([
-                'message' => 'Permissions retrieved successfully',
+                'message' => __('messages.permissions_retrieved_success'),
                 'permissions' => PermissionResource::collection($permissions),
             ], 200);
         }
         catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve permissions',
+                'message' => __('messages.failed_retrieve_permissions'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -211,7 +211,7 @@ class RoleController extends Controller
         }
         catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to export roles',
+                'message' => __('messages.failed_export_roles'),
                 'error' => $e->getMessage(),
             ], 500);
         }

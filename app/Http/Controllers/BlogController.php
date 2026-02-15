@@ -24,13 +24,13 @@ class BlogController extends Controller
             $blogs = $this->blogService->getAll($request->all())->paginate(10);
 
             return response()->json([
-                'message' => 'Blogs retrieved successfully',
+                'message' => __('messages.blogs_retrieved_success'),
                 'data' => BlogResource::collection($blogs),
                 'pagination' => PaginationHelper::paginate($blogs),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve blogs',
+                'message' => __('messages.failed_retrieve_blogs'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -53,12 +53,12 @@ class BlogController extends Controller
             $blog->addMediaFromRequest('image')->toMediaCollection('image');
 
             return response()->json([
-                'message' => 'Blog created successfully',
+                'message' => __('messages.blog_created_success'),
                 'data' => new BlogResource($blog),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create blog',
+                'message' => __('messages.failed_create_blog'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -70,16 +70,16 @@ class BlogController extends Controller
             $blog = $this->blogService->getById((int) $id);
 
             if (!$blog) {
-                return response()->json(['message' => 'Blog not found'], 404);
+                return response()->json(['message' => __('messages.blog_not_found')], 404);
             }
 
             return response()->json([
-                'message' => 'Blog retrieved successfully',
+                'message' => __('messages.blog_retrieved_success'),
                 'data' => new BlogResource($blog),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve blog',
+                'message' => __('messages.failed_retrieve_blog'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -105,12 +105,12 @@ class BlogController extends Controller
             }
 
             return response()->json([
-                'message' => 'Blog updated successfully',
+                'message' => __('messages.blog_updated_success'),
                 'data' => new BlogResource($blog),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update blog',
+                'message' => __('messages.failed_update_blog'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -122,11 +122,11 @@ class BlogController extends Controller
             $this->blogService->delete((int) $id);
 
             return response()->json([
-                'message' => 'Blog deleted successfully',
+                'message' => __('messages.blog_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete blog',
+                'message' => __('messages.failed_delete_blog'),
                 'error' => $e->getMessage(),
             ], 500);
         }

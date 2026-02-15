@@ -74,6 +74,11 @@ class DatabaseSeeder extends Seeder
             ScreenSeeder::class,
         ]);
 
+        // Seed inputs (must be after screens)
+        $this->call([
+            InputSeeder::class,
+        ]);
+
         // Seed system settings
         $this->call([
             SystemSettingSeeder::class,

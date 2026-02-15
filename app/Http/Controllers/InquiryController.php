@@ -27,13 +27,13 @@ class InquiryController extends Controller
             $inquiries = $this->inquiryService->getAll($request->all(), $request->header('lang'))->paginate(10);
 
             return response()->json([
-                'message' => 'Inquiries retrieved successfully',
+                'message' => __('messages.inquiries_retrieved_success'),
                 'data' => InquiryResource::collection($inquiries),
                 'pagination' => PaginationHelper::paginate($inquiries),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve inquiries',
+                'message' => __('messages.failed_retrieve_inquiries'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -60,12 +60,12 @@ class InquiryController extends Controller
             }
 
             return response()->json([
-                'message' => 'Inquiry created successfully',
+                'message' => __('messages.inquiry_created_success'),
                 'data' => new InquiryResource($inquiry),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create inquiry',
+                'message' => __('messages.failed_create_inquiry'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -77,16 +77,16 @@ class InquiryController extends Controller
             $inquiry = $this->inquiryService->getById((int) $id);
 
             if (!$inquiry) {
-                return response()->json(['message' => 'Inquiry not found'], 404);
+                return response()->json(['message' => __('messages.inquiry_not_found')], 404);
             }
 
             return response()->json([
-                'message' => 'Inquiry retrieved successfully',
+                'message' => __('messages.inquiry_retrieved_success'),
                 'data' => new InquiryResource($inquiry),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve inquiry',
+                'message' => __('messages.failed_retrieve_inquiry'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -115,12 +115,12 @@ class InquiryController extends Controller
             }
 
             return response()->json([
-                'message' => 'Inquiry updated successfully',
+                'message' => __('messages.inquiry_updated_success'),
                 'data' => new InquiryResource($inquiry),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update inquiry',
+                'message' => __('messages.failed_update_inquiry'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -136,12 +136,12 @@ class InquiryController extends Controller
             $inquiry = $this->inquiryService->reply($id, $request->reply_message);
 
             return response()->json([
-                'message' => 'Reply sent successfully',
+                'message' => __('messages.reply_sent_success'),
                 'data' => new InquiryResource($inquiry),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to send reply',
+                'message' => __('messages.failed_send_reply'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -153,11 +153,11 @@ class InquiryController extends Controller
             $this->inquiryService->delete((int) $id);
 
             return response()->json([
-                'message' => 'Inquiry deleted successfully',
+                'message' => __('messages.inquiry_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete inquiry',
+                'message' => __('messages.failed_delete_inquiry'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -188,12 +188,12 @@ class InquiryController extends Controller
             }
 
             return response()->json([
-                'message' => 'Bulk actions performed successfully',
+                'message' => __('messages.bulk_actions_success'),
                 'data' => $result,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk actions',
+                'message' => __('messages.failed_bulk_actions'),
                 'error' => $e->getMessage(),
             ], 500);
         }

@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "inputs-crud-collection",
+		"name": "Inputs CRUD",
+		"description": "CRUD tests for Inputs. Options: one value per option (same for en/ar). select/radio => { choices: [{ value, label_en, label_ar }] }; checkbox => { label_en, label_ar }. Set base_url to your API root (e.g. http://localhost:8000/api). Admin routes require Bearer token.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{ "key": "base_url", "value": "http://localhost:8000/api" },
+		{ "key": "token", "value": "" },
+		{ "key": "input_id", "value": "1" }
+	],
+	"item": [
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "Index - List inputs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+									"pm.test('Response has data and pagination', function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('data');",
+									"    pm.expect(json.data).to.be.an('array');",
+									"    pm.expect(json).to.have.property('pagination');",
+									"});",
+									"pm.test('Inputs with options have value + label_en + label_ar + label', function () {",
+									"    const json = pm.response.json();",
+									"    const withOptions = (json.data || []).find(i => i.options && (i.options.choices || i.options.label_en != null));",
+									"    if (withOptions && withOptions.options) {",
+									"        if (withOptions.options.choices) {",
+									"            withOptions.options.choices.forEach((c, i) => {",
+									"                pm.expect(c).to.have.property('value');",
+									"                pm.expect(c).to.have.property('label_en');",
+									"                pm.expect(c).to.have.property('label_ar');",
+									"                pm.expect(c).to.have.property('label');",
+									"            });",
+									"        } else if (withOptions.options.label_en != null || withOptions.options.label_ar != null) {",
+									"            pm.expect(withOptions.options).to.have.property('label');",
+									"        }",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "lang", "value": "ar" }
+						],
+						"url": {
+							"raw": "{{base_url}}/inputs?page=1",
+							"host": ["{{base_url}}"],
+							"path": ["inputs"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "search", "value": "", "disabled": true },
+								{ "key": "screen_id", "value": "", "disabled": true },
+								{ "key": "type", "value": "", "disabled": true }
+							]
+						},
+						"description": "Public. List inputs with pagination. Options returned with value, label_en, label_ar, and resolved label (by lang header)."
+					}
+				},
+				{
+					"name": "Show - Get single input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+									"pm.test('Response has data', function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('data');",
+									"    pm.expect(json.data).to.have.property('id');",
+									"    pm.expect(json.data).to.have.property('type');",
+									"});",
+									"pm.test('Options structure when present: choices have value, label_en, label_ar, label', function () {",
+									"    const json = pm.response.json();",
+									"    const opt = json.data && json.data.options;",
+									"    if (opt && opt.choices && opt.choices.length) {",
+									"        opt.choices.forEach((c, i) => {",
+									"            pm.expect(c).to.have.property('value');",
+									"            pm.expect(c).to.have.property('label_en');",
+									"            pm.expect(c).to.have.property('label_ar');",
+									"            pm.expect(c).to.have.property('label');",
+									"        });",
+									"    }",
+									"    if (opt && (opt.label_en != null || opt.label_ar != null) && !opt.choices) {",
+									"        pm.expect(opt).to.have.property('label');",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "lang", "value": "ar" }
+						],
+						"url": {
+							"raw": "{{base_url}}/inputs/{{input_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["inputs", "{{input_id}}"]
+						},
+						"description": "Public. Get one input by ID. Options include resolved 'label' from label_en/label_ar by lang header."
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Store - Create input (text)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+									"if (pm.response.code === 201) {",
+									"    const json = pm.response.json();",
+									"    if (json.data && json.data.id) {",
+									"        pm.collectionVariables.set('input_id', json.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"screen_id\": 1,\n    \"title_en\": \"Full Name\",\n    \"title_ar\": \"الاسم الكامل\",\n    \"placeholder_en\": \"Enter your name\",\n    \"placeholder_ar\": \"أدخل اسمك\",\n    \"description_en\": \"Your full name as on ID\",\n    \"description_ar\": \"الاسم كما في الهوية\",\n    \"type\": \"text\",\n    \"options\": null,\n    \"is_required\": true\n}"
+						},
+						"url": { "raw": "{{base_url}}/admin/inputs", "host": ["{{base_url}}"], "path": ["admin", "inputs"] },
+						"description": "Admin. Create input without options (e.g. text)."
+					}
+				},
+				{
+					"name": "Store - Create input (select with options)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+									"if (pm.response.code === 201) {",
+									"    const json = pm.response.json();",
+									"    if (json.data && json.data.id) { pm.collectionVariables.set('input_id', json.data.id); }",
+									"    pm.expect(json.data.options).to.have.property('choices');",
+									"    json.data.options.choices.forEach(c => {",
+									"        pm.expect(c).to.have.property('value');",
+									"        pm.expect(c).to.have.property('label_en');",
+									"        pm.expect(c).to.have.property('label_ar');",
+									"        pm.expect(c).to.have.property('label');",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"screen_id\": 1,\n    \"title_en\": \"Gender\",\n    \"title_ar\": \"الجنس\",\n    \"placeholder_en\": null,\n    \"placeholder_ar\": null,\n    \"description_en\": \"Select your gender\",\n    \"description_ar\": \"اختر جنسك\",\n    \"type\": \"select\",\n    \"options\": {\n        \"choices\": [\n            { \"value\": \"male\", \"label_en\": \"Male\", \"label_ar\": \"ذكر\" },\n            { \"value\": \"female\", \"label_en\": \"Female\", \"label_ar\": \"أنثى\" }\n        ]\n    },\n    \"is_required\": true\n}"
+						},
+						"url": { "raw": "{{base_url}}/admin/inputs", "host": ["{{base_url}}"], "path": ["admin", "inputs"] },
+						"description": "Admin. Create input with options: one value per choice (same for en/ar), label_en and label_ar required."
+					}
+				},
+				{
+					"name": "Store - Create input (checkbox with options)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+									"if (pm.response.code === 201) {",
+									"    const json = pm.response.json();",
+									"    if (json.data && json.data.id) { pm.collectionVariables.set('input_id', json.data.id); }",
+									"    if (json.data.options) {",
+									"        pm.expect(json.data.options).to.have.property('label_en');",
+									"        pm.expect(json.data.options).to.have.property('label_ar');",
+									"        pm.expect(json.data.options).to.have.property('label');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"screen_id\": 1,\n    \"title_en\": \"Agree to terms\",\n    \"title_ar\": \"الموافقة على الشروط\",\n    \"placeholder_en\": null,\n    \"placeholder_ar\": null,\n    \"description_en\": \"I have read and accept the terms\",\n    \"description_ar\": \"لقد قرأت وأوافق على الشروط\",\n    \"type\": \"checkbox\",\n    \"options\": {\n        \"label_en\": \"I agree\",\n        \"label_ar\": \"أوافق\"\n    },\n    \"is_required\": true\n}"
+						},
+						"url": { "raw": "{{base_url}}/admin/inputs", "host": ["{{base_url}}"], "path": ["admin", "inputs"] },
+						"description": "Admin. Create checkbox input: options must have label_en and label_ar (one value, two labels)."
+					}
+				},
+				{
+					"name": "Update - Update input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+									"pm.test('Response has data', function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('data');",
+									"    pm.expect(json.data).to.have.property('id');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title_en\": \"Full Name (Updated)\",\n    \"title_ar\": \"الاسم الكامل (محدّث)\",\n    \"is_required\": false\n}"
+						},
+						"url": { "raw": "{{base_url}}/admin/inputs/{{input_id}}", "host": ["{{base_url}}"], "path": ["admin", "inputs", "{{input_id}}"] },
+						"description": "Admin. Partial update. To update options use same structure: choices with value, label_en, label_ar."
+					}
+				},
+				{
+					"name": "Update - Update input options",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+									"if (pm.response.code === 200 && pm.response.json().data.options && pm.response.json().data.options.choices) {",
+									"    pm.response.json().data.options.choices.forEach(c => {",
+									"        pm.expect(c).to.have.property('value');",
+									"        pm.expect(c).to.have.property('label');",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"select\",\n    \"options\": {\n        \"choices\": [\n            { \"value\": \"yes\", \"label_en\": \"Yes\", \"label_ar\": \"نعم\" },\n            { \"value\": \"no\", \"label_en\": \"No\", \"label_ar\": \"لا\" }\n        ]\n    }\n}"
+						},
+						"url": { "raw": "{{base_url}}/admin/inputs/{{input_id}}", "host": ["{{base_url}}"], "path": ["admin", "inputs", "{{input_id}}"] },
+						"description": "Admin. Update options only. Each choice: value (same for en/ar), label_en, label_ar."
+					}
+				},
+				{
+					"name": "Destroy - Delete input",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+									"pm.test('Message indicates success', function () {",
+									"    const json = pm.response.json();",
+									"    pm.expect(json).to.have.property('message');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"url": { "raw": "{{base_url}}/admin/inputs/{{input_id}}", "host": ["{{base_url}}"], "path": ["admin", "inputs", "{{input_id}}"] },
+						"description": "Admin. Delete input by ID."
+					}
+				}
+			]
+		}
+	]
+}

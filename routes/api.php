@@ -18,6 +18,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InputController;
 use App\Http\Controllers\ScreenController;
 
 Route::prefix('auth')->group(function () {
@@ -96,6 +97,7 @@ Route::get('/features', [PlanController::class, 'features']);
 // Public categories routes (index and show)
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
+    Route::get('/{id}/screens', [CategoryController::class, 'screens']);
     Route::get('/{id}', [CategoryController::class, 'show']);
 });
 
@@ -103,6 +105,12 @@ Route::prefix('categories')->group(function () {
 Route::prefix('screens')->group(function () {
     Route::get('/', [ScreenController::class, 'index']);
     Route::get('/{id}', [ScreenController::class, 'show']);
+});
+
+// Public inputs routes (index and show)
+Route::prefix('inputs')->group(function () {
+    Route::get('/', [InputController::class, 'index']);
+    Route::get('/{id}', [InputController::class, 'show']);
 });
 
 // Admin routes
@@ -188,4 +196,9 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::put('screens/{id}', [ScreenController::class, 'update']);
     Route::delete('screens/{id}', [ScreenController::class, 'destroy']);
     Route::post('screensBulkActions', [ScreenController::class, 'bulkActions']);
+
+    // Protected Inputs routes (store, update, destroy)
+    Route::post('inputs', [InputController::class, 'store']);
+    Route::put('inputs/{id}', [InputController::class, 'update']);
+    Route::delete('inputs/{id}', [InputController::class, 'destroy']);
 });

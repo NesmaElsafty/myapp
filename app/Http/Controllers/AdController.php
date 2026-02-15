@@ -27,13 +27,13 @@ class AdController extends Controller
             $ads = $this->adService->getAll($request->all())->paginate(10);
 
             return response()->json([
-                'message' => 'Ads retrieved successfully',
+                'message' => __('messages.ads_retrieved_success'),
                 'data' => AdResource::collection($ads),
                 'pagination' => PaginationHelper::paginate($ads),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve ads',
+                'message' => __('messages.failed_retrieve_ads'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -61,12 +61,12 @@ class AdController extends Controller
             $ad->addMediaFromRequest('image')->toMediaCollection('image');
 
             return response()->json([
-                'message' => 'Ad created successfully',
+                'message' => __('messages.ad_created_success'),
                 'data' => new AdResource($ad),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create ad',
+                'message' => __('messages.failed_create_ad'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -78,16 +78,16 @@ class AdController extends Controller
             $ad = $this->adService->getById((int) $id);
 
             if (!$ad) {
-                return response()->json(['message' => 'Ad not found'], 404);
+                return response()->json(['message' => __('messages.ad_not_found')], 404);
             }
 
             return response()->json([
-                'message' => 'Ad retrieved successfully',
+                'message' => __('messages.ad_retrieved_success'),
                 'data' => new AdResource($ad),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve ad',
+                'message' => __('messages.failed_retrieve_ad'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -118,12 +118,12 @@ class AdController extends Controller
             }
 
             return response()->json([
-                'message' => 'Ad updated successfully',
+                'message' => __('messages.ad_updated_success'),
                 'data' => new AdResource($ad),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update ad',
+                'message' => __('messages.failed_update_ad'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -135,11 +135,11 @@ class AdController extends Controller
             $this->adService->delete((int) $id);
 
             return response()->json([
-                'message' => 'Ad deleted successfully',
+                'message' => __('messages.ad_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete ad',
+                'message' => __('messages.failed_delete_ad'),
                 'error' => $e->getMessage(),
             ], 500);
         }

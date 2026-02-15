@@ -27,13 +27,13 @@ class FaqController extends Controller
             $faqs = $this->faqService->getAll($request->all(), $request->header('lang'))->paginate(10);
 
             return response()->json([
-                'message' => 'FAQs retrieved successfully',
+                'message' => __('messages.faqs_retrieved_success'),
                 'data' => FaqResource::collection($faqs),
                 'pagination' => PaginationHelper::paginate($faqs),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve FAQs',
+                'message' => __('messages.failed_retrieve_faqs'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -54,12 +54,12 @@ class FaqController extends Controller
             $faq = $this->faqService->create($request->all());
 
             return response()->json([
-                'message' => 'FAQ created successfully',
+                'message' => __('messages.faq_created_success'),
                 'data' => new FaqResource($faq),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create FAQ',
+                'message' => __('messages.failed_create_faq'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -71,16 +71,16 @@ class FaqController extends Controller
             $faq = $this->faqService->getById((int) $id);
 
             if (!$faq) {
-                return response()->json(['message' => 'FAQ not found'], 404);
+                return response()->json(['message' => __('messages.faq_not_found')], 404);
             }
 
             return response()->json([
-                'message' => 'FAQ retrieved successfully',
+                'message' => __('messages.faq_retrieved_success'),
                 'data' => new FaqResource($faq),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve FAQ',
+                'message' => __('messages.failed_retrieve_faq'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -101,12 +101,12 @@ class FaqController extends Controller
             $faq = $this->faqService->update($id, $request->all());
 
             return response()->json([
-                'message' => 'FAQ updated successfully',
+                'message' => __('messages.faq_updated_success'),
                 'data' => new FaqResource($faq),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update FAQ',
+                'message' => __('messages.failed_update_faq'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -118,11 +118,11 @@ class FaqController extends Controller
             $this->faqService->delete((int) $id);
 
             return response()->json([
-                'message' => 'FAQ deleted successfully',
+                'message' => __('messages.faq_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete FAQ',
+                'message' => __('messages.failed_delete_faq'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -156,12 +156,12 @@ class FaqController extends Controller
             }
 
             return response()->json([
-                'message' => 'Bulk actions performed successfully',
+                'message' => __('messages.bulk_actions_success'),
                 'data' => $result,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk actions',
+                'message' => __('messages.failed_bulk_actions'),
                 'error' => $e->getMessage(),
             ], 500);
         }

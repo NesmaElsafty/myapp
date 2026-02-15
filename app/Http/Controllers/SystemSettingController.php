@@ -18,12 +18,12 @@ class SystemSettingController extends Controller
         try {
             $systemSettings = $this->systemSettingService->getAll();
             return response()->json([
-                'message' => 'System settings retrieved successfully',
+                'message' => __('messages.system_settings_retrieved_success'),
                 'data' => SystemSettingResource::collection($systemSettings),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve system settings',
+                'message' => __('messages.failed_retrieve_system_settings'),
                 'error' => $e->getMessage(),
                 'status' => 'error',
             ], 500);
@@ -35,13 +35,13 @@ class SystemSettingController extends Controller
         try {
             $systemSetting = $this->systemSettingService->getByName($key);
             return response()->json([
-                'message' => 'System setting retrieved successfully',
+                'message' => __('messages.system_setting_retrieved_success'),
                 'data' => new SystemSettingResource($systemSetting),
             ], 200);
         
         } catch (\Exception $e) {
                 return response()->json([
-                    'message' => 'Failed to retrieve system setting',
+                    'message' => __('messages.failed_retrieve_system_setting'),
                     'error' => $e->getMessage(),
                     'status' => 'error',
                 ], 500);
@@ -70,12 +70,12 @@ class SystemSettingController extends Controller
             // get all system settings
             $systemSettings = $this->systemSettingService->getAll();
             return response()->json([
-                'message' => 'System settings updated successfully',
+                'message' => __('messages.system_settings_updated_success'),
                 'data' => SystemSettingResource::collection($systemSettings),
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to update system settings',
+                'message' => __('messages.failed_update_system_settings'),
                 'error' => $e->getMessage(),
             ], 500);
         }

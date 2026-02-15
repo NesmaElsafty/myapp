@@ -29,13 +29,13 @@ class RegionController extends Controller
             $regions = $this->regionService->getAll($request->all())->paginate(10);
 
             return response()->json([
-                'message' => 'Regions retrieved successfully',
+                'message' => __('messages.regions_retrieved_success'),
                 'data' => RegionResource::collection($regions),
                 'pagination' => PaginationHelper::paginate($regions),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve regions',
+                'message' => __('messages.failed_retrieve_regions'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -55,12 +55,12 @@ class RegionController extends Controller
             $region = $this->regionService->create($request->all());
 
             return response()->json([
-                'message' => 'Region created successfully',
+                'message' => __('messages.region_created_success'),
                 'data' => new RegionResource($region),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create region',
+                'message' => __('messages.failed_create_region'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -73,17 +73,17 @@ class RegionController extends Controller
 
             if (!$region) {
                 return response()->json([
-                    'message' => 'Region not found',
+                    'message' => __('messages.region_not_found'),
                 ], 404);
             }
 
             return response()->json([
-                'message' => 'Region retrieved successfully',
+                'message' => __('messages.region_retrieved_success'),
                 'data' => new RegionResource($region),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve region',
+                'message' => __('messages.failed_retrieve_region'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -103,12 +103,12 @@ class RegionController extends Controller
             $region = $this->regionService->update($id, $request->all());
 
             return response()->json([
-                'message' => 'Region updated successfully',
+                'message' => __('messages.region_updated_success'),
                 'data' => new RegionResource($region),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update region',
+                'message' => __('messages.failed_update_region'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -120,11 +120,11 @@ class RegionController extends Controller
             $this->regionService->delete($id);
 
             return response()->json([
-                'message' => 'Region deleted successfully',
+                'message' => __('messages.region_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete region',
+                'message' => __('messages.failed_delete_region'),
                 'error' => $e->getMessage(),
             ], 500);
         }

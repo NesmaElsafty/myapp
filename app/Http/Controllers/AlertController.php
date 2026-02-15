@@ -24,18 +24,18 @@ class AlertController extends Controller
             $user = $request->user();
             if($user->id != $request->id) {
                 return response()->json([
-                    'message' => 'You are not authorized to mark this alert as read',
+                    'message' => __('messages.not_authorized_mark_alert_read'),
                 ], 403);
             }
             $alert = $this->alertService->markAsRead($request->id);
             
             return response()->json([
-                'message' => 'Alert marked as read successfully',
+                'message' => __('messages.alert_marked_read_success'),
                 'data' => new AlertResource($alert),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to mark alert as read',
+                'message' => __('messages.failed_mark_alert_read'),
                 'error' => $e->getMessage(),
             ], 500);
         }

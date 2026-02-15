@@ -23,13 +23,13 @@ class ScreenController extends Controller
             $screens = $this->screenService->getAll($request->all(), $lang)->paginate(10);
 
             return response()->json([
-                'message' => 'Screens retrieved successfully',
+                'message' => __('messages.screens_retrieved_success'),
                 'data' => ScreenResource::collection($screens),
                 'pagination' => PaginationHelper::paginate($screens),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve screens',
+                'message' => __('messages.failed_retrieve_screens'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -41,15 +41,15 @@ class ScreenController extends Controller
         try {
             $screen = $this->screenService->getById((int) $id);
             if (!$screen) {
-                return response()->json(['message' => 'Screen not found'], 404);
+                return response()->json(['message' => __('messages.screen_not_found')], 404);
             }
             return response()->json([
-                'message' => 'Screen retrieved successfully',
+                'message' => __('messages.screen_retrieved_success'),
                 'data' => new ScreenResource($screen),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve screen',
+                'message' => __('messages.failed_retrieve_screen'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -69,17 +69,17 @@ class ScreenController extends Controller
             $screen = $this->screenService->create($request->all());
 
             return response()->json([
-                'message' => 'Screen created successfully',
+                'message' => __('messages.screen_created_success'),
                 'data' => new ScreenResource($screen->load('category')),
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create screen',
+                'message' => __('messages.failed_create_screen'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -99,17 +99,17 @@ class ScreenController extends Controller
             $screen = $this->screenService->update((int) $id, $request->all());
 
             return response()->json([
-                'message' => 'Screen updated successfully',
+                'message' => __('messages.screen_updated_success'),
                 'data' => new ScreenResource($screen),
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update screen',
+                'message' => __('messages.failed_update_screen'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -120,13 +120,13 @@ class ScreenController extends Controller
         try {
             $this->screenService->delete((int) $id);
             return response()->json([
-                'message' => 'Screen deleted successfully',
+                'message' => __('messages.screen_deleted_success'),
             ], 200);
         } catch (ValidationException $e) {
-            return response()->json(['message' => 'Screen not found'], 404);
+            return response()->json(['message' => __('messages.screen_not_found')], 404);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete screen',
+                'message' => __('messages.failed_delete_screen'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -160,17 +160,17 @@ class ScreenController extends Controller
             }
 
             return response()->json([
-                'message' => 'Bulk action performed successfully',
+                'message' => __('messages.bulk_action_success'),
                 'data' => $result,
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk action',
+                'message' => __('messages.failed_bulk_action'),
                 'error' => $e->getMessage(),
             ], 500);
         }

@@ -27,12 +27,12 @@ class CategoryController extends Controller
             $categories = $this->categoryService->getAll($request->search)->get();
 
             return response()->json([
-                'message' => 'Categories retrieved successfully',
+                'message' => __('messages.categories_retrieved_success'),
                 'data' => CategoryResource::collection($categories),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve categories',
+                'message' => __('messages.failed_retrieve_categories'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -43,15 +43,38 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
             if (!$category) {
-                return response()->json(['message' => 'Category not found'], 404);
+                return response()->json(['message' => __('messages.category_not_found')], 404);
             }
             return response()->json([
-                'message' => 'Category retrieved successfully',
+                'message' => __('messages.category_retrieved_success'),
                 'data' => new CategoryResource($category),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve category',
+                'message' => __('messages.failed_retrieve_category'),
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Get screens by category ID with inputs loaded.
+     */
+    public function screens($id)
+    {
+        try {
+            $category = Category::find($id);
+            if (!$category) {
+                return response()->json(['message' => __('messages.category_not_found')], 404);
+            }
+            $screens = $this->screenService->getByCategoryId((int) $id);
+            return response()->json([
+                'message' => __('messages.screens_retrieved_success'),
+                'data' => \App\Http\Resources\ScreenResource::collection($screens),
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => __('messages.failed_retrieve_screens'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -93,12 +116,12 @@ class CategoryController extends Controller
             }
 
             return response()->json([
-                'message' => 'Category created successfully',
+                'message' => __('messages.category_created_success'),
                 'data' => new CategoryResource($category->load('screens')),
             ], 201);    
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         }
@@ -144,17 +167,17 @@ class CategoryController extends Controller
                 }
             }
             return response()->json([
-                'message' => 'Category updated successfully',
+                'message' => __('messages.category_updated_success'),
                     'data' => new CategoryResource($category->load('screens')),
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update category',
+                'message' => __('messages.failed_update_category'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -165,17 +188,17 @@ class CategoryController extends Controller
         try {
             $category = Category::find($id);
             if (!$category) {
-                return response()->json(['message' => 'Category not found'], 404);
+                return response()->json(['message' => __('messages.category_not_found')], 404);
             }
             $category->clearMediaCollection('image');
             $category->delete();
             return response()->json([
-                'message' => 'Category deleted successfully',
+                'message' => __('messages.category_deleted_success'),
             ], 200);
         }
         catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete category',
+                'message' => __('messages.failed_delete_category'),
                 'error' => $e->getMessage(),
             ], 500);
         }

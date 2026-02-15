@@ -31,13 +31,13 @@ class PlanController extends Controller
             $plans = $this->planService->getAll($request->all(), $request->header('lang'))->paginate(10);
 
             return response()->json([
-                'message' => 'Plans retrieved successfully',
+                'message' => __('messages.plans_retrieved_success'),
                 'data' => PlanResource::collection($plans),
                 'pagination' => PaginationHelper::paginate($plans),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve plans',
+                'message' => __('messages.failed_retrieve_plans'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -48,15 +48,15 @@ class PlanController extends Controller
         try {
             $plan = Plan::find($id);
             if (!$plan) {
-                return response()->json(['message' => 'Plan not found'], 404);
+                return response()->json(['message' => __('messages.plan_not_found')], 404);
             }
             return response()->json([
-                'message' => 'Plan retrieved successfully',
+                'message' => __('messages.plan_retrieved_success'),
                 'plan' => new PlanResource($plan),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve plan',
+                'message' => __('messages.failed_retrieve_plan'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -85,17 +85,17 @@ class PlanController extends Controller
             }
 
             return response()->json([
-                'message' => 'Plan created successfully',
+                'message' => __('messages.plan_created_success'),
                 'data' => new PlanResource($plan),
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create plan',
+                'message' => __('messages.failed_create_plan'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -124,17 +124,17 @@ class PlanController extends Controller
             }
 
             return response()->json([
-                'message' => 'Plan updated successfully',
+                'message' => __('messages.plan_updated_success'),
                 'data' => new PlanResource($plan),
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => 'Validation failed',
+                'message' => __('messages.validation_failed'),
                 'errors' => $e->errors(),
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update plan',
+                'message' => __('messages.failed_update_plan'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -146,16 +146,16 @@ class PlanController extends Controller
             $plan = Plan::find($id);
             
             if (!$plan) {
-                return response()->json(['message' => 'Plan not found'], 404);
+                return response()->json(['message' => __('messages.plan_not_found')], 404);
             }
             $plan->delete();
 
             return response()->json([
-                'message' => 'Plan deleted successfully',
+                'message' => __('messages.plan_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete plan',
+                'message' => __('messages.failed_delete_plan'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -193,12 +193,12 @@ class PlanController extends Controller
             }
 
             return response()->json([
-                'message' => 'Bulk action performed successfully',
+                'message' => __('messages.bulk_action_success'),
                 'data' => $result,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to perform bulk action',
+                'message' => __('messages.failed_bulk_action'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -209,12 +209,12 @@ class PlanController extends Controller
         try {
             $features = Feature::all();
             return response()->json([
-                'message' => 'Features retrieved successfully',
+                'message' => __('messages.features_retrieved_success'),
                 'data' => FeatureResource::collection($features),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve features',
+                'message' => __('messages.failed_retrieve_features'),
                 'error' => $e->getMessage(),
             ], 500);
         }

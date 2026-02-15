@@ -28,6 +28,7 @@ class ScreenResource extends JsonResource
             'description_ar' => $this->description_ar,
             'category_id' => $this->category_id,
             'category' => $this->whenLoaded('category', fn () => new CategoryResource($this->category)),
+            'inputs' => $this->whenLoaded('inputs', fn () => InputResource::collection($this->inputs)),
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
         ];
