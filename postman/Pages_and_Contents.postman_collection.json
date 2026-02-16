@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "pages-contents-api",
+		"name": "Pages & Contents API",
+		"description": "Test collection for Pages (CMS) and Contents API.\n\n**Setup:**\n1. Set `base_url` (e.g. `http://localhost:8000/api`).\n2. For admin routes: run **Auth > Login** and use the returned token as `token`, or set `token` in environment.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{ "key": "base_url", "value": "http://localhost:8000/api" },
+		{ "key": "token", "value": "" },
+		{ "key": "page_id", "value": "1" },
+		{ "key": "content_id", "value": "1" }
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login (get token for admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('token', json.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login to get Bearer token. Update email/password for your admin user. Token is saved to collection variable `token`."
+					}
+				}
+			]
+		},
+		{
+			"name": "Pages",
+			"item": [
+				{
+					"name": "List Pages (public)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "lang", "value": "en", "description": "en | ar" }
+						],
+						"url": {
+							"raw": "{{base_url}}/pages?search=",
+							"host": ["{{base_url}}"],
+							"path": ["pages"],
+							"query": [
+								{ "key": "search", "value": "", "description": "Optional search in title" }
+							]
+						},
+						"description": "Get paginated list of pages. Public."
+					}
+				},
+				{
+					"name": "Get Page by ID (public)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "lang", "value": "en" }
+						],
+						"url": {
+							"raw": "{{base_url}}/pages/{{page_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["pages", "{{page_id}}"]
+						},
+						"description": "Get single page with contents. Public."
+					}
+				},
+				{
+					"name": "Create Page (admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title_en\": \"Our Team\",\n    \"title_ar\": \"فريقنا\",\n    \"content_en\": \"Meet the people behind our company.\",\n    \"content_ar\": \"تعرف على فريق شركتنا.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/pages",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "pages"]
+						},
+						"description": "Create a new page. Requires admin auth."
+					}
+				},
+				{
+					"name": "Update Page (admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title_en\": \"About Us Updated\",\n    \"title_ar\": \"من نحن محدث\",\n    \"content_en\": \"Updated main content.\",\n    \"content_ar\": \"محتوى رئيسي محدث.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/pages/{{page_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "pages", "{{page_id}}"]
+						},
+						"description": "Update page by ID. Requires admin auth."
+					}
+				},
+				{
+					"name": "Delete Page (admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/pages/{{page_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "pages", "{{page_id}}"]
+						},
+						"description": "Delete page by ID. Contents are cascaded. Requires admin auth."
+					}
+				}
+			]
+		},
+		{
+			"name": "Contents",
+			"item": [
+				{
+					"name": "List Contents (public)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "lang", "value": "en" }
+						],
+						"url": {
+							"raw": "{{base_url}}/contents?page_id=&type=&search=",
+							"host": ["{{base_url}}"],
+							"path": ["contents"],
+							"query": [
+								{ "key": "page_id", "value": "", "description": "Filter by page ID" },
+								{ "key": "type", "value": "", "description": "img_text | card | list" },
+								{ "key": "search", "value": "", "description": "Search in title" }
+							]
+						},
+						"description": "Get paginated list of contents. Optional filters: page_id, type. Public."
+					}
+				},
+				{
+					"name": "Get Content by ID (public)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "lang", "value": "en" }
+						],
+						"url": {
+							"raw": "{{base_url}}/contents/{{content_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["contents", "{{content_id}}"]
+						},
+						"description": "Get single content. Public."
+					}
+				},
+				{
+					"name": "Create Content (admin) JSON",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"page_id\": 1,\n    \"type\": \"card\",\n    \"title_en\": \"Feature One\",\n    \"title_ar\": \"ميزة واحدة\",\n    \"content_en\": \"Description of the feature.\",\n    \"content_ar\": \"وصف الميزة.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/contents",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contents"]
+						},
+						"description": "Create content (card or list). For img_text with image use the 'Create Content img_text with image' request."
+					}
+				},
+				{
+					"name": "Create Content img_text with image (admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{ "key": "page_id", "value": "1", "type": "text" },
+								{ "key": "type", "value": "img_text", "type": "text" },
+								{ "key": "title_en", "value": "Section with image", "type": "text" },
+								{ "key": "title_ar", "value": "قسم مع صورة", "type": "text" },
+								{ "key": "content_en", "value": "Text beside the image.", "type": "text" },
+								{ "key": "content_ar", "value": "نص بجانب الصورة.", "type": "text" },
+								{ "key": "image", "type": "file", "src": [], "description": "Image file (jpeg,png,jpg,gif,webp max 5MB)" }
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/contents",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contents"]
+						},
+						"description": "Create content with type img_text and upload an image. Use form-data and set image field to a file. Requires admin auth."
+					}
+				},
+				{
+					"name": "Update Content (admin) JSON",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"page_id\": 1,\n    \"type\": \"card\",\n    \"title_en\": \"Feature One Updated\",\n    \"title_ar\": \"ميزة واحدة محدثة\",\n    \"content_en\": \"Updated description.\",\n    \"content_ar\": \"وصف محدث.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/contents/{{content_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contents", "{{content_id}}"]
+						},
+						"description": "Update content. For img_text image use the form-data request."
+					}
+				},
+				{
+					"name": "Update Content img_text with image (admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{ "key": "title_en", "value": "Section with image updated", "type": "text" },
+								{ "key": "title_ar", "value": "قسم مع صورة محدث", "type": "text" },
+								{ "key": "content_en", "value": "Updated text.", "type": "text" },
+								{ "key": "content_ar", "value": "نص محدث.", "type": "text" },
+								{ "key": "image", "type": "file", "src": [], "description": "New image (replaces existing)" }
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/contents/{{content_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contents", "{{content_id}}"]
+						},
+						"description": "Update img_text content and optionally replace image. Send image file in form-data to replace. Requires admin auth."
+					}
+				},
+				{
+					"name": "Delete Content (admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{token}}" }
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/contents/{{content_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "contents", "{{content_id}}"]
+						},
+						"description": "Delete content by ID. Requires admin auth."
+					}
+				}
+			]
+		}
+	]
+}

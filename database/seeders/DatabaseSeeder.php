@@ -79,6 +79,12 @@ class DatabaseSeeder extends Seeder
             InputSeeder::class,
         ]);
 
+        // Seed pages and contents (contents must be after pages)
+        $this->call([
+            PageSeeder::class,
+            ContentSeeder::class,
+        ]);
+
         // Seed system settings
         $this->call([
             SystemSettingSeeder::class,

@@ -171,6 +171,32 @@ return [
     'blog_deleted_success' => 'Blog deleted successfully',
     'failed_delete_blog' => 'Failed to delete blog',
 
+    // Page
+    'pages_retrieved_success' => 'Pages retrieved successfully',
+    'failed_retrieve_pages' => 'Failed to retrieve pages',
+    'page_created_success' => 'Page created successfully',
+    'failed_create_page' => 'Failed to create page',
+    'page_not_found' => 'Page not found',
+    'page_retrieved_success' => 'Page retrieved successfully',
+    'failed_retrieve_page' => 'Failed to retrieve page',
+    'page_updated_success' => 'Page updated successfully',
+    'failed_update_page' => 'Failed to update page',
+    'page_deleted_success' => 'Page deleted successfully',
+    'failed_delete_page' => 'Failed to delete page',
+
+    // Content
+    'contents_retrieved_success' => 'Contents retrieved successfully',
+    'failed_retrieve_contents' => 'Failed to retrieve contents',
+    'content_created_success' => 'Content created successfully',
+    'failed_create_content' => 'Failed to create content',
+    'content_not_found' => 'Content not found',
+    'content_retrieved_success' => 'Content retrieved successfully',
+    'failed_retrieve_content' => 'Failed to retrieve content',
+    'content_updated_success' => 'Content updated successfully',
+    'failed_update_content' => 'Failed to update content',
+    'content_deleted_success' => 'Content deleted successfully',
+    'failed_delete_content' => 'Failed to delete content',
+
     // Ad
     'ads_retrieved_success' => 'Ads retrieved successfully',
     'failed_retrieve_ads' => 'Failed to retrieve ads',

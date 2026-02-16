@@ -171,6 +171,32 @@ return [
     'blog_deleted_success' => 'تم حذف المدونة بنجاح',
     'failed_delete_blog' => 'فشل حذف المدونة',
 
+    // Page
+    'pages_retrieved_success' => 'تم استرجاع الصفحات بنجاح',
+    'failed_retrieve_pages' => 'فشل استرجاع الصفحات',
+    'page_created_success' => 'تم إنشاء الصفحة بنجاح',
+    'failed_create_page' => 'فشل إنشاء الصفحة',
+    'page_not_found' => 'الصفحة غير موجودة',
+    'page_retrieved_success' => 'تم استرجاع الصفحة بنجاح',
+    'failed_retrieve_page' => 'فشل استرجاع الصفحة',
+    'page_updated_success' => 'تم تحديث الصفحة بنجاح',
+    'failed_update_page' => 'فشل تحديث الصفحة',
+    'page_deleted_success' => 'تم حذف الصفحة بنجاح',
+    'failed_delete_page' => 'فشل حذف الصفحة',
+
+    // Content
+    'contents_retrieved_success' => 'تم استرجاع المحتويات بنجاح',
+    'failed_retrieve_contents' => 'فشل استرجاع المحتويات',
+    'content_created_success' => 'تم إنشاء المحتوى بنجاح',
+    'failed_create_content' => 'فشل إنشاء المحتوى',
+    'content_not_found' => 'المحتوى غير موجود',
+    'content_retrieved_success' => 'تم استرجاع المحتوى بنجاح',
+    'failed_retrieve_content' => 'فشل استرجاع المحتوى',
+    'content_updated_success' => 'تم تحديث المحتوى بنجاح',
+    'failed_update_content' => 'فشل تحديث المحتوى',
+    'content_deleted_success' => 'تم حذف المحتوى بنجاح',
+    'failed_delete_content' => 'فشل حذف المحتوى',
+
     // Ad
     'ads_retrieved_success' => 'تم استرجاع الإعلانات بنجاح',
     'failed_retrieve_ads' => 'فشل استرجاع الإعلانات',

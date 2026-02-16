@@ -20,6 +20,8 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InputController;
 use App\Http\Controllers\ScreenController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ContentController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -113,6 +115,18 @@ Route::prefix('inputs')->group(function () {
     Route::get('/{id}', [InputController::class, 'show']);
 });
 
+// Public pages routes (index and show)
+Route::prefix('pages')->group(function () {
+    Route::get('/', [PageController::class, 'index']);
+    Route::get('/{id}', [PageController::class, 'show']);
+});
+
+// Public contents routes (index and show) - can filter by page_id
+Route::prefix('contents')->group(function () {
+    Route::get('/', [ContentController::class, 'index']);
+    Route::get('/{id}', [ContentController::class, 'show']);
+});
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::apiResource('users', UserController::class);
@@ -201,4 +215,14 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('inputs', [InputController::class, 'store']);
     Route::put('inputs/{id}', [InputController::class, 'update']);
     Route::delete('inputs/{id}', [InputController::class, 'destroy']);
+
+    // Protected Pages routes (store, update, destroy)
+    Route::post('pages', [PageController::class, 'store']);
+    Route::put('pages/{id}', [PageController::class, 'update']);
+    Route::delete('pages/{id}', [PageController::class, 'destroy']);
+
+    // Protected Contents routes (store, update, destroy) - img_text type may include image file
+    Route::post('contents', [ContentController::class, 'store']);
+    Route::put('contents/{id}', [ContentController::class, 'update']);
+    Route::delete('contents/{id}', [ContentController::class, 'destroy']);
 });

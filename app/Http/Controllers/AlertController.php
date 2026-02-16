@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AlertResource;
 use App\Services\AlertService;
+use App\Models\Alert;
 use Exception;
 use Illuminate\Http\Request;
 class AlertController extends Controller
@@ -17,12 +18,13 @@ class AlertController extends Controller
     public function markAsRead(Request $request)
     {
         try {
-            dd($request->all());
             $request->validate([
                 'id' => 'required|integer|exists:alerts,id',
             ]);
-            $user = $request->user();
-            if($user->id != $request->id) {
+            $user = auth()->user();
+            $alert = Alert::find($request->id);
+
+            if($user->id !== $alert->user_id) {
                 return response()->json([
                     'message' => __('messages.not_authorized_mark_alert_read'),
                 ], 403);
