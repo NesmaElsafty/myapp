@@ -32,7 +32,7 @@ class NotificationController extends Controller
                 'sorted_by' => 'nullable|string|in:title,newest,oldest,all',
             ]);
 
-            $notifications = $this->notificationService->getAll($request->all(), $request->header('lang'))->paginate(10);
+            $notifications = $this->notificationService->getAll($request->all(), app()->getLocale())->paginate(10);
 
             return response()->json([
                 'message' => __('messages.notifications_retrieved_success'),

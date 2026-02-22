@@ -14,7 +14,7 @@ class ScreenResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $lang = $request->header('lang') ?? 'en';
+        $lang = app()->getLocale();
         $name = $lang === 'ar' ? $this->name_ar : $this->name_en;
         $description = $lang === 'ar' ? $this->description_ar : $this->description_en;
 

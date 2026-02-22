@@ -26,7 +26,7 @@ class TermController extends Controller
                 'sorted_by' => 'nullable|string|in:newest,oldest,all,name',
             ]);
 
-            $terms = $this->termService->getAll($request->all(), $request->header('lang'))->paginate(10);
+            $terms = $this->termService->getAll($request->all(), app()->getLocale())->paginate(10);
 
             return response()->json([
                 'message' => __('messages.terms_retrieved_success'),
@@ -153,7 +153,7 @@ class TermController extends Controller
                     $result = $this->termService->bulkDelete($term_ids);
                     break;
                 case 'export':
-                    $result = $this->termService->export($term_ids, $request->header('lang'));
+                    $result = $this->termService->export($term_ids, app()->getLocale());
                     break;
             }
 

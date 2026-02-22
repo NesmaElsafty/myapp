@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CityController;

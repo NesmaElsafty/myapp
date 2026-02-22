@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "users-crud-collection",
+		"name": "Users CRUD (Admin)",
+		"description": "Admin CRUD for users. Supports specialty_areas, major, summary for agents, individuals, and origins.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has users and pagination\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('users');",
+							"    pm.expect(jsonData).to.have.property('pagination');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Authorization", "value": "Bearer {{admin_token}}" }
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/users?type=user&search=&role_id=&sorted_by=all&is_active=all",
+					"host": ["{{base_url}}"],
+					"path": ["api", "admin", "users"],
+					"query": [
+						{ "key": "type", "value": "user", "description": "user, admin, individual, origin" },
+						{ "key": "search", "value": "" },
+						{ "key": "role_id", "value": "" },
+						{ "key": "sorted_by", "value": "all", "description": "name, newest, oldest, all" },
+						{ "key": "is_active", "value": "all", "description": "1, 0, all" }
+					]
+				},
+				"description": "List users. Requires admin auth. Set type to user, admin, individual, or origin."
+			}
+		},
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    const jsonData = pm.response.json();",
+							"    pm.environment.set('user_id', jsonData.data.id);",
+							"}",
+							"",
+							"pm.test(\"Response has user with specialty_areas, major, summary, bank fields\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('specialty_areas');",
+							"    pm.expect(jsonData.data).to.have.property('major');",
+							"    pm.expect(jsonData.data).to.have.property('summary');",
+							"    pm.expect(jsonData.data).to.have.property('bank_name');",
+							"    pm.expect(jsonData.data).to.have.property('bank_account_number');",
+							"    pm.expect(jsonData.data).to.have.property('bank_account_iban');",
+							"    pm.expect(jsonData.data).to.have.property('bank_account_address');",
+							"    pm.expect(jsonData.data).to.have.property('language');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Content-Type", "value": "application/json" },
+					{ "key": "Authorization", "value": "Bearer {{admin_token}}" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"f_name\": \"أحمد\",\n    \"l_name\": \"السالم\",\n    \"email\": \"newuser@example.com\",\n    \"phone\": \"0509876543\",\n    \"type\": \"user\",\n    \"location\": \"جدة\",\n    \"is_active\": true,\n    \"specialty_areas\": [\"عقارات\", \"سيارات\"],\n    \"major\": \"هندسة\",\n    \"summary\": \"ملخص قصير عن المستخدم.\",\n    \"bank_name\": \"البنك الأهلي\",\n    \"bank_account_number\": \"123456789012\",\n    \"bank_account_iban\": \"SA0380000000608010167519\",\n    \"bank_account_address\": \"جدة، شارع التحلية\",\n    \"language\": \"ar\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/users",
+					"host": ["{{base_url}}"],
+					"path": ["api", "admin", "users"]
+				},
+				"description": "Create a user. specialty_areas, major, summary, bank fields, language (ar|en) are optional. language defaults to ar for all user types."
+			}
+		},
+		{
+			"name": "Get User by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has user with specialty_areas, major, summary, bank fields\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData.data).to.have.property('specialty_areas');",
+							"    pm.expect(jsonData.data).to.have.property('major');",
+							"    pm.expect(jsonData.data).to.have.property('summary');",
+							"    pm.expect(jsonData.data).to.have.property('bank_name');",
+							"    pm.expect(jsonData.data).to.have.property('bank_account_iban');",
+							"    pm.expect(jsonData.data).to.have.property('language');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Authorization", "value": "Bearer {{admin_token}}" }
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/users/{{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "admin", "users", "{{user_id}}"]
+				},
+				"description": "Get one user by ID. Uses user_id from environment (e.g. from Create User)."
+			}
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has updated specialty_areas, major, summary\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.specialty_areas).to.eql([\"عقارات\", \"سيارات\", \"إلكترونيات\"]);",
+							"    pm.expect(jsonData.data.major).to.eql(\"حاسوب\");",
+							"    pm.expect(jsonData.data.summary).to.include(\"ملخص محدث\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Content-Type", "value": "application/json" },
+					{ "key": "Authorization", "value": "Bearer {{admin_token}}" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"f_name\": \"أحمد\",\n    \"l_name\": \"السالم\",\n    \"email\": \"newuser@example.com\",\n    \"phone\": \"0509876543\",\n    \"type\": \"user\",\n    \"location\": \"الرياض\",\n    \"is_active\": true,\n    \"specialty_areas\": [\"عقارات\", \"سيارات\", \"إلكترونيات\"],\n    \"major\": \"حاسوب\",\n    \"summary\": \"ملخص محدث عن المستخدم.\",\n    \"bank_name\": \"بنك الراجحي\",\n    \"bank_account_number\": \"987654321098\",\n    \"bank_account_iban\": \"SA0390000000608010167519\",\n    \"bank_account_address\": \"الرياض، حي النخيل\",\n    \"language\": \"en\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/users/{{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "admin", "users", "{{user_id}}"]
+				},
+				"description": "Update user. Include specialty_areas, major, summary, bank fields, language (ar|en) as needed."
+			}
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Authorization", "value": "Bearer {{admin_token}}" }
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/users/{{user_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "admin", "users", "{{user_id}}"]
+				},
+				"description": "Delete (force) a user. Uses user_id from environment."
+			}
+		}
+	]
+}

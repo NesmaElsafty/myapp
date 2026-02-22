@@ -15,7 +15,7 @@ class PermissionResource extends JsonResource
     public function toArray(Request $request): array
     {
         // get locale
-        $locale = $request->header('lang');
+        $locale = app()->getLocale();
         $displayName = $locale == 'ar' ? $this->display_name_ar : $this->display_name_en;
 
         return [

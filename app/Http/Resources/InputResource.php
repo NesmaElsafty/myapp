@@ -23,7 +23,7 @@ class InputResource extends JsonResource
             return null;
         }
 
-        $lang = $request->header('lang') ?? 'en';
+        $lang = app()->getLocale();
         $labelKey = $lang === 'ar' ? 'label_ar' : 'label_en';
 
         // select/radio: choices with same value, label_en, label_ar → add resolved label
@@ -54,7 +54,7 @@ class InputResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-        $lang = $request->header('lang') ?? 'en';
+        $lang = app()->getLocale();
         $title = $lang === 'ar' ? $this->title_ar : $this->title_en;
         $placeholder = $lang === 'ar' ? $this->placeholder_ar : $this->placeholder_en;
         $description = $lang === 'ar' ? $this->description_ar : $this->description_en;

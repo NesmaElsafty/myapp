@@ -16,7 +16,7 @@ class RoleResource extends JsonResource
     public function toArray(Request $request): array
     {
         // get locale
-        $locale = $request->header('lang') ?? 'ar';
+        $locale = app()->getLocale();
         $name = $locale == 'ar' ? $this->name_ar : $this->name_en;
         $description = $locale == 'ar' ? $this->description_ar : $this->description_en;
         $total_admins = $this->users()->count();

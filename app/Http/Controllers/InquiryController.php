@@ -24,7 +24,7 @@ class InquiryController extends Controller
                 'sorted_by' => 'nullable|string|in:newest,oldest,all,name',
             ]);
 
-            $inquiries = $this->inquiryService->getAll($request->all(), $request->header('lang'))->paginate(10);
+            $inquiries = $this->inquiryService->getAll($request->all(), app()->getLocale())->paginate(10);
 
             return response()->json([
                 'message' => __('messages.inquiries_retrieved_success'),
@@ -183,7 +183,7 @@ class InquiryController extends Controller
                     $result = $this->inquiryService->bulkDelete($inquiry_ids);
                     break;
                 case 'export':
-                    $result = $this->inquiryService->export($inquiry_ids, $request->header('lang'));
+                    $result = $this->inquiryService->export($inquiry_ids, app()->getLocale());
                     break;
             }
 

@@ -24,7 +24,7 @@ class FaqController extends Controller
                 'sorted_by' => 'nullable|string|in:newest,oldest,all,name',
             ]);
 
-            $faqs = $this->faqService->getAll($request->all(), $request->header('lang'))->paginate(10);
+            $faqs = $this->faqService->getAll($request->all(), app()->getLocale())->paginate(10);
 
             return response()->json([
                 'message' => __('messages.faqs_retrieved_success'),
@@ -151,7 +151,7 @@ class FaqController extends Controller
                     $result = $this->faqService->bulkDelete($faq_ids);
                     break;
                 case 'export':
-                    $result = $this->faqService->export($faq_ids, $request->header('lang'));
+                    $result = $this->faqService->export($faq_ids, app()->getLocale());
                     break;
             }
 

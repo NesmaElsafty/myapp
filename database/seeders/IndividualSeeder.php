@@ -25,6 +25,14 @@ class IndividualSeeder extends Seeder
             'origin_id' => null,
             'national_id' => '12345678901234',
             'commercial_number' => null,
+            'specialty_areas' => ['عقارات', 'أثاث'],
+            'major' => 'هندسة',
+            'summary' => 'مهندسة معمارية مهتمة بالعقارات والتأثيث. أبحث عن فرص استثمارية مناسبة.',
+            'bank_name' => 'البنك السعودي الفرنسي',
+            'bank_account_number' => '555566667777',
+            'bank_account_iban' => 'SA0330000000608010167519',
+            'bank_account_address' => 'جدة، حي الروضة',
+            'language' => 'ar',
         ]);
 
         // Create additional individual users

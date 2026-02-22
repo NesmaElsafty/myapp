@@ -26,6 +26,14 @@ class UserSeeder extends Seeder
             'origin_id' => null,
             'national_id' => null,
             'commercial_number' => null,
+            'specialty_areas' => [],
+            'major' => null,
+            'summary' => null,
+            'bank_name' => null,
+            'bank_account_number' => null,
+            'bank_account_iban' => null,
+            'bank_account_address' => null,
+            'language' => 'ar',
         ]);
 
         // Create additional regular users

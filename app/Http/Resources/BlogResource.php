@@ -19,7 +19,7 @@ class BlogResource extends JsonResource
             $image = str_replace('public/', '', $this->getFirstMediaUrl('image'));
         }
 
-        $lang = $request->header('lang') ?? 'ar';
+        $lang = app()->getLocale();
         $title = $lang == 'ar' ? $this->title_ar : $this->title_en;
         $description = $lang == 'ar' ? $this->description_ar : $this->description_en;
 

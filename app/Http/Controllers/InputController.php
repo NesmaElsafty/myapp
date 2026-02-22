@@ -53,7 +53,7 @@ class InputController extends Controller
     public function index(Request $request)
     {
         try {
-            $lang = $request->header('lang') ?? 'ar';
+            $lang = app()->getLocale();
             $inputs = $this->inputService->getAll($request->all(), $lang)->paginate(10);
 
             return response()->json([

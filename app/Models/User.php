@@ -43,6 +43,7 @@ class User extends Authenticatable implements HasMedia
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'specialty_areas' => 'array',
         ];
     }
 

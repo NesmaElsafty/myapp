@@ -14,7 +14,7 @@ class RegionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $lang = $request->header('lang') ?? 'ar';
+        $lang = app()->getLocale();
         $name = $lang == 'ar' ? $this->name_ar : $this->name_en;
         $district = $lang == 'ar' ? $this->district_ar : $this->district_en;
 

@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use App\Helpers\PaginationHelper;
 use Exception;
 use App\Models\User;
+
 class UserController extends Controller
 {
     protected UserService $userService;
@@ -21,27 +19,26 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    
     public function index(Request $request)
     {
         try {
-        $request->validate([
-            'type' => 'required|in:user,admin,individual,origin',
-            'search' => 'nullable|string|max:255',
-            'role_id' => 'nullable|exists:roles,id',
-            'sorted_by' => 'nullable|string|in:name,newest,oldest,all',
-            'is_active' => 'nullable|string|in:1,0,all',
-        ]);
+            $request->validate([
+                'type' => 'required|in:user,admin,individual,origin',
+                'search' => 'nullable|string|max:255',
+                'role_id' => 'nullable|exists:roles,id',
+                'sorted_by' => 'nullable|string|in:name,newest,oldest,all',
+                'is_active' => 'nullable|string|in:1,0,all',
+            ]);
 
-        $users = $this->userService->getAll($request->all(), $request->type)->paginate(10);
-        $stats = $this->userService->stats($request->type);
+            $users = $this->userService->getAll($request->all(), $request->type)->paginate(10);
+            $stats = $this->userService->stats($request->type);
 
-        return response()->json([
-            'message' => __('messages.users_retrieved_success'),
-            'users' => UserResource::collection($users),
-            'pagination' => PaginationHelper::paginate($users),
-            'stats' => $request->type !== 'admin' ? $stats : null,
-        ], 200);
+            return response()->json([
+                'message' => __('messages.users_retrieved_success'),
+                'users' => UserResource::collection($users),
+                'pagination' => PaginationHelper::paginate($users),
+                'stats' => $request->type !== 'admin' ? $stats : null,
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_retrieve_users'),
@@ -52,7 +49,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-       $request->validate([
+        $request->validate([
             'f_name' => 'required|string|max:255',
             'l_name' => 'required|string|max:255',
             'email' => [
@@ -75,6 +72,15 @@ class UserController extends Controller
             'type' => 'required|in:user,admin',
             'location' => 'nullable|string|max:255',
             'is_active' => 'nullable|boolean|in:1,0',
+            'specialty_areas' => 'nullable|array',
+            'specialty_areas.*' => 'nullable|string|max:255',
+            'major' => 'nullable|string|max:255',
+            'summary' => 'nullable|string',
+            'bank_name' => 'nullable|string|max:255',
+            'bank_account_number' => 'nullable|string|max:255',
+            'bank_account_iban' => 'nullable|string|max:34',
+            'bank_account_address' => 'nullable|string|max:255',
+            'language' => 'nullable|in:ar,en',
         ]);
 
         try {
@@ -84,7 +90,7 @@ class UserController extends Controller
                 'message' => __('messages.user_created_success'),
                 'data' => new UserResource($user),
             ], 201);
-       } catch (Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_create_user'),
                 'error' => $e->getMessage(),
@@ -107,7 +113,6 @@ class UserController extends Controller
                 'message' => __('messages.user_retrieved_success'),
                 'data' => new UserResource($user),
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_retrieve_user'),
@@ -119,7 +124,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // dd($request->all());
             $request->validate([
                 'f_name' => 'string|max:255',
                 'l_name' => 'string|max:255',
@@ -133,11 +137,20 @@ class UserController extends Controller
                     'max:20',
                     'unique:users,phone,' . $id . ',id,type,' . $request->type,
                 ],
-            'role_id' => 'exists:roles,id',
-            'type' => 'in:user,admin',
-            'location' => 'string|max:255',    
-            'is_active' => 'boolean|in:1,0',
-        ]);
+                'role_id' => 'exists:roles,id',
+                'type' => 'in:user,admin',
+                'location' => 'string|max:255',
+                'is_active' => 'boolean|in:1,0',
+                'specialty_areas' => 'nullable|array',
+                'specialty_areas.*' => 'nullable|string|max:255',
+                'major' => 'nullable|string|max:255',
+                'summary' => 'nullable|string',
+                'bank_name' => 'nullable|string|max:255',
+                'bank_account_number' => 'nullable|string|max:255',
+                'bank_account_iban' => 'nullable|string|max:34',
+                'bank_account_address' => 'nullable|string|max:255',
+                'language' => 'nullable|in:ar,en',
+            ]);
 
             $user = $this->userService->update($id, $request->all());
 
@@ -145,7 +158,6 @@ class UserController extends Controller
                 'message' => __('messages.user_updated_success'),
                 'data' => new UserResource($user),
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_update_user'),
@@ -170,22 +182,20 @@ class UserController extends Controller
         }
     }
 
-    // bulk actions
     public function bulkActions(Request $request)
     {
         try {
-            
             $request->validate([
                 'action' => 'required|in:block,unblock,toggleActive,export',
                 'type' => 'required|in:user,admin,individual,origin',
                 'user_ids' => 'nullable|array|exists:users,id',
             ]);
 
-           $user_ids = $request->user_ids;
+            $user_ids = $request->user_ids;
 
-           if(!$user_ids || count($user_ids) === 0) {
-            $user_ids = User::where('type', $request->type)->pluck('id')->toArray();
-           } 
+            if (!$user_ids || count($user_ids) === 0) {
+                $user_ids = User::where('type', $request->type)->pluck('id')->toArray();
+            }
 
             $result = null;
             switch ($request->action) {
@@ -205,12 +215,11 @@ class UserController extends Controller
                     $result = $this->userService->export($user_ids);
                     break;
             }
-            
+
             return response()->json([
                 'message' => __('messages.bulk_actions_success'),
                 'data' => $result,
             ], 200);
-            
         } catch (\Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_bulk_actions'),

@@ -19,7 +19,7 @@ class ScreenController extends Controller
     public function index(Request $request)
     {
         try {
-            $lang = $request->header('lang') ?? 'ar';
+            $lang = app()->getLocale();
             $screens = $this->screenService->getAll($request->all(), $lang)->paginate(10);
 
             return response()->json([

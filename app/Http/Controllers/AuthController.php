@@ -49,6 +49,11 @@ class AuthController extends Controller
             'origin_id' => 'nullable|exists:users,id',
             'national_id' => 'nullable|string|max:255',
             'commercial_number' => 'nullable|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'bank_account_number' => 'nullable|string|max:255',
+            'bank_account_iban' => 'nullable|string|max:34',
+            'bank_account_address' => 'nullable|string|max:255',
+            'language' => 'nullable|in:ar,en',
         ]);
 
         if ($validator->fails()) {
@@ -89,21 +94,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-            'type' => 'nullable|in:user,admin,individual,agent,origin',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => __('messages.validation_error'),
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
         try {
-            $result = $this->authService->login($validator->validated());
+            $request->validate([
+                'email' => 'required|string|email',
+                'password' => 'required|string',
+                'type' => 'nullable|in:user,admin,individual,agent,origin',
+            ]);
+            $result = $this->authService->login($request->only('email', 'password', 'type'));
 
             // Load relationships if needed
             if ($result['user']->type === 'agent') {
@@ -112,7 +109,7 @@ class AuthController extends Controller
 
             $resourceClass = $this->getResourceClass($result['user']->type);
             $userResource = new $resourceClass($result['user']->load('alerts'));
-
+            
             return response()->json([
                 'message' => __('messages.login_success'),
                 'user' => $userResource,
@@ -123,11 +120,6 @@ class AuthController extends Controller
                 'message' => __('messages.invalid_credentials'),
                 'errors' => $e->errors(),
             ], 401);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => __('messages.login_failed'),
-                'error' => $e->getMessage(),
-            ], 500);
         }
     }
 
@@ -183,8 +175,13 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'nullable|string|email|max:255|unique:users,email,' . $user->id . ',id,type,' . $user->type,
             'phone' => 'nullable|string|max:20|unique:users,phone,' . $user->id . ',id,type,' . $user->type,
+            'bank_name' => 'nullable|string|max:255',
+            'bank_account_number' => 'nullable|string|max:255',
+            'bank_account_iban' => 'nullable|string|max:34',
+            'bank_account_address' => 'nullable|string|max:255',
+            'language' => 'nullable|in:ar,en',
         ]);
-        
+
         $user = $this->authService->updateProfile($request->all());
 
         // if ahs image, update it

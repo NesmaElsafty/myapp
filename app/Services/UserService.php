@@ -71,6 +71,14 @@ class UserService
             'is_active' => $data['is_active'],
             'password' => Hash::make('123456'),
             'role_id' => $data['role_id'] ?? null,
+            'specialty_areas' => $data['specialty_areas'] ?? [],
+            'major' => $data['major'] ?? null,
+            'summary' => $data['summary'] ?? null,
+            'bank_name' => $data['bank_name'] ?? null,
+            'bank_account_number' => $data['bank_account_number'] ?? null,
+            'bank_account_iban' => $data['bank_account_iban'] ?? null,
+            'bank_account_address' => $data['bank_account_address'] ?? null,
+            'language' => $data['language'] ?? 'ar',
         ];
 
         return User::create($userData);
@@ -139,6 +147,34 @@ class UserService
 
         if (isset($data['role_id'])) {
             $updateData['role_id'] = $data['role_id'];
+        }
+
+        if (array_key_exists('specialty_areas', $data)) {
+            $updateData['specialty_areas'] = $data['specialty_areas'] ?? [];
+        }
+
+        if (isset($data['major'])) {
+            $updateData['major'] = $data['major'];
+        }
+
+        if (isset($data['summary'])) {
+            $updateData['summary'] = $data['summary'];
+        }
+
+        if (isset($data['bank_name'])) {
+            $updateData['bank_name'] = $data['bank_name'];
+        }
+        if (isset($data['bank_account_number'])) {
+            $updateData['bank_account_number'] = $data['bank_account_number'];
+        }
+        if (isset($data['bank_account_iban'])) {
+            $updateData['bank_account_iban'] = $data['bank_account_iban'];
+        }
+        if (isset($data['bank_account_address'])) {
+            $updateData['bank_account_address'] = $data['bank_account_address'];
+        }
+        if (isset($data['language'])) {
+            $updateData['language'] = $data['language'];
         }
 
         $user->update($updateData);
@@ -214,6 +250,14 @@ class UserService
                 'phone' => $user->phone,
                 'type' => $user->type,
                 'location' => $user->location,
+                'specialty_areas' => is_array($user->specialty_areas) ? implode(', ', $user->specialty_areas) : '',
+                'major' => $user->major,
+                'summary' => $user->summary,
+                'bank_name' => $user->bank_name,
+                'bank_account_number' => $user->bank_account_number,
+                'bank_account_iban' => $user->bank_account_iban,
+                'bank_account_address' => $user->bank_account_address,
+                'language' => $user->language ?? 'ar',
                 'is_active' => $user->is_active == '1' ? 'مفعل' : 'غير مفعل',
                 'created_at' => $user->created_at,
                 'updated_at' => $user->updated_at,

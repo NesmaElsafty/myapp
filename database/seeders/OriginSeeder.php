@@ -13,6 +13,25 @@ class OriginSeeder extends Seeder
      */
     public function run(): void
     {
+        // Backfill existing origin user if specialty_areas/major/summary are empty
+        $existingOrigin = User::where('email', 'origin@example.com')->where('type', 'origin')->first();
+        if ($existingOrigin && (empty($existingOrigin->specialty_areas) || $existingOrigin->major === null || $existingOrigin->summary === null || $existingOrigin->bank_name === null)) {
+            $existingOrigin->update([
+                'specialty_areas' => ['عقارات', 'عقارات تجارية'],
+                'major' => 'إدارة أعمال',
+                'summary' => 'شركة متخصصة في التسويق العقاري والتطوير. نقدم خدمات شاملة للأفراد والشركات في مجال العقارات التجارية والسكنية.',
+                'bank_name' => 'البنك الأهلي',
+                'bank_account_number' => '123456789012',
+                'bank_account_iban' => 'SA0380000000608010167519',
+                'bank_account_address' => 'الدمام، شارع الملك فهد',
+                'language' => 'ar',
+            ]);
+        }
+
+        if ($existingOrigin) {
+            return; // already have the main origin user
+        }
+
         User::create([
             'f_name' => 'شركة',
             'l_name' => 'النجاح',
@@ -25,6 +44,14 @@ class OriginSeeder extends Seeder
             'origin_id' => null,
             'national_id' => null,
             'commercial_number' => 'CR123456789',
+            'specialty_areas' => ['عقارات', 'عقارات تجارية'],
+            'major' => 'إدارة أعمال',
+            'summary' => 'شركة متخصصة في التسويق العقاري والتطوير. نقدم خدمات شاملة للأفراد والشركات في مجال العقارات التجارية والسكنية.',
+            'bank_name' => 'البنك الأهلي',
+            'bank_account_number' => '123456789012',
+            'bank_account_iban' => 'SA0380000000608010167519',
+            'bank_account_address' => 'الدمام، شارع الملك فهد',
+            'language' => 'ar',
         ]);
 
         // Create additional origin users

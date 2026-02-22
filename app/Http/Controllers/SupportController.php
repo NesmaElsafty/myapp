@@ -24,7 +24,7 @@ class SupportController extends Controller
                 'sorted_by' => 'nullable|string|in:newest,oldest,all,name',
             ]);
 
-            $supports = $this->supportService->getAll($request->all(), $request->header('lang'))->paginate(10);
+            $supports = $this->supportService->getAll($request->all(), app()->getLocale())->paginate(10);
 
             return response()->json([
                 'message' => __('messages.support_tickets_retrieved_success'),
@@ -183,7 +183,7 @@ class SupportController extends Controller
                     $result = $this->supportService->bulkDelete($support_ids);
                     break;
                 case 'export':
-                    $result = $this->supportService->export($support_ids, $request->header('lang'));
+                    $result = $this->supportService->export($support_ids, app()->getLocale());
                     break;
             }
 

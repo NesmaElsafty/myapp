@@ -16,11 +16,12 @@ class UserResource extends JsonResource
     {
 
         $role = null;
+
         if($this->type == 'admin') {
             $role = $this->role;
         }
         $alerts = [];
-        if($this->id == auth()->user()->id) {
+        if (auth()->check() && auth()->id() === $this->id) {
             $alerts = AlertResource::collection($this->alerts);
         }
 
@@ -40,6 +41,14 @@ class UserResource extends JsonResource
             'origin_id' => $this->origin_id,
             'national_id' => $this->national_id,
             'commercial_number' => $this->commercial_number,
+            'specialty_areas' => $this->specialty_areas ?? [],
+            'major' => $this->major,
+            'summary' => $this->summary,
+            'bank_name' => $this->bank_name,
+            'bank_account_number' => $this->bank_account_number,
+            'bank_account_iban' => $this->bank_account_iban,
+            'bank_account_address' => $this->bank_account_address,
+            'language' => $this->language ?? 'ar',
             'role' => $role ? new RoleResource($role) : null,
             'email_verified_at' => $this->email_verified_at,
             'created_at' => $this->created_at,

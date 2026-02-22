@@ -14,7 +14,7 @@ class NotificationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $lang = $request->header('Accept-Language', 'en');
+        $lang = app()->getLocale();
         
         return [
             'id' => $this->id,

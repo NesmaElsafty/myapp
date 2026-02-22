@@ -29,6 +29,14 @@ class AgentSeeder extends Seeder
                 'origin_id' => $origin->id,
                 'national_id' => null,
                 'commercial_number' => null,
+                'specialty_areas' => ['عقارات سكنية', 'سيارات'],
+                'major' => 'تسويق',
+                'summary' => 'وكيل عقاري معتمد مع خبرة في المبيعات والتسويق. متخصص في العقارات السكنية والمركبات.',
+                'bank_name' => 'بنك الراجحي',
+                'bank_account_number' => '987654321098',
+                'bank_account_iban' => 'SA0390000000608010167519',
+                'bank_account_address' => 'الخبر، حي الشاطئ',
+                'language' => 'ar',
             ]);
 
             // Create additional agent users

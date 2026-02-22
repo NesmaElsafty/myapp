@@ -28,6 +28,11 @@ class AuthService
             'national_id' => $data['national_id'] ?? null,
             'commercial_number' => $data['commercial_number'] ?? null,
             'email_verified_at' => now(),
+            'bank_name' => $data['bank_name'] ?? null,
+            'bank_account_number' => $data['bank_account_number'] ?? null,
+            'bank_account_iban' => $data['bank_account_iban'] ?? null,
+            'bank_account_address' => $data['bank_account_address'] ?? null,
+            'language' => $data['language'] ?? 'ar',
         ]);
 
         // Create token
@@ -44,16 +49,16 @@ class AuthService
      */
     public function login(array $credentials): array
     {
-        $query = User::where('email', $credentials['email']);
+        $email = isset($credentials['email']) ? trim($credentials['email']) : '';
 
-        // If type is provided, filter by type
+        $query = User::where('email', $email);
+
         if (isset($credentials['type'])) {
             $query->where('type', $credentials['type']);
         }
 
-        // Check if email exists in multiple types
-        $usersWithEmail = User::where('email', $credentials['email'])->get();
-        
+        $usersWithEmail = User::where('email', $email)->get();
+
         if ($usersWithEmail->count() > 1 && !isset($credentials['type'])) {
             throw ValidationException::withMessages([
                 'type' => ['Multiple accounts found with this email. Please specify the user type.'],
@@ -62,16 +67,24 @@ class AuthService
 
         $user = $query->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        if (!$user) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        // Delete existing tokens (optional - for single device login)
-        // $user->tokens()->delete();
+        if (!Hash::check($credentials['password'], $user->getAuthPassword())) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
 
-        // Create new token
+        if ($user->is_active === '0' || $user->is_active === false) {
+            throw ValidationException::withMessages([
+                'email' => ['This account has been deactivated.'],
+            ]);
+        }
+
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return [
@@ -144,6 +157,21 @@ class AuthService
         $user->l_name = $data['l_name'] ?? $user->l_name;
         $user->email = $data['email'] ?? $user->email;
         $user->phone = $data['phone'] ?? $user->phone;
+        if (array_key_exists('bank_name', $data)) {
+            $user->bank_name = $data['bank_name'];
+        }
+        if (array_key_exists('bank_account_number', $data)) {
+            $user->bank_account_number = $data['bank_account_number'];
+        }
+        if (array_key_exists('bank_account_iban', $data)) {
+            $user->bank_account_iban = $data['bank_account_iban'];
+        }
+        if (array_key_exists('bank_account_address', $data)) {
+            $user->bank_account_address = $data['bank_account_address'];
+        }
+        if (array_key_exists('language', $data)) {
+            $user->language = $data['language'];
+        }
         $user->save();
         return $user;
     }

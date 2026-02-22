@@ -7,16 +7,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
+    
     public function toArray(Request $request): array
     {
         $image = null;
-        if($this->hasMedia('profile')) {
+        if ($this->hasMedia('profile')) {
             $image = str_replace('public/', '', $this->getFirstMediaUrl('profile'));
+        }
+
+        $alerts = [];
+        if (auth()->check() && auth()->id() === $this->id) {
+            $alerts = AlertResource::collection($this->alerts);
         }
 
         return [
@@ -26,9 +27,10 @@ class AdminResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'type' => $this->type,
+            'language' => $this->language ?? 'ar',
             'image' => $image,
             'email_verified_at' => $this->email_verified_at,
-            'alerts' => AlertResource::collection($this->alerts),
+            'alerts' => $alerts,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

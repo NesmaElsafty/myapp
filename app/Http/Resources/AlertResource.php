@@ -9,7 +9,7 @@ class AlertResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $lang = $request->header('Accept-Language', 'en');
+        $lang = app()->getLocale();
         Auth::check() ? $this->user_id == Auth::user()->id : false;
         return [
             'id' => $this->id,

@@ -24,6 +24,21 @@ return new class extends Migration
             $table->enum('type', ['user', 'admin','individual', 'agent','origin'])->nullable();
             $table->foreignId('origin_id')->nullable()->constrained('users');
             
+            // for agents & individuals & origins
+            $table->json('specialty_areas')->nullable()->default('[]');
+            $table->string('major')->nullable();
+            $table->longText('summary')->nullable();
+
+            // bank data
+            $table->string('bank_name')->nullable();
+            $table->string('bank_account_number')->nullable();
+            $table->string('bank_account_iban')->nullable();
+            $table->string('bank_account_address')->nullable();
+
+            // language
+            $table->enum('language', ['ar', 'en'])->default('ar');
+           
+
             // $table->foreignId('role_id')->nullable()->constrained('roles');
             $table->string('national_id')->nullable();
             $table->string('commercial_number')->nullable();       

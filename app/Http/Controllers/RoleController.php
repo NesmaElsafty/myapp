@@ -191,8 +191,9 @@ class RoleController extends Controller
             
             $data = [];
             foreach ($roles as $role) {
-                $name = $request->header('lang') == 'ar' ? $role['name_ar'] : $role['name_en'];
-                $description = $request->header('lang') == 'ar' ? $role['description_ar'] : $role['description_en'];
+                $locale = app()->getLocale();
+                $name = $locale == 'ar' ? $role['name_ar'] : $role['name_en'];
+                $description = $locale == 'ar' ? $role['description_ar'] : $role['description_en'];
                 $data[] = [
                     'id' => $role->id,
                     'name' => $name,
@@ -201,7 +202,7 @@ class RoleController extends Controller
                     // merge group and display name like this: group - display name
                     'permissions' => implode(' - ', array_map(function($group, $displayName) {
                         return "$displayName ($group)";
-                    }, $role->permissions()->pluck('group')->toArray(), $role->permissions()->pluck('display_name_'.$request->header('lang'))->toArray())),
+                    }, $role->permissions()->pluck('group')->toArray(), $role->permissions()->pluck('display_name_'.app()->getLocale())->toArray())),
                     'created_at' => $role->created_at,
                 ];
             }

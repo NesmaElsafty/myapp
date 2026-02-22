@@ -14,7 +14,7 @@ class FaqResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $lang = $request->header('lang') ?? 'ar';
+        $lang = app()->getLocale();
         $question = $lang == 'ar' ? $this->question_ar : $this->question_en;
         $answer = $lang == 'ar' ? $this->answer_ar : $this->answer_en;
 

@@ -28,7 +28,7 @@ class PlanController extends Controller
                 'official_duration' => 'nullable|string|in:1,3,6,12,all',
             ]);
 
-            $plans = $this->planService->getAll($request->all(), $request->header('lang'))->paginate(10);
+            $plans = $this->planService->getAll($request->all(), app()->getLocale())->paginate(10);
 
             return response()->json([
                 'message' => __('messages.plans_retrieved_success'),
@@ -186,7 +186,7 @@ class PlanController extends Controller
                     $result = ['deleted' => count($planIds)];
                     break;
                 case 'export':
-                    $result = $this->planService->export($planIds, $request->header('lang') ?? 'ar');
+                    $result = $this->planService->export($planIds, app()->getLocale());
                     break;
                 default:
                     $result = [];

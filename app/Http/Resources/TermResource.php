@@ -14,7 +14,7 @@ class TermResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $lang = $request->header('lang') ?? 'ar';
+        $lang = app()->getLocale();
         $title = $lang == 'ar' ? $this->title_ar : $this->title_en;
         $content = $lang == 'ar' ? $this->content_ar : $this->content_en;
         
