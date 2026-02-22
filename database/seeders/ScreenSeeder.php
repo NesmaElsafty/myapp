@@ -191,6 +191,143 @@ class ScreenSeeder extends Seeder
     }
 
     /**
+     * Fixed 2 screens for category id 1 (from property listing UI).
+     */
+    private function screensForCategoryOne(): array
+    {
+        return [
+            [
+                'name_en' => 'Basic Property Information',
+                'name_ar' => 'المعلومات الأساسية للعقار',
+                'description_en' => 'Enter the basic property information: purpose, type, status, furnishing, condition, area, facade, and nearby landmarks.',
+                'description_ar' => 'أدخل المعلومات الأساسية للعقار: الغرض، النوع، الحالة، التأثيث، وضع العقار، المساحة، الواجهة، والمعالم القريبة.',
+            ],
+            [
+                'name_en' => 'Property Details',
+                'name_ar' => 'تفاصيل العقار',
+                'description_en' => 'Enter property details: bedrooms, halls, bathrooms, arrangement, features, AC type, warranty, and upload photos/videos and blueprint.',
+                'description_ar' => 'أدخل تفاصيل العقار: غرف النوم، الصالات، دورات المياه، ترتيب الشقة، المميزات، نوع التكييف، الضمان، ورفع الصور/الفيديو والمخطط المصغر.',
+            ],
+        ];
+    }
+
+    /**
+     * Fixed 2 screens for category id 2 (Projects - from project listing UI).
+     * Screen 1: Basic Project Information (المعلومات الأساسية للمشروع)
+     * Screen 2: Property Details (تفاصيل العقار)
+     */
+    private function screensForCategoryTwo(): array
+    {
+        return [
+            [
+                'name_en' => 'Basic Project Information',
+                'name_ar' => 'المعلومات الأساسية للمشروع',
+                'description_en' => 'Enter project features (anchor), project status, completion date, situation, guarantees and commission, construction date, number of units, unit area, price, facade, finishing type, master plan, company logo, and facade logo.',
+                'description_ar' => 'أدخل المميزات (المرسى)، حالة المشروع، تاريخ الانتهاء، وضع المشروع، الضمانات والعمولة، تاريخ البناء، عدد الوحدات، مساحة الوحدة، السعر، الواجهة، نوع التشطيب، المخطط الرئيسي، شعار الشركة، وشعار الواجهة.',
+            ],
+            [
+                'name_en' => 'Property Details (Project)',
+                'name_ar' => 'تفاصيل العقار',
+                'description_en' => 'Enter property name, address, location, description, property type, floors, rooms, bathrooms, halls, kitchens, guarantees, commission, AC type, status, rental value, unit image, addition date, city, neighborhood, street, and property number.',
+                'description_ar' => 'أدخل اسم العقار، العنوان، الموقع، وصف العقار، نوع العقار، عدد الطوابق، الغرف، دورات المياه، الصالات، المطابخ، الضمانات، العمولة، نوع التكييف، الحالة، القيمة الإيجارية، صورة الوحدة، تاريخ الإضافة، المدينة، الحي، الشارع، ورقم العقار.',
+            ],
+        ];
+    }
+
+    /**
+     * Fixed 3 screens for category id 6 (Property for Rent Daily-Monthly - rental flow UI).
+     */
+    private function screensForCategorySix(): array
+    {
+        return [
+            [
+                'name_en' => 'Basic Property Information',
+                'name_ar' => 'المعلومات الأساسية للعقار',
+                'description_en' => 'Enter purpose, category, property type, area, and nearby landmarks.',
+                'description_ar' => 'أدخل الغرض، الصنف، نوع العقار، المساحة، والمعالم القريبة.',
+            ],
+            [
+                'name_en' => 'Property Details',
+                'name_ar' => 'تفاصيل العقار',
+                'description_en' => 'Enter rooms, halls, bathrooms, features, facilities, and property photos.',
+                'description_ar' => 'أدخل الغرف، الصالات، دورات المياه، المميزات، المرافق، وصور العقار.',
+            ],
+            [
+                'name_en' => 'Property Price',
+                'name_ar' => 'سعر العقار',
+                'description_en' => 'Enter financial matters, cancellation period, daily/weekly/monthly prices, and deposit.',
+                'description_ar' => 'أدخل الأمور المالية، مدة الإلغاء، أسعار اليومي/الأسبوعي/الشهري، ومبلغ التأمين.',
+            ],
+        ];
+    }
+
+    /**
+     * Fixed 2 screens for category id 7 (Cars - add car ad UI).
+     */
+    private function screensForCategorySeven(): array
+    {
+        return [
+            [
+                'name_en' => 'Basic Car Information',
+                'name_ar' => 'البيانات الأساسية للسيارة',
+                'description_en' => 'Enter car type, category, color, country of origin, odometer, condition, and photos.',
+                'description_ar' => 'أدخل نوع السيارة، الفئة، اللون، البلد المنشأ، عداد الأمتار، الحالة، والصور.',
+            ],
+            [
+                'name_en' => 'Car Details',
+                'name_ar' => 'تفاصيل السيارة',
+                'description_en' => 'Enter engine, horsepower, consumption, drive type, cooling, fuel type, doors, extras, and warranty.',
+                'description_ar' => 'أدخل المحرك، القوة الحصانية، الاستهلاك، نوع الدفع، التبريد، نوع الوقود، الأبواب، الإضافات، والضمان.',
+            ],
+        ];
+    }
+
+    /**
+     * Fixed 1 screen for category id 3 (Car Plates).
+     */
+    private function screensForCategoryThree(): array
+    {
+        return [
+            [
+                'name_en' => 'Basic Data for Car Plates',
+                'name_ar' => 'البيانات الأساسية للوحات السيارات',
+                'description_en' => 'Enter plate type, features, status, and plate number.',
+                'description_ar' => 'أدخل نوع اللوحة، المميزات، الحالة، ورقم اللوحة.',
+            ],
+        ];
+    }
+
+    /**
+     * Fixed 1 screen for category id 4 (Furniture & Accessories).
+     */
+    private function screensForCategoryFour(): array
+    {
+        return [
+            [
+                'name_en' => 'Basic Data for Furniture and Accessories',
+                'name_ar' => 'البيانات الأساسية للأثاث و كماليات',
+                'description_en' => 'Enter furniture type, style, color, material, dimensions, condition, warranty, and photos.',
+                'description_ar' => 'أدخل نوع الأثاث، النمط، اللون، الخامة، الأبعاد، الحالة، الضمان، والصور.',
+            ],
+        ];
+    }
+
+    /**
+     * Fixed 1 screen for category id 8 (Devices & Equipment).
+     */
+    private function screensForCategoryEight(): array
+    {
+        return [
+            [
+                'name_en' => 'Basic Data for Devices and Equipment',
+                'name_ar' => 'البيانات الأساسية للأجهزة والمعدات',
+                'description_en' => 'Enter device type, brand, storage capacity, RAM, size (inches), color, condition, warranty period, and photos/video (min 4 images).',
+                'description_ar' => 'أدخل الجهاز (نوع الجهاز)، الماركة، سعة التخزين، الرام، الحجم بالبوصة، اللون، الحالة، مدة الضمان، وصور وفيديو الإلكترونيات (4 صور على الأقل).',
+            ],
+        ];
+    }
+
+    /**
      * Run the database seeds.
      */
     public function run(): void
@@ -204,11 +341,135 @@ class ScreenSeeder extends Seeder
 
         $screensByCategory = $this->screensByCategory();
 
+        // Category id 1: exactly 2 screens (from property listing UI)
+        $categoryOne = Category::find(1);
+        if ($categoryOne) {
+            Screen::where('category_id', 1)->delete();
+            foreach ($this->screensForCategoryOne() as $screenData) {
+                Screen::create([
+                    'category_id' => 1,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Category id 5: same 2 screens as category 1 (Property for Sale - same property listing UI)
+        $categoryFive = Category::find(5);
+        if ($categoryFive) {
+            Screen::where('category_id', 5)->delete();
+            foreach ($this->screensForCategoryOne() as $screenData) {
+                Screen::create([
+                    'category_id' => 5,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Category id 2: exactly 2 screens (from project listing UI)
+        $categoryTwo = Category::find(2);
+        if ($categoryTwo) {
+            Screen::where('category_id', 2)->delete();
+            foreach ($this->screensForCategoryTwo() as $screenData) {
+                Screen::create([
+                    'category_id' => 2,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Category id 3: exactly 1 screen (Car Plates)
+        $categoryThree = Category::find(3);
+        if ($categoryThree) {
+            Screen::where('category_id', 3)->delete();
+            foreach ($this->screensForCategoryThree() as $screenData) {
+                Screen::create([
+                    'category_id' => 3,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Category id 4: exactly 1 screen (Furniture & Accessories)
+        $categoryFour = Category::find(4);
+        if ($categoryFour) {
+            Screen::where('category_id', 4)->delete();
+            foreach ($this->screensForCategoryFour() as $screenData) {
+                Screen::create([
+                    'category_id' => 4,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Category id 6: exactly 3 screens (daily/monthly rental flow UI)
+        $categorySix = Category::find(6);
+        if ($categorySix) {
+            Screen::where('category_id', 6)->delete();
+            foreach ($this->screensForCategorySix() as $screenData) {
+                Screen::create([
+                    'category_id' => 6,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Category id 7: exactly 2 screens (Cars - add car ad UI)
+        $categorySeven = Category::find(7);
+        if ($categorySeven) {
+            Screen::where('category_id', 7)->delete();
+            foreach ($this->screensForCategorySeven() as $screenData) {
+                Screen::create([
+                    'category_id' => 7,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Category id 8: exactly 1 screen (Devices & Equipment)
+        $categoryEight = Category::find(8);
+        if ($categoryEight) {
+            Screen::where('category_id', 8)->delete();
+            foreach ($this->screensForCategoryEight() as $screenData) {
+                Screen::create([
+                    'category_id' => 8,
+                    'name_en' => $screenData['name_en'],
+                    'name_ar' => $screenData['name_ar'],
+                    'description_en' => $screenData['description_en'],
+                    'description_ar' => $screenData['description_ar'],
+                ]);
+            }
+        }
+
+        // Other categories: use existing screen map
         foreach ($categories as $category) {
+            if (in_array($category->id, [1, 2, 3, 4, 5, 6, 7, 8], true)) {
+                continue;
+            }
+
             $screens = $screensByCategory[$category->name_en] ?? null;
 
             if (empty($screens)) {
-                // Fallback: one generic screen per category if name_en not in map
                 $screens = [
                     [
                         'name_en' => $category->name_en . ' - Main',

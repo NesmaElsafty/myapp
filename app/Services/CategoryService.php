@@ -28,8 +28,9 @@ class CategoryService
             'name_en' => $data['name_en'],
             'name_ar' => $data['name_ar'],
             'is_active' => $data['is_active'] ?? true,
+            'types' => $data['types'] ?? null,
         ]);
-        
+
         return $category;
     }
 
@@ -39,11 +40,15 @@ class CategoryService
         if (!$category) {
             throw ValidationException::withMessages(['category' => ['Category not found']]);
         }
-        $category->update([
-            'name_en' => $data['name_en'],
-            'name_ar' => $data['name_ar'],
+        $update = [
+            'name_en' => $data['name_en'] ?? $category->name_en,
+            'name_ar' => $data['name_ar'] ?? $category->name_ar,
             'is_active' => $data['is_active'] ?? $category->is_active,
-        ]);
+        ];
+        if (array_key_exists('types', $data)) {
+            $update['types'] = $data['types'];
+        }
+        $category->update($update);
         return $category;
     }
 

@@ -15,6 +15,7 @@ class Category extends Model implements HasMedia
     {
         return [
             'is_active' => 'boolean',
+            'types' => 'array',
         ];
     }
 

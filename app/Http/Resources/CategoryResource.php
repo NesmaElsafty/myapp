@@ -19,12 +19,22 @@ class CategoryResource extends JsonResource
 
         // string replace public/ from the url
         $image = $this->getMedia('image')->first() ? str_replace('public/', '', $this->getMedia('image')->first()->getUrl()) : null;
+
+        $types = $this->types;
+        if (is_array($types)) {
+            $types = array_map(function ($item) use ($lang) {
+                $label = ($lang === 'ar' && !empty($item['label_ar'])) ? $item['label_ar'] : ($item['label_en'] ?? null);
+                return array_merge($item, ['label' => $label]);
+            }, $types);
+        }
+
         return [
             'id' => $this->id,
             'name' => $name,
             'name_en' => $this->name_en,
             'name_ar' => $this->name_ar,
             'is_active' => $this->is_active,
+            'types' => $types,
             'image' => $image,
             'screens' => ScreenResource::collection($this->screens),
             'created_at' => $this->created_at,

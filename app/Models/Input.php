@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * Options JSON structure (one value per option, same for en/ar; labels per language):
  * - select/radio: { "choices": [ { "value": "male", "label_en": "Male", "label_ar": "ذكر" }, ... ] }
  * - checkbox: { "label_en": "I agree", "label_ar": "أوافق" }
+ * - repeatable: { "fields": [ { "key": "name", "label_en", "label_ar", "placeholder_en", "placeholder_ar", "type": "text" }, ... ], "add_label_en", "add_label_ar" }
+ *   Value stored: array of objects, e.g. [ {"name": "Mosque", "distance": "500m"}, ... ]
  */
 class Input extends Model
 {
