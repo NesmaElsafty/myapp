@@ -1,0 +1,5353 @@
+{
+  "info": {
+    "_postman_id": "b19a7b8f-7b40-4101-9b8c-8c50b8e1c0b7",
+    "name": "Admin - Routes Aligned",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32224145",
+    "_collection_link": "https://go.postman.co/collection/32224145-b19a7b8f-7b40-4101-9b8c-8c50b8e1c0b7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Register Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('admin_token', jsonData.token);",
+                  "    pm.environment.set('admin_id', jsonData.user.id);",
+                  "    pm.environment.set('admin_token', jsonData.token);",
+                  "",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"f_name\": \"Admin\",\n    \"l_name\": \"User\",\n    \"email\": \"admin@example.com\",\n    \"phone\": \"1234567891\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"type\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('admin_token', jsonData.token);",
+                  "    pm.environment.set('admin_id', jsonData.user.id);",
+                  "    pm.environment.set('admin_token', jsonData.token);",
+                  "",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "f_name",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "fb189d4f-f140-4336-a2e6-44d49c7e6b62",
+                  "disabled": true
+                },
+                {
+                  "key": "l_name",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "3ab02c89-a86b-4770-b4d9-a03bb618e244",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "c5e5eb9d-caec-4786-935e-e8e1953a4c12",
+                  "disabled": true
+                },
+                {
+                  "key": "phone",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "24f91a20-9525-47eb-b68d-5243ffcae730",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "b3ac938b-0938-44d7-88ba-3d0afcccd821",
+                  "src": "/C:/Users/IT/Pictures/2d3d0121bdf5ca28ee2e9a5aa4f90823.jpg"
+                },
+                {
+                  "key": "language",
+                  "value": "",
+                  "description": "en,ar",
+                  "type": "text",
+                  "uuid": "3a18ab63-185d-4b97-bc9e-8ccb4e265ab9"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/updateProfile",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "updateProfile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('admin_token', jsonData.token);",
+                  "    pm.environment.set('admin_id', jsonData.user.id);",
+                  "    pm.environment.set('admin_token', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"admin@example.com\",\n    \"password\": \"123456\",\n    \"type\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "change password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "old_password",
+                  "value": "123456",
+                  "type": "text",
+                  "uuid": "17cd5dc2-b626-44b1-b2e2-5e817f399068"
+                },
+                {
+                  "key": "new_password",
+                  "value": "123456",
+                  "type": "text",
+                  "uuid": "04af779f-c3cb-4649-8bb2-e32561ba63d6"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/changePassword",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "changePassword"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "markAsRead",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "id",
+                  "value": "127",
+                  "type": "text",
+                  "uuid": "362a678b-feaf-4e3b-8ff2-fd313df92f02"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/markAsRead",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "markAsRead"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "index",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users?type=admin&role_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "admin",
+                  "description": "user,admin,individual,origin"
+                },
+                {
+                  "key": "search",
+                  "value": "السلطان",
+                  "description": "search by: f_name, l_name, phone, email, location",
+                  "disabled": true
+                },
+                {
+                  "key": "sorted_by",
+                  "value": "newest",
+                  "description": "name,newest,oldest,all",
+                  "disabled": true
+                },
+                {
+                  "key": "is_active",
+                  "value": "0",
+                  "description": "0,1,all",
+                  "disabled": true
+                },
+                {
+                  "key": "role_id",
+                  "value": null,
+                  "description": "role_id, all"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users/107",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "107"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"f_name\" : \"محمد\", \r\n    \"l_name\": \"محمود\",\r\n    \"phone\": \"+966123456799\",\r\n    \"email\": \"user@exam.com\",\r\n    \"location\"  : \"الرياض\",\r\n    \"is_active\": 1,\r\n    \"type\" : \"user\" // admin, user (required)\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "السلطان",
+                  "description": "search by: f_name, l_name, phone, email, location",
+                  "disabled": true
+                },
+                {
+                  "key": "sorted_by",
+                  "value": "newest",
+                  "description": "name,newest,oldest,all",
+                  "disabled": true
+                },
+                {
+                  "key": "is_active",
+                  "value": "0",
+                  "description": "0,1,all",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"f_name\" : \"محمد\", \r\n    \"l_name\": \"محمود\",\r\n    \"phone\": \"+966123456799\",\r\n    \"email\": \"user@exam.com\",\r\n    \"location\"  : \"الرياض\",\r\n    \"is_active\": 1,\r\n    \"_method\" : \"PUT\",\r\n    \"role_id\" : 1, // 1=admin \r\n    \"type\" : \"admin\" // admin, user (required)\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users/45",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "45"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"f_name\" : \"محمد\", \r\n    \"l_name\": \"محمود\",\r\n    \"phone\": \"+966123456799\",\r\n    \"email\": \"user@exam.com\",\r\n    \"location\"  : \"الرياض\",\r\n    \"is_active\": 1,\r\n    \"_method\" : \"PUT\",\r\n    \"type\" : \"user\" // admin, user (required)\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/users/44",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "44"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "bulkActions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"action\" : \"unblock\", //block,unblock,toggleActive,export\r\n    \"user_ids\" : [24,27],\r\n    \"type\" : \"user\"// user,admin,individual,origin\r\n\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/UserbulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "UserbulkActions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "blocklist",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/blocklist?user_type=user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "blocklist"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "السلطان",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "user_type",
+                  "value": "user",
+                  "description": "user,admin,individual,origin"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "roles & permissions",
+      "item": [
+        {
+          "name": "index",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/roles?search=all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "roles"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "all",
+                  "description": "will search into: name, desription"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "all permissions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "lang",
+                "value": "en",
+                "description": "en,ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/permissions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "permissions"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "السلطان",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "show",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/roles/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "roles",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "store",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name_en",
+                  "value": "test",
+                  "type": "text",
+                  "uuid": "b17184a7-8301-4ffe-bfc7-3f4f149a98e2"
+                },
+                {
+                  "key": "name_ar",
+                  "value": "تيست",
+                  "type": "text",
+                  "uuid": "abeecdd4-9be8-44c4-8a38-dfd08ed1357a"
+                },
+                {
+                  "key": "description_en",
+                  "value": "jakljsk",
+                  "type": "text",
+                  "uuid": "7de3d357-8837-4322-87e9-e7234e01ea4e"
+                },
+                {
+                  "key": "description_ar",
+                  "value": "سشهتءا",
+                  "type": "text",
+                  "uuid": "f89c3f3e-54f7-4d3f-b10b-e62c19360705"
+                },
+                {
+                  "key": "permissions[]",
+                  "value": "user.read",
+                  "type": "text",
+                  "uuid": "3e5cacd3-23f6-4f3d-a44f-482b9e0a2f97"
+                },
+                {
+                  "key": "permissions[]",
+                  "value": "user.create",
+                  "type": "text",
+                  "uuid": "55c5596c-724a-426a-9a14-3d75ad837e2f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/roles",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "roles"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name_en",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "b17184a7-8301-4ffe-bfc7-3f4f149a98e2",
+                  "disabled": true
+                },
+                {
+                  "key": "name_ar",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "abeecdd4-9be8-44c4-8a38-dfd08ed1357a",
+                  "disabled": true
+                },
+                {
+                  "key": "description_en",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "7de3d357-8837-4322-87e9-e7234e01ea4e",
+                  "disabled": true
+                },
+                {
+                  "key": "description_ar",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "f89c3f3e-54f7-4d3f-b10b-e62c19360705",
+                  "disabled": true
+                },
+                {
+                  "key": "permissions[]",
+                  "value": "user.update",
+                  "type": "text",
+                  "uuid": "3e5cacd3-23f6-4f3d-a44f-482b9e0a2f97",
+                  "description": "permission's name"
+                },
+                {
+                  "key": "_method",
+                  "value": "PUT",
+                  "type": "text",
+                  "uuid": "d2772e0f-a698-43f6-ae09-9978ada51806"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/roles/3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "roles",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/roles/3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "roles",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name_en",
+                  "value": "test",
+                  "type": "text",
+                  "uuid": "b17184a7-8301-4ffe-bfc7-3f4f149a98e2"
+                },
+                {
+                  "key": "name_ar",
+                  "value": "تيست",
+                  "type": "text",
+                  "uuid": "abeecdd4-9be8-44c4-8a38-dfd08ed1357a"
+                },
+                {
+                  "key": "description_en",
+                  "value": "jakljsk",
+                  "type": "text",
+                  "uuid": "7de3d357-8837-4322-87e9-e7234e01ea4e"
+                },
+                {
+                  "key": "description_ar",
+                  "value": "سشهتءا",
+                  "type": "text",
+                  "uuid": "f89c3f3e-54f7-4d3f-b10b-e62c19360705"
+                },
+                {
+                  "key": "permissions[]",
+                  "value": "user.read",
+                  "type": "text",
+                  "uuid": "3e5cacd3-23f6-4f3d-a44f-482b9e0a2f97"
+                },
+                {
+                  "key": "permissions[]",
+                  "value": "user.create",
+                  "type": "text",
+                  "uuid": "55c5596c-724a-426a-9a14-3d75ad837e2f"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/exportRoles",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "exportRoles"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Category was created\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.environment.set('category_id', jsonData.data.id);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name_en",
+                  "value": "elictoronics",
+                  "type": "text",
+                  "uuid": "d7955ee7-3707-47dc-96b4-00fc686897d2"
+                },
+                {
+                  "key": "name_ar",
+                  "value": "الكترو",
+                  "type": "text",
+                  "uuid": "0e255c1f-1b8c-4126-83fb-e426cc908974"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "76a14583-f1a7-4379-9381-e80c323c96b1",
+                  "src": "/C:/Users/IT/OneDrive/Pictures/9508a7d91017ef276ce8ca8d24904a9d.jpg"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "50236eb6-69c4-4034-a0e6-b08e7033beb6",
+                  "disabled": true
+                },
+                {
+                  "key": "screens[0][name_en]",
+                  "value": "screen 1",
+                  "type": "text",
+                  "uuid": "d2d391c7-bf4f-4239-9ec0-753aca3dffc7"
+                },
+                {
+                  "key": "screens[0][name_ar]",
+                  "value": "سكرين 1",
+                  "type": "text",
+                  "uuid": "7e63b297-5e69-4f1d-8aab-1d048eefecfa"
+                },
+                {
+                  "key": "screens[0][description_en]",
+                  "value": "description 1",
+                  "type": "text",
+                  "uuid": "471169e8-c8de-471c-98a5-25395932aec7"
+                },
+                {
+                  "key": "screens[0][description_ar]",
+                  "value": "وصف 1",
+                  "type": "text",
+                  "uuid": "4dd83dfa-1509-48f1-b464-12e96d28d4e8"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "categories"
+              ]
+            },
+            "description": "Create a new category. Required: name_en, name_ar."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Category was updated\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name_en",
+                  "value": "updated",
+                  "type": "text",
+                  "uuid": "16babe0f-4522-4a1a-a591-9471e41f9210"
+                },
+                {
+                  "key": "name_ar",
+                  "value": "ابديتد",
+                  "type": "text",
+                  "uuid": "8c820129-20cc-4f17-b47f-aaff0ded8e74"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text",
+                  "uuid": "1029ecb9-4eb9-4001-bb71-af882bf129e1",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "a78a6e2d-bca8-4081-aba5-ba0975b065ce",
+                  "src": "/C:/Users/IT/OneDrive/Pictures/9508a7d91017ef276ce8ca8d24904a9d.jpg"
+                },
+                {
+                  "key": "_method",
+                  "value": "PUT",
+                  "type": "text",
+                  "uuid": "0de447af-2a77-48f4-965d-a37a45bd9561"
+                },
+                {
+                  "key": "screens[0][name_en]",
+                  "value": "screen 2",
+                  "type": "text",
+                  "uuid": "0501167f-0ec5-4e77-8e7c-14bf9ca1a846"
+                },
+                {
+                  "key": "screens[0][name_ar]",
+                  "value": "سكرين 2",
+                  "type": "text",
+                  "uuid": "6dcda882-90c2-4ad0-8866-c64e0bb9a857"
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "d1319848-1824-4ec1-b4ce-0722f7eebefc",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/categories/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "categories",
+                "{{category_id}}"
+              ]
+            },
+            "description": "Update an existing category. All fields optional."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/categories/{{category_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "categories",
+                "{{category_id}}"
+              ]
+            },
+            "description": "Delete a category by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "cities",
+      "item": [
+        {
+          "name": "create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('city_id', jsonData.data.id);",
+                  "}",
+                  "",
+                  "pm.test(\"Response has city data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('name_en');",
+                  "    pm.expect(jsonData.data).to.have.property('name_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name_en",
+                  "value": "test",
+                  "type": "text",
+                  "uuid": "6b942e15-8718-4fbe-a6f8-c9a10cd2db1f"
+                },
+                {
+                  "key": "name_ar",
+                  "value": "تيست",
+                  "type": "text",
+                  "uuid": "c5694cbb-b0fb-4677-9029-83b7b6029472"
+                },
+                {
+                  "key": "regions[0][name_en]",
+                  "value": "test",
+                  "type": "text",
+                  "uuid": "ffe5289d-09ae-4dd2-a448-de05cc594bf2"
+                },
+                {
+                  "key": "regions[0][name_ar]",
+                  "value": "تيست",
+                  "type": "text",
+                  "uuid": "66e08252-858b-4411-bc70-ce652287f9c5"
+                },
+                {
+                  "key": "regions[0][district_en]",
+                  "value": "test",
+                  "type": "text",
+                  "uuid": "9570c3e0-8e63-4589-a904-5470c78bccd9"
+                },
+                {
+                  "key": "regions[0][district_ar]",
+                  "value": "تيست",
+                  "type": "text",
+                  "uuid": "1cc8297a-3605-4557-8aa1-29d89cca1224"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/cities",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "cities"
+              ]
+            },
+            "description": "Create a new city. Requires admin authentication. Automatically saves city_id to environment."
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated city data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('name_en');",
+                  "    pm.expect(jsonData.data).to.have.property('name_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name_en\": \"Riyadh Updated\",\n    \"name_ar\": \"الرياض المحدثة\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/cities/{{city_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "cities",
+                "{{city_id}}"
+              ]
+            },
+            "description": "Update a city. Requires admin authentication. Note: Set city_id variable from Create City response."
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/cities/{{city_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "cities",
+                "{{city_id}}"
+              ]
+            },
+            "description": "Delete a city. Requires admin authentication. Note: Cannot delete city if it has regions. Set city_id variable from Create City response."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Regions",
+      "item": [
+        {
+          "name": "Create Region",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/regions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "regions"
+              ]
+            },
+            "description": "Admin. Create a region.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "city_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "name_en",
+                  "value": "Downtown",
+                  "type": "text"
+                },
+                {
+                  "key": "name_ar",
+                  "value": "وسط البلد",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Region",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/regions/{{region_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "regions",
+                "{{region_id}}"
+              ]
+            },
+            "description": "Admin. Update a region by ID.",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "city_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "name_en",
+                  "value": "Downtown - Updated",
+                  "type": "text"
+                },
+                {
+                  "key": "name_ar",
+                  "value": "وسط البلد - تعديل",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Region",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/regions/{{region_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "regions",
+                "{{region_id}}"
+              ]
+            },
+            "description": "Admin. Delete a region by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Ads",
+      "item": [
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('ad_id', jsonData.data.id);",
+                  "}",
+                  "",
+                  "pm.test(\"Response has ad data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('title_en');",
+                  "    pm.expect(jsonData.data).to.have.property('title_ar');",
+                  "    pm.expect(jsonData.data).to.have.property('description_en');",
+                  "    pm.expect(jsonData.data).to.have.property('description_ar');",
+                  "    pm.expect(jsonData.data).to.have.property('type');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title_en",
+                  "value": "Summer Sale",
+                  "type": "text"
+                },
+                {
+                  "key": "title_ar",
+                  "value": "تخفيضات الصيف",
+                  "type": "text"
+                },
+                {
+                  "key": "description_en",
+                  "value": "Get amazing discounts on all products this summer!",
+                  "type": "text"
+                },
+                {
+                  "key": "description_ar",
+                  "value": "احصل على خصومات رائعة على جميع المنتجات هذا الصيف!",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "btn_text_en",
+                  "value": "Shop Now",
+                  "type": "text"
+                },
+                {
+                  "key": "btn_text_ar",
+                  "value": "تسوق الآن",
+                  "type": "text"
+                },
+                {
+                  "key": "btn_link",
+                  "value": "https://example.com/shop",
+                  "type": "text"
+                },
+                {
+                  "key": "btn_is_active",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "type",
+                  "value": "promotion",
+                  "type": "text",
+                  "description": "promotion or interface"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "description": "Image file (jpeg, png, jpg, gif, webp, max 5MB)",
+                  "src": "/C:/Users/IT/Pictures/9508a7d91017ef276ce8ca8d24904a9d.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/ads",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "ads"
+              ]
+            },
+            "description": "Create a new ad. Requires admin authentication. Automatically saves ad_id to environment. Note: Image file is required. Select an image file in the form-data."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated ad data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('title_en');",
+                  "    pm.expect(jsonData.data).to.have.property('title_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title_en",
+                  "value": "Summer Sale Updated",
+                  "type": "text"
+                },
+                {
+                  "key": "title_ar",
+                  "value": "تخفيضات الصيف المحدثة",
+                  "type": "text"
+                },
+                {
+                  "key": "description_en",
+                  "value": "Updated description",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "description_ar",
+                  "value": "الوصف المحدث",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "is_active",
+                  "value": "false",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "btn_text_en",
+                  "value": "Buy Now",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "btn_text_ar",
+                  "value": "اشتري الآن",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "btn_link",
+                  "value": "https://example.com/buy",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "btn_is_active",
+                  "value": "false",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "interface",
+                  "type": "text",
+                  "description": "promotion or interface",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "description": "Image file (optional, only if updating image)",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "_method",
+                  "value": "PUT",
+                  "type": "text",
+                  "uuid": "1c52d8a7-38cb-491a-9cb1-ff9509392472"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/ads/{{ad_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "ads",
+                "{{ad_id}}"
+              ]
+            },
+            "description": "Update an ad. Requires admin authentication. All fields are optional. Note: Set ad_id variable from Create Ad response. Enable the fields you want to update. Image is optional - only include if you want to update the image."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/ads/{{ad_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "ads",
+                "{{ad_id}}"
+              ]
+            },
+            "description": "Delete an ad. Requires admin authentication. Note: Set ad_id variable from Create Ad response."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Blogs",
+      "item": [
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('blog_id', jsonData.data.id);",
+                  "}",
+                  "",
+                  "pm.test(\"Response has blog data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('title_en');",
+                  "    pm.expect(jsonData.data).to.have.property('title_ar');",
+                  "    pm.expect(jsonData.data).to.have.property('description_en');",
+                  "    pm.expect(jsonData.data).to.have.property('description_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title_en",
+                  "value": "Introduction to Laravel",
+                  "type": "text"
+                },
+                {
+                  "key": "title_ar",
+                  "value": "مقدمة إلى Laravel",
+                  "type": "text"
+                },
+                {
+                  "key": "description_en",
+                  "value": "Laravel is a powerful PHP framework that makes web development elegant and enjoyable. In this blog post, we'll explore the fundamentals of Laravel and how it can help you build robust web applications.",
+                  "type": "text"
+                },
+                {
+                  "key": "description_ar",
+                  "value": "Laravel هو إطار عمل PHP قوي يجعل تطوير الويب أنيقًا وممتعًا. في منشور المدونة هذا، سوف نستكشف أساسيات Laravel وكيف يمكن أن يساعدك في بناء تطبيقات ويب قوية.",
+                  "type": "text"
+                },
+                {
+                  "key": "is_active",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "description": "Image file (jpeg, png, jpg, gif, webp, max 5MB)",
+                  "src": "/C:/Users/IT/Pictures/d70ad07e08e071b134c47e69fbd98de0.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/blogs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "blogs"
+              ]
+            },
+            "description": "Create a new blog. Requires admin authentication. Automatically saves blog_id to environment. Note: Image file is required. Select an image file in the form-data."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated blog data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('title_en');",
+                  "    pm.expect(jsonData.data).to.have.property('title_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title_en",
+                  "value": "Advanced Laravel Techniques..",
+                  "type": "text"
+                },
+                {
+                  "key": "title_ar",
+                  "value": "تقنيات Laravel المتقدمة..",
+                  "type": "text"
+                },
+                {
+                  "key": "description_en",
+                  "value": "Updated description with advanced techniques and best practices.",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "description_ar",
+                  "value": "الوصف المحدث مع التقنيات المتقدمة وأفضل الممارسات.",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "is_active",
+                  "value": "false",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "description": "Image file (optional, only if updating image)",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "_method",
+                  "value": "PUT",
+                  "type": "text",
+                  "uuid": "dc2b3252-f97e-46fa-9174-ec253e11c775"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/blogs/{{blog_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "blogs",
+                "{{blog_id}}"
+              ]
+            },
+            "description": "Update a blog. Requires admin authentication. All fields are optional. Note: Set blog_id variable from Create Blog response. Enable the fields you want to update. Image is optional - only include if you want to update the image."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/blogs/{{blog_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "blogs",
+                "{{blog_id}}"
+              ]
+            },
+            "description": "Delete a blog. Requires admin authentication. Note: Set blog_id variable from Create Blog response."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FAQs",
+      "item": [
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('faq_id', jsonData.data.id);",
+                  "}",
+                  "",
+                  "pm.test(\"Response has FAQ data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('question_en');",
+                  "    pm.expect(jsonData.data).to.have.property('question_ar');",
+                  "    pm.expect(jsonData.data).to.have.property('answer_en');",
+                  "    pm.expect(jsonData.data).to.have.property('answer_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"question_en\": \"How do I create an account?\",\n    \"question_ar\": \"كيف يمكنني إنشاء حساب؟\",\n    \"answer_en\": \"To create an account, click on the Register button and fill in your details.\",\n    \"answer_ar\": \"لإنشاء حساب، انقر على زر التسجيل واملأ بياناتك.\",\n    \"segment\": \"user\",\n    \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/faqs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "faqs"
+              ]
+            },
+            "description": "Create a new FAQ. Requires admin authentication. Automatically saves faq_id to environment."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated FAQ data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('question_en');",
+                  "    pm.expect(jsonData.data).to.have.property('question_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"question_en\": \"How do I update my account?...\",\n    \"question_ar\": \"كيف يمكنني تحديث حسابي؟...\",\n    \"answer_en\": \"To update your account, go to your profile settings and make the necessary changes.\",\n    \"answer_ar\": \"لتحديث حسابك، انتقل إلى إعدادات ملفك الشخصي وقم بإجراء التغييرات اللازمة.\",\n    \"segment\": \"user\",\n    \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/faqs/{{faq_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "faqs",
+                "{{faq_id}}"
+              ]
+            },
+            "description": "Update a FAQ. Requires admin authentication. All fields are optional. Note: Set faq_id variable from Create FAQ response."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/faqs/{{faq_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "faqs",
+                "{{faq_id}}"
+              ]
+            },
+            "description": "Delete a FAQ. Requires admin authentication. Note: Set faq_id variable from Create FAQ response."
+          },
+          "response": []
+        },
+        {
+          "name": "bulkActions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"faq_ids\" : [14,13,12],\n    \"action\": \"delete\" // toggleActive,delete,export\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/faqsBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "faqsBulkActions"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "terms",
+      "item": [
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.environment.set('term_id', jsonData.data.id);",
+                  "}",
+                  "",
+                  "pm.test(\"Response has Term data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('title_en');",
+                  "    pm.expect(jsonData.data).to.have.property('title_ar');",
+                  "    pm.expect(jsonData.data).to.have.property('content_en');",
+                  "    pm.expect(jsonData.data).to.have.property('content_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "",
+                "description": "en,ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title_en\": \"Terms and Conditions\",\n    \"title_ar\": \"الشروط والأحكام\",\n    \"content_en\": \"These terms and conditions outline the rules and regulations for the use of our service.\",\n    \"content_ar\": \"تحدد هذه الشروط والأحكام القواعد واللوائح لاستخدام خدمتنا.\",\n    \"type\": \"terms\", // can be \"terms\" or \"privacy\"\n    \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/terms",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "terms"
+              ]
+            },
+            "description": "Create a new Term. Requires admin authentication. Automatically saves term_id to environment."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated Term data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('title_en');",
+                  "    pm.expect(jsonData.data).to.have.property('title_ar');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title_en\": \"Updated Terms and Conditions\",\n    \"title_ar\": \"الشروط والأحكام المحدثة\",\n    \"content_en\": \"These updated terms and conditions outline the rules and regulations for the use of our service.\",\n    \"content_ar\": \"تحدد هذه الشروط والأحكام المحدثة القواعد واللوائح لاستخدام خدمتنا.\",\n    \"type\": \"terms\", //can be either \"terms\" or \"privacy\"\n    \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/terms/{{term_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "terms",
+                "{{term_id}}"
+              ]
+            },
+            "description": "Update a Term. Requires admin authentication. All fields are optional. Note: Set term_id variable from Create Term response."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/terms/{{term_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "terms",
+                "{{term_id}}"
+              ]
+            },
+            "description": "Delete a Term. Requires admin authentication. Note: Set term_id variable from Create Term response."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"toggleActive\",\n    \"term_ids\": [1, 2, 3]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/termsBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "termsBulkActions"
+              ]
+            },
+            "description": "Perform bulk actions on Terms. Actions: toggleActive, delete, export. If term_ids is empty, applies to all Terms."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "support messages",
+      "item": [
+        {
+          "name": "Get All Support Tickets",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has Supports data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData).to.have.property('pagination');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/supports",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "supports"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by name, email, phone, or message",
+                  "disabled": true
+                },
+                {
+                  "key": "is_replied",
+                  "value": "",
+                  "description": "Filter by replied status: true or false",
+                  "disabled": true
+                },
+                {
+                  "key": "sorted_by",
+                  "value": "newest",
+                  "description": "Sort by: newest, oldest, all, name",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all support tickets with pagination. Requires admin authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Support Ticket by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has Support data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.expect(jsonData.data).to.have.property('name');",
+                  "    pm.expect(jsonData.data).to.have.property('email');",
+                  "    pm.expect(jsonData.data).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/supports/{{support_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "supports",
+                "{{support_id}}"
+              ]
+            },
+            "description": "Get a specific support ticket by ID. Requires admin authentication. Note: Set support_id variable from Create Support Ticket response."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Support Ticket",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated Support data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@example.com\",\n    \"phone\": \"+9876543210\",\n    \"message\": \"Updated message\",\n    \"is_replied\": true,\n    \"reply_message\": \"Thank you for contacting us. We have resolved your issue.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/supports/{{support_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "supports",
+                "{{support_id}}"
+              ]
+            },
+            "description": "Update a support ticket. Requires admin authentication. All fields are optional. Note: Set support_id variable from Create Support Ticket response."
+          },
+          "response": []
+        },
+        {
+          "name": "Reply to Support Ticket",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has replied Support data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('is_replied', true);",
+                  "    pm.expect(jsonData.data).to.have.property('reply_message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reply_message\": \"Thank you for contacting us. We have resolved your issue. If you need any further assistance, please don't hesitate to contact us again.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/supports/{{support_id}}/reply",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "supports",
+                "{{support_id}}",
+                "reply"
+              ]
+            },
+            "description": "Reply to a support ticket. This automatically sets is_replied to true. Requires admin authentication. Note: Set support_id variable from Create Support Ticket response."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Support Ticket",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/supports/{{support_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "supports",
+                "{{support_id}}"
+              ]
+            },
+            "description": "Delete a support ticket. Requires admin authentication. Note: Set support_id variable from Create Support Ticket response."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"export\", // export, delete\n    \"support_ids\": [1, 2, 3]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/supportsBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "supportsBulkActions"
+              ]
+            },
+            "description": "Perform bulk actions on Support tickets. Actions: toggleReplied, delete, export. If support_ids is empty, applies to all Support tickets."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inquiry Messages",
+      "item": [
+        {
+          "name": "Get All Inquiries",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has Inquiries data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData).to.have.property('pagination');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/inquiries?sorted_by=newest",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inquiries"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by name, email, phone, or message",
+                  "disabled": true
+                },
+                {
+                  "key": "account_type",
+                  "value": "",
+                  "description": "Filter by account type: user, individual, origin, or all",
+                  "disabled": true
+                },
+                {
+                  "key": "sorted_by",
+                  "value": "newest",
+                  "description": "Sort by: newest, oldest, all, name"
+                }
+              ]
+            },
+            "description": "Get all inquiries with pagination. Requires admin authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Inquiry by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has Inquiry data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.expect(jsonData.data).to.have.property('name');",
+                  "    pm.expect(jsonData.data).to.have.property('email');",
+                  "    pm.expect(jsonData.data).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/inquiries/{{inquiry_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inquiries",
+                "{{inquiry_id}}"
+              ]
+            },
+            "description": "Get a specific inquiry by ID. Requires admin authentication. Note: Set inquiry_id variable from Create Inquiry response."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Inquiry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has updated Inquiry data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Name\",\n    \"email\": \"updated@example.com\",\n    \"phone\": \"+9876543210\",\n    \"message\": \"Updated message\",\n    \"account_type\": \"individual\",\n    \"is_replied\": true,\n    \"reply_message\": \"Thank you for your inquiry. We will get back to you soon.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inquiries/{{inquiry_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inquiries",
+                "{{inquiry_id}}"
+              ]
+            },
+            "description": "Update an inquiry. Requires admin authentication. All fields are optional. Note: Set inquiry_id variable from Create Inquiry response."
+          },
+          "response": []
+        },
+        {
+          "name": "Reply to Inquiry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has replied Inquiry data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('is_replied', true);",
+                  "    pm.expect(jsonData.data).to.have.property('reply_message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reply_message\": \"Thank you for your inquiry. We have received your message and will get back to you within 24 hours. If you need immediate assistance, please contact our support team.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inquiries/{{inquiry_id}}/reply",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inquiries",
+                "{{inquiry_id}}",
+                "reply"
+              ]
+            },
+            "description": "Reply to an inquiry. This automatically sets is_replied to true. Requires admin authentication. Note: Set inquiry_id variable from Create Inquiry response."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Inquiry",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/inquiries/{{inquiry_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inquiries",
+                "{{inquiry_id}}"
+              ]
+            },
+            "description": "Delete an inquiry. Requires admin authentication. Note: Set inquiry_id variable from Create Inquiry response."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"delete\",\n    \"inquiry_ids\": [1, 2, 3]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inquiriesBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inquiriesBulkActions"
+              ]
+            },
+            "description": "Perform bulk actions on Inquiries. Actions: delete, export. If inquiry_ids is empty, applies to all Inquiries."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "system settings",
+      "item": [
+        {
+          "name": "Get All System Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has System Settings data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (jsonData.data.length > 0) {",
+                  "        pm.environment.set('setting_id', jsonData.data[0].id);",
+                  "        pm.environment.set('setting_key', jsonData.data[0].key);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/system-settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "system-settings"
+              ]
+            },
+            "description": "Get all system settings. Requires admin authentication. Automatically saves setting_id and setting_key from first setting."
+          },
+          "response": []
+        },
+        {
+          "name": "Get System Setting by Key - Example",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has System Setting data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/system-settings/{{key}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "system-settings",
+                "{{key}}"
+              ]
+            },
+            "description": "Example: Get platform_status setting. Requires admin authentication."
+          },
+          "response": []
+        },
+        {
+          "name": "Update System Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "setting[0][key]",
+                  "value": "app_default_background",
+                  "type": "text",
+                  "uuid": "adab942e-a814-47f6-aef1-5cdfb6fd28c6"
+                },
+                {
+                  "key": "setting[0][value]",
+                  "value": "file",
+                  "type": "text",
+                  "uuid": "62241ad5-756b-42b5-bd2e-189f788fef6c"
+                },
+                {
+                  "key": "setting[0][image]",
+                  "type": "file",
+                  "uuid": "5f2dd633-63b4-4eaa-ae78-8bddeff1c6b6",
+                  "src": "/C:/Users/IT/Pictures/1fb54b7dbdbea2b4aa1e16a890eb702a.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/updateSettings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "updateSettings"
+              ]
+            },
+            "description": "Update system settings. Requires admin authentication. You can update multiple settings at once by providing an array. Each setting must have a valid key and value. Note: ID in URL is required but the actual updates are based on the keys in the array."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "List Notifications",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has message, data, and pagination\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData).to.have.property('pagination');",
+                  "    pm.expect(jsonData.data).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Store first notification ID for other requests",
+                  "if (pm.response.json().data.length > 0) {",
+                  "    pm.environment.set('notification_id', pm.response.json().data[0].id);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "description": "Language: en or ar"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications?target_type[]=user&target_type[]=individual",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Quisquam",
+                  "description": "Search in title or content",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "reminder",
+                  "description": "Filter by type: reminder, alert, notification, all",
+                  "disabled": true
+                },
+                {
+                  "key": "target_type[]",
+                  "value": "user",
+                  "description": "Filter by target: user, individual, origin, all"
+                },
+                {
+                  "key": "status",
+                  "value": "sent",
+                  "description": "Filter by status: sent, scheduled, unsent, all",
+                  "disabled": true
+                },
+                {
+                  "key": "sorted_by",
+                  "value": "newest",
+                  "description": "Sort by: title, newest, oldest, all",
+                  "disabled": true
+                },
+                {
+                  "key": "target_type[]",
+                  "value": "individual"
+                }
+              ]
+            },
+            "description": "Get a paginated list of all notifications (10 per page) with optional filters (search, type, target_type, status) and sorting. Filters accept 'all' to show all values."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Single Notification",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has notification data\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "description": "Language: en or ar"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications/{{notification_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{{notification_id}}"
+              ]
+            },
+            "description": "Get a single notification by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Notification",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Notification was created\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    ",
+                  "    // Store the created notification ID",
+                  "    pm.environment.set('notification_id', jsonData.data.id);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title_en\": \"System Maintenance Reminder\",\n    \"title_ar\": \"تذكير بصيانة النظام\",\n    \"content_en\": \"The system will be under maintenance on Sunday from 2 AM to 4 AM.\",\n    \"content_ar\": \"سيكون النظام قيد الصيانة يوم الأحد من الساعة 2 صباحًا حتى 4 صباحًا.\",\n    \"type\": \"reminder\", //reminder,alert,notification\n    \"target_type\": [\"user\", \"admin\"], // user,individual,origin,admin\n    \"status\": \"sent\" //sent,scheduled,unsent\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/notifications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            },
+            "description": "Create a new notification. Required fields: title_en, title_ar, content_en, content_ar, type (reminder/alert/notification), target_type (user/individual/origin), status (sent/scheduled/unsent)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Notification",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Notification was updated\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title_en\": \"Updated: System Maintenance Alert\",\n    \"title_ar\": \"محدث: تنبيه صيانة النظام\",\n    \"content_en\": \"The scheduled maintenance has been rescheduled to Monday from 3 AM to 5 AM.\",\n    \"content_ar\": \"تم إعادة جدولة الصيانة المجدولة إلى يوم الاثنين من الساعة 3 صباحًا حتى 5 صباحًا.\",\n    \"type\": \"alert\",\n    \"status\": \"sent\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/notifications/{{notification_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{{notification_id}}"
+              ]
+            },
+            "description": "Update an existing notification. All fields are optional."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Notification",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Notification was deleted\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications/{{notification_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{{notification_id}}"
+              ]
+            },
+            "description": "Delete a notification by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions - Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Bulk action completed\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"delete\",\n    \"ids\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/notificationsBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notificationsBulkActions"
+              ]
+            },
+            "description": "Perform bulk delete action on multiple notifications"
+          },
+          "response": []
+        },
+        {
+          "name": "notify",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "notification_id",
+                  "value": "42",
+                  "type": "text",
+                  "uuid": "362a678b-feaf-4e3b-8ff2-fd313df92f02"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/notify",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/notifications/{{notification_id}}/updateStatus",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{{notification_id}}",
+                "updateStatus"
+              ]
+            },
+            "description": "Admin. Update notification status (e.g., read/unread).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"read\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Plans",
+      "item": [
+        {
+          "name": "Create",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Plan was created\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "    pm.expect(jsonData.data).to.have.property('id');",
+                  "    pm.environment.set('plan_id', jsonData.data.id);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name_en\": \"Premium Individual\",\n    \"name_ar\": \"بريميوم فردي\",\n    \"price\": 99.99,\n    \"official_duration\": \"12 months\",\n    \"free_duration\": \"14 days\",\n    \"posts_limit\": \"100\",\n    \"target_user\": \"individual\",\n    \"is_active\": true,\n\n    \"features\": [1,2,3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/plans",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "plans"
+              ]
+            },
+            "description": "Create a new plan. Required: name_en, name_ar, price, target_user."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Plan was updated\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name_en\": \"Premium Individual Updated\",\n    \"name_ar\": \"بريميوم فردي محدث\",\n    \"price\": 79.99,\n    \"official_duration\": \"6 months\",\n    \"is_active\": true,\n    \"features\" : [1]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/plans/{{plan_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "plans",
+                "{{plan_id}}"
+              ]
+            },
+            "description": "Update an existing plan. All fields optional."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success message\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/plans/{{plan_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "plans",
+                "{{plan_id}}"
+              ]
+            },
+            "description": "Delete a plan by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions - Toggle Active",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Bulk action completed\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"toggleActive\",\n    \"plan_ids\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/plansBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "plansBulkActions"
+              ]
+            },
+            "description": "Toggle is_active for selected plans. Omit plan_ids to apply to all plans."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions - Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Bulk delete completed\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"delete\",\n    \"plan_ids\": [1, 2]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/plansBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "plansBulkActions"
+              ]
+            },
+            "description": "Delete multiple plans. Omit plan_ids to delete all (use with caution)."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions - Export",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Export data received\", function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{admin_token}}"
+              },
+              {
+                "key": "lang",
+                "value": "en"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"action\": \"export\",\n    \"plan_ids\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/plansBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "plansBulkActions"
+              ]
+            },
+            "description": "Export selected plans. Omit plan_ids to export all. Uses lang header for export content."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Screens",
+      "item": [
+        {
+          "name": "Create Screen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/screens",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "screens"
+              ]
+            },
+            "description": "Admin. Create a screen.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name_en\": \"Personal Information\",\n  \"name_ar\": \"المعلومات الشخصية\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Screen",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/screens/{{screen_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "screens",
+                "{{screen_id}}"
+              ]
+            },
+            "description": "Admin. Update a screen by ID.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name_en\": \"Personal Information (Updated)\",\n  \"name_ar\": \"المعلومات الشخصية (تعديل)\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Screen",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/screens/{{screen_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "screens",
+                "{{screen_id}}"
+              ]
+            },
+            "description": "Admin. Delete a screen by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Actions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/screensBulkActions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "screensBulkActions"
+              ]
+            },
+            "description": "Admin. Bulk actions for screens. Actions may include toggleActive, delete, export.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"toggleActive\",\n  \"screen_ids\": [1,2,3]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inputs",
+      "item": [
+        {
+          "name": "Store (text)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.data && json.data.id) {",
+                  "        pm.collectionVariables.set('input_id', json.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"screen_id\": 1,\n    \"title_en\": \"Full Name\",\n    \"title_ar\": \"الاسم الكامل\",\n    \n    \"placeholder_en\": \"Enter your name\",\n    \"placeholder_ar\": \"أدخل اسمك\",\n\n    \"description_en\": \"Your full name as on ID\",\n    \"description_ar\": \"الاسم كما في الهوية\",\n    \"type\": \"text\",\n    \"options\": null,\n    \"is_required\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inputs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inputs"
+              ]
+            },
+            "description": "Admin. Create input without options (e.g. text)."
+          },
+          "response": []
+        },
+        {
+          "name": "Store (select with options)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.data && json.data.id) { pm.collectionVariables.set('input_id', json.data.id); }",
+                  "    pm.expect(json.data.options).to.have.property('choices');",
+                  "    json.data.options.choices.forEach(c => {",
+                  "        pm.expect(c).to.have.property('value');",
+                  "        pm.expect(c).to.have.property('label_en');",
+                  "        pm.expect(c).to.have.property('label_ar');",
+                  "        pm.expect(c).to.have.property('label');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"screen_id\": 1,\n    \"title_en\": \"Gender\",\n    \"title_ar\": \"الجنس\",\n    \"placeholder_en\": \"qwe\",\n    \"placeholder_ar\": \"ضثصث\",\n    \"description_en\": \"Select your gender\",\n    \"description_ar\": \"اختر جنسك\",\n    \"type\": \"select\",\n    \"options\": {\n        \"choices\": [\n            { \"value\": \"male\", \"label_en\": \"Male\", \"label_ar\": \"ذكر\" },\n            { \"value\": \"female\", \"label_en\": \"Female\", \"label_ar\": \"أنثى\" }\n        ]\n    },\n    \"is_required\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inputs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inputs"
+              ]
+            },
+            "description": "Admin. Create input with options: one value per choice (same for en/ar), label_en and label_ar required."
+          },
+          "response": []
+        },
+        {
+          "name": "Store (checkbox with options)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "    const json = pm.response.json();",
+                  "    if (json.data && json.data.id) { pm.collectionVariables.set('input_id', json.data.id); }",
+                  "    if (json.data.options) {",
+                  "        pm.expect(json.data.options).to.have.property('label_en');",
+                  "        pm.expect(json.data.options).to.have.property('label_ar');",
+                  "        pm.expect(json.data.options).to.have.property('label');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"screen_id\": 1,\n    \"title_en\": \"Agree to terms\",\n    \"title_ar\": \"الموافقة على الشروط\",\n    \"placeholder_en\": null,\n    \"placeholder_ar\": null,\n    \"description_en\": \"I have read and accept the terms\",\n    \"description_ar\": \"لقد قرأت وأوافق على الشروط\",\n    \"type\": \"checkbox\",\n    \"options\": {\n        \"label_en\": \"I agree\",\n        \"label_ar\": \"أوافق\"\n    },\n    \"is_required\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inputs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inputs"
+              ]
+            },
+            "description": "Admin. Create checkbox input: options must have label_en and label_ar (one value, two labels)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update - Update input",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Response has data', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('data');",
+                  "    pm.expect(json.data).to.have.property('id');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title_en\": \"Full Name (Updated)\",\n    \"title_ar\": \"الاسم الكامل (محدّث)\",\n    \"is_required\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inputs/{{input_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inputs",
+                "{{input_id}}"
+              ]
+            },
+            "description": "Admin. Partial update. To update options use same structure: choices with value, label_en, label_ar."
+          },
+          "response": []
+        },
+        {
+          "name": "Update - Update input options",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200 && pm.response.json().data.options && pm.response.json().data.options.choices) {",
+                  "    pm.response.json().data.options.choices.forEach(c => {",
+                  "        pm.expect(c).to.have.property('value');",
+                  "        pm.expect(c).to.have.property('label');",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"select\",\n    \"options\": {\n        \"choices\": [\n            { \"value\": \"yes\", \"label_en\": \"Yes\", \"label_ar\": \"نعم\" },\n            { \"value\": \"no\", \"label_en\": \"No\", \"label_ar\": \"لا\" }\n        ]\n    }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/inputs/{{input_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inputs",
+                "{{input_id}}"
+              ]
+            },
+            "description": "Admin. Update options only. Each choice: value (same for en/ar), label_en, label_ar."
+          },
+          "response": []
+        },
+        {
+          "name": "Destroy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Message indicates success', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('message');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/inputs/{{input_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "inputs",
+                "{{input_id}}"
+              ]
+            },
+            "description": "Admin. Delete input by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pages",
+      "item": [
+        {
+          "name": "Contents",
+          "item": [
+            {
+              "name": "Create Content img_text with image (admin)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "lang",
+                    "value": "en",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "page_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "type",
+                      "value": "img_text",
+                      "type": "text"
+                    },
+                    {
+                      "key": "title_en",
+                      "value": "Section with image",
+                      "type": "text"
+                    },
+                    {
+                      "key": "title_ar",
+                      "value": "قسم مع صورة",
+                      "type": "text"
+                    },
+                    {
+                      "key": "content_en",
+                      "value": "Text beside the image.",
+                      "type": "text"
+                    },
+                    {
+                      "key": "content_ar",
+                      "value": "نص بجانب الصورة.",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "description": "Image file (jpeg,png,jpg,gif,webp max 5MB)",
+                      "src": "/C:/Users/IT/OneDrive/Pictures/2d3d0121bdf5ca28ee2e9a5aa4f90823.jpg"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/contents",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "contents"
+                  ]
+                },
+                "description": "Create content with type img_text and upload an image. Use form-data and set image field to a file. Requires admin auth."
+              },
+              "response": []
+            },
+            {
+              "name": "Update (img_text)",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "lang",
+                    "value": "en",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "title_en",
+                      "value": "Section with image updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "title_ar",
+                      "value": "قسم مع صورة محدث",
+                      "type": "text"
+                    },
+                    {
+                      "key": "content_en",
+                      "value": "Updated text.",
+                      "type": "text"
+                    },
+                    {
+                      "key": "content_ar",
+                      "value": "نص محدث.",
+                      "type": "text"
+                    },
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "description": "New image (replaces existing)",
+                      "src": "/C:/Users/IT/OneDrive/Pictures/9508a7d91017ef276ce8ca8d24904a9d.jpg"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/contents/{{content_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "contents",
+                    "{{content_id}}"
+                  ]
+                },
+                "description": "Update img_text content and optionally replace image. Send image file in form-data to replace. Requires admin auth."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Content (admin)",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/contents/{{content_id}}?lang=en",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "contents",
+                    "{{content_id}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "lang",
+                      "value": "en",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "description": "Delete content by ID. Requires admin auth."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title_en\": \"Our Team\",\n    \"title_ar\": \"فريقنا\",\n    \"content_en\": \"Meet the people behind our company.\",\n    \"content_ar\": \"تعرف على فريق شركتنا.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/pages",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "pages"
+              ]
+            },
+            "description": "Create a new page. Requires admin auth."
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "ar",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title_en\": \"About Us Updated\",\n    \"title_ar\": \"من نحن محدث\",\n    \"content_en\": \"Updated main content.\",\n    \"content_ar\": \"محتوى رئيسي محدث.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/pages/{{page_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "pages",
+                "{{page_id}}"
+              ]
+            },
+            "description": "Update page by ID. Requires admin auth."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "lang",
+                "value": "en",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/pages/{{page_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "pages",
+                "{{page_id}}"
+              ]
+            },
+            "description": "Delete page by ID. Contents are cascaded. Requires admin auth."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "update or create contact info",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has contact info data\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('data');",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "lang",
+            "value": "en",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"phone\": \"+966501234567\",\n    \"email\": \"info@example.com\",\n    \"copyright\": \"© 2026 All Rights Reserved\",\n    \"social_media\": [\n        {\n            \"platform\": \"Facebook\",\n            \"url\": \"https://www.facebook.com/example\"\n        },\n        {\n            \"platform\": \"Twitter\",\n            \"url\": \"https://www.twitter.com/example\"\n        },\n        {\n            \"platform\": \"Instagram\",\n            \"url\": \"https://www.instagram.com/example\"\n        }\n    ]\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/admin/contact-info",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "admin",
+            "contact-info"
+          ]
+        },
+        "description": "Update or create contact info with multiple social media entries. Requires admin authentication. Note: The current implementation may only handle one social media entry, but this request shows the expected format for multiple entries."
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{admin_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "input_id",
+      "value": ""
+    }
+  ]
+}

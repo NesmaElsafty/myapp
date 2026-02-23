@@ -31,6 +31,10 @@ class IndividualResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'type' => $this->type,
+            'origin_id' => $this->origin_id,
+            'origin' => $this->whenLoaded('origin', function () {
+                return new OriginResource($this->origin);
+            }),
             'national_id' => $this->national_id,
             'specialty_areas' => $this->specialty_areas ?? [],
             'major' => $this->major,

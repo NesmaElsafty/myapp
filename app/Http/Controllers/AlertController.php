@@ -23,7 +23,7 @@ class AlertController extends Controller
             ]);
             $user = auth()->user();
             $alert = Alert::find($request->id);
-
+            
             if($user->id !== $alert->user_id) {
                 return response()->json([
                     'message' => __('messages.not_authorized_mark_alert_read'),

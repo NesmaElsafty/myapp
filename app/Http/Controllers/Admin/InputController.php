@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\InputResource;
 use App\Models\Input;
@@ -84,7 +85,7 @@ class InputController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_input'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -173,7 +174,7 @@ class InputController extends Controller
             return response()->json([
                 'message' => __('messages.failed_delete_input'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 }

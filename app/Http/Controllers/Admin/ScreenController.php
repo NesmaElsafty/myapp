@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\ScreenResource;
 use App\Models\Screen;
@@ -51,7 +52,7 @@ class ScreenController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_screen'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -128,7 +129,7 @@ class ScreenController extends Controller
             return response()->json([
                 'message' => __('messages.failed_delete_screen'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 

@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\InquiryResource;
 use App\Services\InquiryService;
 use App\Models\Inquiry;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class InquiryController extends Controller
 {
@@ -88,7 +90,7 @@ class InquiryController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_inquiry'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -118,6 +120,11 @@ class InquiryController extends Controller
                 'message' => __('messages.inquiry_updated_success'),
                 'data' => new InquiryResource($inquiry),
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => __('messages.inquiry_not_found'),
+                'errors' => $e->errors(),
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_update_inquiry'),
@@ -139,6 +146,11 @@ class InquiryController extends Controller
                 'message' => __('messages.reply_sent_success'),
                 'data' => new InquiryResource($inquiry),
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => __('messages.inquiry_not_found'),
+                'errors' => $e->errors(),
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_send_reply'),
@@ -155,6 +167,11 @@ class InquiryController extends Controller
             return response()->json([
                 'message' => __('messages.inquiry_deleted_success'),
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => __('messages.inquiry_not_found'),
+                'errors' => $e->errors(),
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_delete_inquiry'),

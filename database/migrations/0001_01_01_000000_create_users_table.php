@@ -21,10 +21,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('is_active')->default(true);
-            $table->enum('type', ['user', 'admin','individual', 'agent','origin'])->nullable();
-            $table->foreignId('origin_id')->nullable()->constrained('users');
-            
-            // for agents & individuals & origins
+            $table->enum('type', ['user', 'admin', 'individual', 'origin'])->nullable();
+            $table->foreignId('origin_id')->nullable()->constrained('users'); // optional: only for type individual
+
+            // for individuals & origins
             $table->json('specialty_areas')->nullable()->default('[]');
             $table->string('major')->nullable();
             $table->longText('summary')->nullable();

@@ -71,6 +71,7 @@ class UserService
             'is_active' => $data['is_active'],
             'password' => Hash::make('123456'),
             'role_id' => $data['role_id'] ?? null,
+            'origin_id' => ($data['type'] ?? null) === 'individual' ? ($data['origin_id'] ?? null) : null,
             'specialty_areas' => $data['specialty_areas'] ?? [],
             'major' => $data['major'] ?? null,
             'summary' => $data['summary'] ?? null,
@@ -121,8 +122,9 @@ class UserService
             $updateData['type'] = $data['type'];
         }
 
-        if (isset($data['origin_id'])) {
-            $updateData['origin_id'] = $data['origin_id'];
+        // origin_id only for individual type
+        if (array_key_exists('origin_id', $data)) {
+            $updateData['origin_id'] = ($data['type'] ?? $user->type) === 'individual' ? ($data['origin_id'] ?? null) : null;
         }
 
         if (isset($data['national_id'])) {
@@ -221,10 +223,11 @@ class UserService
         $users = User::whereIn('id', $ids)->get();
 
         foreach ($users as $user) {
-            $user->agents->each(function ($agent) {
-                $agent->delete();
-            });
-            $user->delete(); 
+            // Unlink individuals from this origin (only origin type has individuals)
+            if ($user->type === 'origin') {
+                User::where('origin_id', $user->id)->update(['origin_id' => null]);
+            }
+            $user->delete();
         }
         return true;
     }
@@ -352,34 +355,30 @@ class UserService
             ],
         ];
 
-        // If user type is origin, add total_agents
+        // If user type is origin, add total_individuals (individuals linked to origins)
         if ($userType === 'origin') {
-            // Get all origin user IDs
             $originIds = User::where('type', 'origin')->pluck('id');
 
-            // Total agents belonging to all origins
-            $totalAgents = User::where('type', 'agent')
+            $totalIndividuals = User::where('type', 'individual')
                 ->whereIn('origin_id', $originIds)
                 ->count();
 
-            // Agents created in current month
-            $currentMonthAgents = User::where('type', 'agent')
+            $currentMonthIndividuals = User::where('type', 'individual')
                 ->whereIn('origin_id', $originIds)
                 ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
                 ->count();
 
-            // Agents created in last month
-            $lastMonthAgents = User::where('type', 'agent')
+            $lastMonthIndividuals = User::where('type', 'individual')
                 ->whereIn('origin_id', $originIds)
                 ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
                 ->count();
 
-            $agentsPercentage = $this->calculatePercentageChange($lastMonthAgents, $currentMonthAgents);
+            $individualsPercentage = $this->calculatePercentageChange($lastMonthIndividuals, $currentMonthIndividuals);
 
-            $result['total_agents'] = [
-                'count' => $totalAgents,
-                'percentage' => $agentsPercentage,
-                'label' => 'إجمالي الوكلاء',
+            $result['total_individuals'] = [
+                'count' => $totalIndividuals,
+                'percentage' => $individualsPercentage,
+                'label' => 'إجمالي الأفراد المرتبطين',
             ];
         }
 
@@ -420,14 +419,14 @@ class UserService
             ]);
         }
 
-        // Validate origin_id for agent type
-        if ($type === 'agent' && empty($data['origin_id'])) {
+        // origin_id only allowed for individual type
+        if (isset($data['origin_id']) && $data['origin_id'] && $type !== 'individual') {
             throw ValidationException::withMessages([
-                'origin_id' => ['Origin ID is required for agent users.'],
+                'origin_id' => ['Origin ID is only allowed for individual users.'],
             ]);
         }
 
-        // Ensure origin exists if provided
+        // Ensure origin exists if provided (for individual)
         if (isset($data['origin_id']) && $data['origin_id']) {
             $origin = User::where('id', $data['origin_id'])
                 ->where('type', 'origin')

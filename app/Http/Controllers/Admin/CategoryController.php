@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
@@ -53,7 +54,7 @@ class CategoryController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_category'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -76,7 +77,7 @@ class CategoryController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_screens'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -206,7 +207,7 @@ class CategoryController extends Controller
             return response()->json([
                 'message' => __('messages.failed_delete_category'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 }

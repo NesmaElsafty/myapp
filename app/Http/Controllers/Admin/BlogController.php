@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\BlogResource;
 use App\Services\BlogService;
@@ -81,7 +82,7 @@ class BlogController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_blog'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 

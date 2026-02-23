@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -117,7 +118,7 @@ class UserController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_user'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 

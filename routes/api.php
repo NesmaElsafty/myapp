@@ -1,27 +1,27 @@
 <?php
 
-use App\Http\Controllers\AdController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\RegionController;
-use App\Http\Controllers\ContactInfoController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\FaqController;
-use App\Http\Controllers\TermController;
-use App\Http\Controllers\SupportController;
-use App\Http\Controllers\InquiryController;
-use App\Http\Controllers\SystemSettingController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Admin\AdController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\ContactInfoController;
+use App\Http\Controllers\Admin\ContentController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\InquiryController;
+use App\Http\Controllers\Admin\InputController;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\RegionController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\ScreenController;
+use App\Http\Controllers\Admin\SupportController;
+use App\Http\Controllers\Admin\SystemSettingController;
+use App\Http\Controllers\Admin\TermController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AlertController;
-use App\Http\Controllers\PlanController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\InputController;
-use App\Http\Controllers\ScreenController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\ContentController;
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -128,7 +128,7 @@ Route::prefix('contents')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(function () {
     Route::apiResource('users', UserController::class);
     Route::post('UserbulkActions', [UserController::class, 'bulkActions']);
     Route::get('blocklist', [UserController::class, 'blocklist']);
@@ -225,4 +225,19 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function ()
     Route::post('contents', [ContentController::class, 'store']);
     Route::put('contents/{id}', [ContentController::class, 'update']);
     Route::delete('contents/{id}', [ContentController::class, 'destroy']);
+});
+
+// User type routes (only type 'user')
+Route::prefix('user')->middleware(['auth:sanctum', 'type:user'])->group(function () {
+    // Add user-type-only routes here, e.g. Route::get('/dashboard', ...);
+});
+
+// Individual type routes (only type 'individual')
+Route::prefix('individual')->middleware(['auth:sanctum', 'type:individual'])->group(function () {
+    // Add individual-type-only routes here
+});
+
+// Origin type routes (only type 'origin')
+Route::prefix('origin')->middleware(['auth:sanctum', 'type:origin'])->group(function () {
+    // Add origin-type-only routes here
 });

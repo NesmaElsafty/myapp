@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\AdminResource;
 use App\Http\Resources\IndividualResource;
-use App\Http\Resources\AgentResource;
 use App\Http\Resources\OriginResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Validation\Rule;
@@ -45,8 +44,8 @@ class AuthController extends Controller
                 })
             ],
             'password' => 'required|string|min:8|confirmed',
-            'type' => 'required|in:user,admin,individual,agent,origin',
-            'origin_id' => 'nullable|exists:users,id',
+            'type' => 'required|in:user,admin,individual,origin',
+            'origin_id' => 'nullable|exists:users,id', // only used when type is individual
             'national_id' => 'nullable|string|max:255',
             'commercial_number' => 'nullable|string|max:255',
             'bank_name' => 'nullable|string|max:255',
@@ -66,8 +65,8 @@ class AuthController extends Controller
         try {
             $result = $this->authService->register($validator->validated());
 
-            // Load relationships if needed
-            if ($result['user']->type === 'agent') {
+            // Load relationships if needed (individual may have optional origin)
+            if ($result['user']->type === 'individual' && $result['user']->origin_id) {
                 $result['user']->load('origin');
             }
 
@@ -98,12 +97,12 @@ class AuthController extends Controller
             $request->validate([
                 'email' => 'required|string|email',
                 'password' => 'required|string',
-                'type' => 'nullable|in:user,admin,individual,agent,origin',
+                'type' => 'nullable|in:user,admin,individual,origin',
             ]);
             $result = $this->authService->login($request->only('email', 'password', 'type'));
 
-            // Load relationships if needed
-            if ($result['user']->type === 'agent') {
+            // Load relationships if needed (individual may have optional origin)
+            if ($result['user']->type === 'individual' && $result['user']->origin_id) {
                 $result['user']->load('origin');
             }
 
@@ -144,8 +143,8 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        // Load relationships if needed
-        if ($user->type === 'agent') {
+        // Load relationships if needed (individual may have optional origin)
+        if ($user->type === 'individual' && $user->origin_id) {
             $user->load('origin');
         }
 
@@ -162,7 +161,6 @@ class AuthController extends Controller
         return match ($type) {
             'admin' => AdminResource::class,
             'individual' => IndividualResource::class,
-            'agent' => AgentResource::class,
             'origin' => OriginResource::class,
             default => UserResource::class,
         };

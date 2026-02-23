@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\PageResource;
 use App\Services\PageService;
@@ -77,7 +78,7 @@ class PageController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_page'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 

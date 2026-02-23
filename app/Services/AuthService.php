@@ -24,7 +24,8 @@ class AuthService
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
             'type' => $data['type'],
-            'origin_id' => $data['origin_id'] ?? null,
+            // origin_id only for type individual (optional)
+            'origin_id' => ($data['type'] ?? null) === 'individual' ? ($data['origin_id'] ?? null) : null,
             'national_id' => $data['national_id'] ?? null,
             'commercial_number' => $data['commercial_number'] ?? null,
             'email_verified_at' => now(),
@@ -128,14 +129,14 @@ class AuthService
             ]);
         }
 
-        // Validate origin_id for agent type
-        if ($type === 'agent' && empty($data['origin_id'])) {
+        // origin_id is only allowed for individual type; if provided must be a valid origin
+        if (isset($data['origin_id']) && $data['origin_id'] && $type !== 'individual') {
             throw ValidationException::withMessages([
-                'origin_id' => ['Origin ID is required for agent users.'],
+                'origin_id' => ['Origin ID is only allowed for individual users.'],
             ]);
         }
 
-        // Ensure origin exists if provided
+        // Ensure origin exists if provided (for individual)
         if (isset($data['origin_id']) && $data['origin_id']) {
             $origin = User::where('id', $data['origin_id'])
                 ->where('type', 'origin')

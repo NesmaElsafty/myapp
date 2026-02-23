@@ -58,11 +58,6 @@ class SupportFactory extends Factory
         return $this->state(fn (array $attributes) => ['account_type' => 'individual']);
     }
 
-    public function forAgent(): static
-    {
-        return $this->state(fn (array $attributes) => ['account_type' => 'agent']);
-    }
-
     public function forOrigin(): static
     {
         return $this->state(fn (array $attributes) => ['account_type' => 'origin']);

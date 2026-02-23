@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\SupportResource;
 use App\Services\SupportService;
 use App\Models\Support;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class SupportController extends Controller
 {
@@ -88,7 +90,7 @@ class SupportController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_support_ticket'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -100,7 +102,7 @@ class SupportController extends Controller
                 'email' => 'nullable|email|max:255',
                 'phone' => 'nullable|string|max:255',
                 'message' => 'nullable|string',
-                'account_type' => 'nullable|string|in:user,individual,agent,origin',
+                'account_type' => 'nullable|string|in:user,individual,origin',
                 'is_replied' => 'nullable|boolean',
                 'reply_message' => 'nullable|string',
             ]);
@@ -118,6 +120,11 @@ class SupportController extends Controller
                 'message' => __('messages.support_ticket_updated_success'),
                 'data' => new SupportResource($support),
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => __('messages.support_ticket_not_found'),
+                'errors' => $e->errors(),
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_update_support_ticket'),
@@ -139,6 +146,11 @@ class SupportController extends Controller
                 'message' => __('messages.reply_sent_success'),
                 'data' => new SupportResource($support),
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => __('messages.support_ticket_not_found'),
+                'errors' => $e->errors(),
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_send_reply'),
@@ -155,6 +167,11 @@ class SupportController extends Controller
             return response()->json([
                 'message' => __('messages.support_ticket_deleted_success'),
             ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => __('messages.support_ticket_not_found'),
+                'errors' => $e->errors(),
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_delete_support_ticket'),

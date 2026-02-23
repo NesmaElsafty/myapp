@@ -45,7 +45,7 @@ class UserFactory extends Factory
     ];
 
     /**
-     * Specialty areas (for individual, agent, origin)
+     * Specialty areas (for individual, origin)
      */
     protected array $specialtyAreas = [
         'عقارات', 'سيارات', 'إلكترونيات', 'أثاث', 'عقارات تجارية', 'عقارات سكنية',
@@ -61,7 +61,7 @@ class UserFactory extends Factory
     ];
 
     /**
-     * Bank names (for individual, agent, origin)
+     * Bank names (for individual, origin)
      */
     protected array $bankNames = [
         'البنك الأهلي', 'بنك الراجحي', 'البنك السعودي الفرنسي', 'بنك الرياض',
@@ -110,12 +110,12 @@ class UserFactory extends Factory
     }
 
     /**
-     * Configure the model factory: fill specialty_areas, major, summary for individual/agent/origin.
+     * Configure the model factory: fill specialty_areas, major, summary for individual/origin.
      */
     public function configure(): static
     {
         return $this->afterMaking(function (\App\Models\User $user) {
-            if (in_array($user->type, ['individual', 'agent', 'origin'], true)) {
+            if (in_array($user->type, ['individual', 'origin'], true)) {
                 $user->specialty_areas = fake()->randomElements($this->specialtyAreas, fake()->numberBetween(1, 3));
                 $user->major = fake()->randomElement($this->majors);
                 $user->summary = fake()->paragraph(3);

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
-use App\Http\Resources\TermResource;
-use App\Services\TermService;
-use App\Models\Term;
+use App\Http\Resources\FaqResource;
+use App\Models\Faq;
+use App\Services\FaqService;
 use Exception;
 use Illuminate\Http\Request;
 
-class TermController extends Controller
+class FaqController extends Controller
 {
-
     public function __construct(
-        protected TermService $termService
+        protected FaqService $faqService
     ) {}
 
     public function index(Request $request)
@@ -21,21 +21,21 @@ class TermController extends Controller
         try {
             $request->validate([
                 'search' => 'nullable|string|max:255',
-                'type' => 'nullable|string|in:terms,privacy',
+                'segment' => 'nullable|string|in:user,origin,individual',
                 'is_active' => 'nullable|boolean',
                 'sorted_by' => 'nullable|string|in:newest,oldest,all,name',
             ]);
 
-            $terms = $this->termService->getAll($request->all(), app()->getLocale())->paginate(10);
+            $faqs = $this->faqService->getAll($request->all(), app()->getLocale())->paginate(10);
 
             return response()->json([
-                'message' => __('messages.terms_retrieved_success'),
-                'data' => TermResource::collection($terms),
-                'pagination' => PaginationHelper::paginate($terms),
+                'message' => __('messages.faqs_retrieved_success'),
+                'data' => FaqResource::collection($faqs),
+                'pagination' => PaginationHelper::paginate($faqs),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => __('messages.failed_retrieve_terms'),
+                'message' => __('messages.failed_retrieve_faqs'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -45,23 +45,23 @@ class TermController extends Controller
     {
         try {
             $request->validate([
-                'title_en' => 'required|string|max:255',
-                'title_ar' => 'required|string|max:255',
-                'content_en' => 'required|string',
-                'content_ar' => 'required|string',
-                'type' => 'nullable|string|in:terms,privacy',
+                'question_en' => 'required|string|max:255',
+                'question_ar' => 'required|string|max:255',
+                'answer_en' => 'required|string',
+                'answer_ar' => 'required|string',
+                'segment' => 'nullable|string|in:user,origin,individual',
                 'is_active' => 'nullable|boolean',
             ]);
 
-            $term = $this->termService->create($request->all());
+            $faq = $this->faqService->create($request->all());
 
             return response()->json([
-                'message' => __('messages.term_created_success'),
-                'data' => new TermResource($term),
+                'message' => __('messages.faq_created_success'),
+                'data' => new FaqResource($faq),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
-                'message' => __('messages.failed_create_term'),
+                'message' => __('messages.failed_create_faq'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -70,21 +70,21 @@ class TermController extends Controller
     public function show(string $id)
     {
         try {
-            $term = $this->termService->getById((int) $id);
+            $faq = $this->faqService->getById((int) $id);
 
-            if (!$term) {
-                return response()->json(['message' => __('messages.term_not_found')], 404);
+            if (!$faq) {
+                return response()->json(['message' => __('messages.faq_not_found')], 404);
             }
 
             return response()->json([
-                'message' => __('messages.term_retrieved_success'),
-                'data' => new TermResource($term),
+                'message' => __('messages.faq_retrieved_success'),
+                'data' => new FaqResource($faq),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => __('messages.failed_retrieve_term'),
+                'message' => __('messages.failed_retrieve_faq'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -92,23 +92,23 @@ class TermController extends Controller
     {
         try {
             $request->validate([
-                'title_en' => 'nullable|string|max:255',
-                'title_ar' => 'nullable|string|max:255',
-                'content_en' => 'nullable|string',
-                'content_ar' => 'nullable|string',
-                'type' => 'nullable|string|in:terms,privacy',
+                'question_en' => 'nullable|string|max:255',
+                'question_ar' => 'nullable|string|max:255',
+                'answer_en' => 'nullable|string',
+                'answer_ar' => 'nullable|string',
+                'segment' => 'nullable|string|in:user,origin,individual',
                 'is_active' => 'nullable|boolean',
             ]);
 
-            $term = $this->termService->update($id, $request->all());
+            $faq = $this->faqService->update($id, $request->all());
 
             return response()->json([
-                'message' => __('messages.term_updated_success'),
-                'data' => new TermResource($term),
+                'message' => __('messages.faq_updated_success'),
+                'data' => new FaqResource($faq),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => __('messages.failed_update_term'),
+                'message' => __('messages.failed_update_faq'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -117,14 +117,14 @@ class TermController extends Controller
     public function destroy(string $id)
     {
         try {
-            $this->termService->delete((int) $id);
+            $this->faqService->delete((int) $id);
 
             return response()->json([
-                'message' => __('messages.term_deleted_success'),
+                'message' => __('messages.faq_deleted_success'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => __('messages.failed_delete_term'),
+                'message' => __('messages.failed_delete_faq'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -136,24 +136,24 @@ class TermController extends Controller
         try {
             $request->validate([
                 'action' => 'required|in:toggleActive,delete,export',
-                'term_ids' => 'nullable|array|exists:terms,id',
+                'faq_ids' => 'nullable|array|exists:faqs,id',
             ]);
 
-            $term_ids = $request->term_ids;
+            $faq_ids = $request->faq_ids;
 
-            if(!$term_ids || count($term_ids) === 0) {
-                $term_ids = Term::pluck('id')->toArray();
+            if(!$faq_ids || count($faq_ids) === 0) {
+                $faq_ids = Faq::pluck('id')->toArray();
             }
             
             switch ($request->action) {
                 case 'toggleActive':
-                    $result = $this->termService->toggleActive($term_ids);
+                    $result = $this->faqService->toggleActive($faq_ids);
                     break;
                 case 'delete':
-                    $result = $this->termService->bulkDelete($term_ids);
+                    $result = $this->faqService->bulkDelete($faq_ids);
                     break;
                 case 'export':
-                    $result = $this->termService->export($term_ids, app()->getLocale());
+                    $result = $this->faqService->export($faq_ids, app()->getLocale());
                     break;
             }
 

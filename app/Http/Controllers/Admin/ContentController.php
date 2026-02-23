@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Helpers\PaginationHelper;
 use App\Http\Resources\ContentResource;
 use App\Services\ContentService;
@@ -89,7 +90,7 @@ class ContentController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_content'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 

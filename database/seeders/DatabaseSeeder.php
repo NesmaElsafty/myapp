@@ -45,13 +45,12 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
         ]);
 
-        // Seed users in order: origin first (needed for agents), then others
+        // Seed users in order: origin first (optional for individuals), then others
         $this->call([
             OriginSeeder::class,
             UserSeeder::class,
             AdminSeeder::class,
             IndividualSeeder::class,
-            AgentSeeder::class, // Must be after OriginSeeder
         ]);
 
         // Seed alerts (must be after users)

@@ -48,7 +48,7 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
-     * Get the origin user (for agents)
+     * Get the origin user (only for individuals with origin_id set)
      */
     public function origin()
     {
@@ -56,11 +56,11 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
-     * Get the agents belonging to this origin
+     * Get the individuals belonging to this origin (when type is origin)
      */
-    public function agents()
+    public function individuals()
     {
-        return $this->hasMany(User::class, 'origin_id')->where('type', 'agent');
+        return $this->hasMany(User::class, 'origin_id')->where('type', 'individual');
     }
 
     /**

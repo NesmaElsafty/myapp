@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
 use Illuminate\Http\Request;
 use Exception;
@@ -56,7 +57,7 @@ class RoleController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_role'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 

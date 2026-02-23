@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "users-crud-collection",
 		"name": "Users CRUD (Admin)",
-		"description": "Admin CRUD for users. Supports specialty_areas, major, summary for agents, individuals, and origins.",
+		"description": "Admin CRUD for users. Supports specialty_areas, major, summary for individuals and origins. Individual is the only type that may have optional origin_id.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [

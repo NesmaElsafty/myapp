@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CityResource;
 use App\Services\CityService;
 use Illuminate\Http\Request;
@@ -97,7 +98,7 @@ class CityController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_city'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 
@@ -116,19 +117,21 @@ class CityController extends Controller
 
             $city = $this->cityService->update($id, $request->all());   
             // delete all regions
-            foreach ($city->regions as $region) {
-                $region->delete();
-            }
+            if($request->has('regions')) {
+                foreach ($city->regions as $region) {
+                    $region->delete();
+                }
 
-            // create new regions
-            foreach ($request->regions as $region) {
-                $region = Region::create([
-                    'name_en' => $region['name_en'],
-                    'name_ar' => $region['name_ar'],
-                    'district_en' => $region['district_en'],
-                    'district_ar' => $region['district_ar'],
-                    'city_id' => $city->id,
-                ]);
+                // create new regions
+                foreach ($request->regions as $region) {
+                    $region = Region::create([
+                        'name_en' => $region['name_en'],
+                        'name_ar' => $region['name_ar'],
+                        'district_en' => $region['district_en'],
+                        'district_ar' => $region['district_ar'],
+                        'city_id' => $city->id,
+                    ]);
+                }
             }
             return response()->json([
                 'message' => __('messages.city_updated_success'),

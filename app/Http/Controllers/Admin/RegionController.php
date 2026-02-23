@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\RegionResource;
 use App\Services\RegionService;
 use Illuminate\Http\Request;
@@ -85,7 +86,7 @@ class RegionController extends Controller
             return response()->json([
                 'message' => __('messages.failed_retrieve_region'),
                 'error' => $e->getMessage(),
-            ], 500);
+            ], 404);
         }
     }
 

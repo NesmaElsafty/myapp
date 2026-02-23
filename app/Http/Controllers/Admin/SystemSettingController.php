@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SystemSetting;
 use App\Services\SystemSettingService;
@@ -44,7 +45,7 @@ class SystemSettingController extends Controller
                     'message' => __('messages.failed_retrieve_system_setting'),
                     'error' => $e->getMessage(),
                     'status' => 'error',
-                ], 500);
+                ], 404);
         }
     }
 
