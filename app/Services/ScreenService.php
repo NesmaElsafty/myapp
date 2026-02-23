@@ -42,8 +42,8 @@ class ScreenService
         $screen = new Screen();
         $screen->name_en = $data['name_en'];
         $screen->name_ar = $data['name_ar'];
-        $screen->description_en = $data['description_en'];
-        $screen->description_ar = $data['description_ar'];
+        $screen->description_en = $data['description_en'] ?? null;
+        $screen->description_ar = $data['description_ar'] ?? null;
         $screen->category_id = $data['category_id'];
         $screen->save();
 
