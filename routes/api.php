@@ -252,6 +252,7 @@ Route::prefix('user')->middleware(['auth:sanctum', 'type:user'])->group(function
 Route::prefix('individual')->middleware(['auth:sanctum', 'type:individual'])->group(function () {
     // Add individual-type-only routes here
     Route::post('requestToJoinOrigin', [OriginController::class, 'requestToJoinOrigin']);
+    Route::post('signoutFromOrigin', [OriginController::class, 'signoutFromOrigin']);
 });
 
 // Origin type routes (guarded by type 'origin', not individual)

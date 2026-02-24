@@ -294,4 +294,7 @@ return [
     'you_are_already_in_this_origin' => 'أنت بالفعل في هذا المصدر.',
     'request_to_join_origin_success' => 'تم إرسال طلب الانضمام إلى المصدر بنجاح.',
     'failed_to_request_to_join_origin' => 'فشل إرسال طلب الانضمام إلى المصدر.',
+    'you_are_not_in_this_origin' => 'أنت لست في هذا المصدر.',
+    'signout_from_origin_success' => 'تم إنهاء الانضمام إلى المصدر بنجاح.',
+    'failed_to_signout_from_origin' => 'فشل إنهاء الانضمام إلى المصدر.',
 ];

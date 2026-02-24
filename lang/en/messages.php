@@ -294,4 +294,7 @@ return [
     'you_are_already_in_this_origin' => 'You are already in this origin.',
     'request_to_join_origin_success' => 'Request to join origin sent successfully.',
     'failed_to_request_to_join_origin' => 'Failed to send request to join origin.',
+    'you_are_not_in_this_origin' => 'You are not in this origin.',
+    'signout_from_origin_success' => 'Signed out from origin successfully.',
+    'failed_to_signout_from_origin' => 'Failed to sign out from origin.',
 ];

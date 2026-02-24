@@ -13,6 +13,7 @@ use App\Services\AlertService;
 
 class IndividualController extends Controller
 {
+    
     protected $alertService;
     public function __construct(AlertService $alertService)
     {
