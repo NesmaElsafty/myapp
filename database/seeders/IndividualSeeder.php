@@ -13,6 +13,8 @@ class IndividualSeeder extends Seeder
      */
     public function run(): void
     {
+        $originIds = User::where('type', 'origin')->pluck('id')->toArray();
+
         User::create([
             'f_name' => 'فاطمة',
             'l_name' => 'الغامدي',
@@ -22,7 +24,7 @@ class IndividualSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
             'type' => 'individual',
-            'origin_id' => null,
+            'origin_id' => $originIds[array_rand($originIds)] ?? null,
             'national_id' => '12345678901234',
             'commercial_number' => null,
             'specialty_areas' => ['عقارات', 'أثاث'],
@@ -35,11 +37,15 @@ class IndividualSeeder extends Seeder
             'language' => 'ar',
         ]);
 
-        // Create additional individual users
+        // Create additional individual users; assign origin_id for some
         for ($i = 0; $i < 20; $i++) {
+            $originId = $originIds !== [] && fake()->boolean(60)
+                ? $originIds[array_rand($originIds)]
+                : null;
+
             User::factory()->create([
                 'type' => 'individual',
-                'origin_id' => null,
+                'origin_id' => $originId,
                 'national_id' => fake()->numerify('##############'),
                 'commercial_number' => null,
             ]);

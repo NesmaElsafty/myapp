@@ -14,10 +14,7 @@ class IndividualResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $alerts = [];
-        if (auth()->check() && auth()->id() === $this->id) {
-            $alerts = AlertResource::collection($this->alerts);
-        }
+       
 
         $image = null;
         if ($this->hasMedia('profile')) {
@@ -46,7 +43,6 @@ class IndividualResource extends JsonResource
             'language' => $this->language ?? 'ar',
             'email_verified_at' => $this->email_verified_at,
             'image' => $image,
-            'alerts' => $alerts,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

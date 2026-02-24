@@ -19,11 +19,10 @@ class AlertService
         return Alert::findOrFail($id);
     }
 
-    public function create(array $data = [], int $notification_id = null): bool
+    public function create(array $data = [], int $notification_id = null)
     {
         if($notification_id) {
             $notification = Notification::find($notification_id);
-            if($notification) {
                 $target_type = $notification->target_type;
                 $users = User::whereIn('type', $target_type)->where('is_active', true)->pluck('id');
                 foreach($users as $user) {
@@ -35,16 +34,15 @@ class AlertService
                         'content_ar' => $notification->content_ar,
                     ]);
                 }
-            }else{
-                $userId = $data['user_id'] ?? null;
-                Alert::create([
-                    'user_id' => $userId,
-                    'title_en' => $data['title_en'] ?? null,
-                    'title_ar' => $data['title_ar'] ?? null,
-                    'content_en' => $data['content_en'] ?? null,
-                    'content_ar' => $data['content_ar'] ?? null,
-                ]);
-            }
+        }else{
+            $userId = $data['user_id'] ?? null;
+            Alert::create([
+                'user_id' => $userId,
+                'title_en' => $data['title_en'] ?? null,
+                'title_ar' => $data['title_ar'] ?? null,
+                'content_en' => $data['content_en'] ?? null,
+                'content_ar' => $data['content_ar'] ?? null,
+            ]);
         }
         return true;
     }

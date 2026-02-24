@@ -17,10 +17,13 @@ use App\Http\Controllers\Admin\ScreenController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Admin\TermController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Origin\IndividualController;
+use App\Http\Controllers\Individual\OriginController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -35,6 +38,7 @@ Route::prefix('auth')->group(function () {
         Route::post('/updateProfile', [AuthController::class, 'updateProfile']);
         Route::post('/changePassword', [AuthController::class, 'changePassword']);
         Route::post('/markAsRead', [AlertController::class, 'markAsRead']);
+        Route::get('/myAlerts', [AlertController::class, 'myAlerts']);
     });
 });
 
@@ -96,6 +100,12 @@ Route::prefix('plans')->group(function () {
 });
 Route::get('/features', [PlanController::class, 'features']);
 
+// Public users (individuals and origins) - for guests, no auth
+Route::prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{id}', [UserController::class, 'show']);
+});
+
 // Public categories routes (index and show)
 Route::prefix('categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
@@ -121,6 +131,12 @@ Route::prefix('pages')->group(function () {
     Route::get('/{id}', [PageController::class, 'show']);
 });
 
+// Public users routes (index and show)
+Route::prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::get('/{id}', [UserController::class, 'show']);
+});
+
 // Public contents routes (index and show) - can filter by page_id
 Route::prefix('contents')->group(function () {
     Route::get('/', [ContentController::class, 'index']);
@@ -129,9 +145,9 @@ Route::prefix('contents')->group(function () {
 
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(function () {
-    Route::apiResource('users', UserController::class);
-    Route::post('UserbulkActions', [UserController::class, 'bulkActions']);
-    Route::get('blocklist', [UserController::class, 'blocklist']);
+    Route::apiResource('users', AdminUserController::class);
+    Route::post('UserbulkActions', [AdminUserController::class, 'bulkActions']);
+    Route::get('blocklist', [AdminUserController::class, 'blocklist']);
     Route::apiResource('roles', RoleController::class);
     Route::get('permissions', [RoleController::class, 'permissions']);
     Route::get('exportRoles', [RoleController::class, 'export']);
@@ -235,9 +251,14 @@ Route::prefix('user')->middleware(['auth:sanctum', 'type:user'])->group(function
 // Individual type routes (only type 'individual')
 Route::prefix('individual')->middleware(['auth:sanctum', 'type:individual'])->group(function () {
     // Add individual-type-only routes here
+    Route::post('requestToJoinOrigin', [OriginController::class, 'requestToJoinOrigin']);
 });
 
-// Origin type routes (only type 'origin')
+// Origin type routes (guarded by type 'origin', not individual)
 Route::prefix('origin')->middleware(['auth:sanctum', 'type:origin'])->group(function () {
-    // Add origin-type-only routes here
+    Route::post('addIndividual', [IndividualController::class, 'addIndividual']);
+    Route::get('getIndividualRequests', [IndividualController::class, 'getIndividualRequests']);
+    Route::post('changeRequestStatus', [IndividualController::class, 'changeRequestStatus']);
+    Route::get('myIndividuals', [IndividualController::class, 'myIndividuals']);
+    Route::post('removeIndividual', [IndividualController::class, 'removeIndividual']);
 });

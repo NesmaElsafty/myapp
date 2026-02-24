@@ -77,6 +77,8 @@ return [
     'not_authorized_mark_alert_read' => 'You are not authorized to mark this alert as read',
     'alert_marked_read_success' => 'Alert marked as read successfully',
     'failed_mark_alert_read' => 'Failed to mark alert as read',
+    'alerts_retrieved_success' => 'Alerts retrieved successfully.',
+    'failed_retrieve_alerts' => 'Failed to retrieve alerts.',
 
     // Notification
     'notifications_retrieved_success' => 'Notifications retrieved successfully',
@@ -272,4 +274,24 @@ return [
     'failed_delete_user' => 'Failed to delete user',
     'blocklist_retrieved_success' => 'Blocklist retrieved successfully',
     'failed_retrieve_blocklist' => 'Failed to retrieve blocklist',
+
+    // Origin / Individual
+    'failed_to_request_origin' => 'Failed to request origin',
+    'you_are_not_an_origin' => 'You are not an origin account.',
+    'individual_not_found' => 'Individual not found.',
+    'individual_added_to_origin' => 'Individual added to origin successfully.',
+    'failed_to_add_individual_to_origin' => 'Failed to add individual to origin.',
+    'individual_id_required' => 'The individual is required.',
+    'individual_id_exists' => 'The selected individual is invalid.',
+    'individuals_retrieved_success' => 'Individuals retrieved successfully.',
+    'failed_to_get_individuals' => 'Failed to retrieve individuals.',
+    'unauthorized_request' => 'You are not authorized to handle this request.',
+    'request_status_changed_success' => 'Request status updated successfully.',
+    'failed_to_change_request_status' => 'Failed to update request status.',
+    'individual_removed_from_origin_success' => 'Individual removed from origin successfully.',
+    'failed_to_remove_individual' => 'Failed to remove individual from origin.',
+    'origin_not_found' => 'Origin not found.',
+    'you_are_already_in_this_origin' => 'You are already in this origin.',
+    'request_to_join_origin_success' => 'Request to join origin sent successfully.',
+    'failed_to_request_to_join_origin' => 'Failed to send request to join origin.',
 ];

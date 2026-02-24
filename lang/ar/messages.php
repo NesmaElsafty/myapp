@@ -77,6 +77,8 @@ return [
     'not_authorized_mark_alert_read' => 'غير مصرح لك بتحديد هذا التنبيه كمقروء',
     'alert_marked_read_success' => 'تم تحديد التنبيه كمقروء بنجاح',
     'failed_mark_alert_read' => 'فشل تحديد التنبيه كمقروء',
+    'alerts_retrieved_success' => 'تم استرجاع التنبيهات بنجاح.',
+    'failed_retrieve_alerts' => 'فشل استرجاع التنبيهات.',
 
     // Notification
     'notifications_retrieved_success' => 'تم استرجاع الإشعارات بنجاح',
@@ -272,4 +274,24 @@ return [
     'failed_delete_user' => 'فشل حذف المستخدم',
     'blocklist_retrieved_success' => 'تم استرجاع قائمة الحظر بنجاح',
     'failed_retrieve_blocklist' => 'فشل استرجاع قائمة الحظر',
+
+    // Origin / Individual
+    'failed_to_request_origin' => 'فشل طلب المصدر',
+    'you_are_not_an_origin' => 'حسابك ليس من نوع مصدر.',
+    'individual_not_found' => 'الفرد غير موجود.',
+    'individual_added_to_origin' => 'تم إضافة الفرد إلى المصدر بنجاح.',
+    'failed_to_add_individual_to_origin' => 'فشل إضافة الفرد إلى المصدر.',
+    'individual_id_required' => 'الفرد مطلوب.',
+    'individual_id_exists' => 'الفرد المحدد غير صالح.',
+    'individuals_retrieved_success' => 'تم استرجاع الأفراد بنجاح.',
+    'failed_to_get_individuals' => 'فشل استرجاع الأفراد.',
+    'unauthorized_request' => 'غير مصرح لك بالتعامل مع هذا الطلب.',
+    'request_status_changed_success' => 'تم تحديث حالة الطلب بنجاح.',
+    'failed_to_change_request_status' => 'فشل تحديث حالة الطلب.',
+    'individual_removed_from_origin_success' => 'تم إزالة الفرد من المصدر بنجاح.',
+    'failed_to_remove_individual' => 'فشل إزالة الفرد من المصدر.',
+    'origin_not_found' => 'المصدر غير موجود.',
+    'you_are_already_in_this_origin' => 'أنت بالفعل في هذا المصدر.',
+    'request_to_join_origin_success' => 'تم إرسال طلب الانضمام إلى المصدر بنجاح.',
+    'failed_to_request_to_join_origin' => 'فشل إرسال طلب الانضمام إلى المصدر.',
 ];

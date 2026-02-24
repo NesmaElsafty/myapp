@@ -7,6 +7,7 @@ use App\Services\AlertService;
 use App\Models\Alert;
 use Exception;
 use Illuminate\Http\Request;
+use App\Helpers\PaginationHelper;   
 class AlertController extends Controller
 {
     protected $alertService;
@@ -38,6 +39,25 @@ class AlertController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_mark_alert_read'),
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // get all alerts for a user
+    public function myAlerts(Request $request)
+    {
+        try {
+            $user = auth()->user();
+            $alerts = Alert::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(10);
+            return response()->json([
+                'message' => __('messages.alerts_retrieved_success'),
+                'data' => AlertResource::collection($alerts),
+                'pagination' => PaginationHelper::paginate($alerts),
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => __('messages.failed_retrieve_alerts'),
                 'error' => $e->getMessage(),
             ], 500);
         }

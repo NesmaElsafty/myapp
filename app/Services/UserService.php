@@ -59,6 +59,49 @@ class UserService
         return User::with('origin')->find($id);
     }
 
+    /**
+     * Get individuals and/or origins for public (guest) listing.
+     * Only active users, optional filter by type and search.
+     *
+     * @param  array<string, mixed>  $data  ['type' => 'individual'|'origin'|null, 'search' => string|null, 'sorted_by' => string|null]
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getPublicIndividualsAndOrigins(array $data)
+    {
+        $query = User::query()
+            ->whereIn('type', ['individual', 'origin'])
+            ->where('is_active', true);
+
+        if (! empty($data['type']) && in_array($data['type'], ['individual', 'origin'], true)) {
+            $query->where('type', $data['type']);
+        }
+
+        if (! empty($data['search'])) {
+            $search = $data['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('f_name', 'like', "%{$search}%")
+                    ->orWhere('l_name', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%")
+                    ->orWhere('summary', 'like', "%{$search}%")
+                    ->orWhere('major', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->with('origin');
+    }
+
+    /**
+     * Get a single individual or origin by id for public view. Returns null if not found or not public.
+     */
+    public function getPublicById(int $id): ?User
+    {
+        $user = User::with('origin')->find($id);
+        if (! $user || ! in_array($user->type, ['individual', 'origin'], true) || ! $user->is_active) {
+            return null;
+        }
+        return $user;
+    }
+
     public function create($data)
     {
         $userData = [

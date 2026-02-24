@@ -15,10 +15,7 @@ class AdminResource extends JsonResource
             $image = str_replace('public/', '', $this->getFirstMediaUrl('profile'));
         }
 
-        $alerts = [];
-        if (auth()->check() && auth()->id() === $this->id) {
-            $alerts = AlertResource::collection($this->alerts);
-        }
+      
 
         return [
             'id' => $this->id,
@@ -30,7 +27,6 @@ class AdminResource extends JsonResource
             'language' => $this->language ?? 'ar',
             'image' => $image,
             'email_verified_at' => $this->email_verified_at,
-            'alerts' => $alerts,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

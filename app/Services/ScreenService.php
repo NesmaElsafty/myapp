@@ -52,7 +52,7 @@ class ScreenService
 
     public function update($id, $data)
     {
-        $screen = Screen::find($id);
+        $screen = Screen::find($id); 
         if (!$screen) {
             throw ValidationException::withMessages(['screen' => ['Screen not found']]);
         }
