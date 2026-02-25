@@ -21,6 +21,7 @@ class Input extends Model
 
     protected $fillable = [
         'screen_id',
+        'name',
         'title_en',
         'title_ar',
         'placeholder_en',
@@ -30,10 +31,12 @@ class Input extends Model
         'type',
         'options',
         'is_required',
+        'validation_rules',
     ];
 
     protected $casts = [
         'options' => 'array',
+        'validation_rules' => 'array',
         'is_required' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

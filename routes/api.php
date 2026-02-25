@@ -22,6 +22,7 @@ use App\Http\Controllers\AlertController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Origin\IndividualController;
 use App\Http\Controllers\Individual\OriginController;
 use Illuminate\Support\Facades\Route;
@@ -262,4 +263,13 @@ Route::prefix('origin')->middleware(['auth:sanctum', 'type:origin'])->group(func
     Route::post('changeRequestStatus', [IndividualController::class, 'changeRequestStatus']);
     Route::get('myIndividuals', [IndividualController::class, 'myIndividuals']);
     Route::post('removeIndividual', [IndividualController::class, 'removeIndividual']);
+});
+
+// Item routes (only for origin & individual types)
+Route::prefix('items')->middleware(['auth:sanctum', 'type:individual,origin'])->group(function () {
+    Route::get('/', [ItemController::class, 'index']);
+    Route::post('/', [ItemController::class, 'store']);
+    Route::get('/{id}', [ItemController::class, 'show']);
+    Route::put('/{id}', [ItemController::class, 'update']);
+    Route::delete('/{id}', [ItemController::class, 'destroy']);
 });

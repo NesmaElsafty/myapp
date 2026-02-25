@@ -88,5 +88,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SystemSettingSeeder::class,
         ]);
+
+        // Seed sample items for origins & individuals
+        $this->call([
+            ItemSeeder::class,
+        ]);
     }
 }

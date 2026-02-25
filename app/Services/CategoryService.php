@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
+use Exception;
 use Illuminate\Validation\ValidationException;
 
 class CategoryService
@@ -51,5 +52,14 @@ class CategoryService
         $category->update($update);
         return $category;
     }
+
+    public function getCategoryInputsName(int $categoryId)
+    {
+        $category = Category::find($categoryId);
+        return $category->getCategoryInputsName($categoryId);
+    }
+
+    // 
+
 
 }

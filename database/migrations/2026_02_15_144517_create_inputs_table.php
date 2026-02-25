@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('inputs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('screen_id')->constrained('screens')->onDelete('cascade');
+            $table->string('name')->nullable();
             $table->string('title_en')->nullable();
             $table->string('title_ar')->nullable();
             $table->string('placeholder_en')->nullable();
@@ -24,6 +25,7 @@ return new class extends Migration
             // options: one value per option (same for en/ar). select/radio: { choices: [{ value, label_en, label_ar }] }; checkbox: { label_en, label_ar }
             $table->json('options')->nullable();
             $table->boolean('is_required')->default(false);
+            $table->json('validation_rules')->nullable();
             $table->timestamps();
         });
     }

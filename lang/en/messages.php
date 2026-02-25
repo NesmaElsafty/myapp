@@ -275,7 +275,7 @@ return [
     'blocklist_retrieved_success' => 'Blocklist retrieved successfully',
     'failed_retrieve_blocklist' => 'Failed to retrieve blocklist',
 
-    // Origin / Individual
+    // Origin / Individual / Items
     'failed_to_request_origin' => 'Failed to request origin',
     'you_are_not_an_origin' => 'You are not an origin account.',
     'individual_not_found' => 'Individual not found.',
@@ -297,4 +297,15 @@ return [
     'you_are_not_in_this_origin' => 'You are not in this origin.',
     'signout_from_origin_success' => 'Signed out from origin successfully.',
     'failed_to_signout_from_origin' => 'Failed to sign out from origin.',
+    'items_retrieved_success' => 'Items retrieved successfully.',
+    'failed_retrieve_items' => 'Failed to retrieve items.',
+    'item_created_success' => 'Item created successfully.',
+    'failed_create_item' => 'Failed to create item.',
+    'item_not_found' => 'Item not found.',
+    'item_retrieved_success' => 'Item retrieved successfully.',
+    'failed_retrieve_item' => 'Failed to retrieve item.',
+    'item_updated_success' => 'Item updated successfully.',
+    'failed_update_item' => 'Failed to update item.',
+    'item_deleted_success' => 'Item deleted successfully.',
+    'failed_delete_item' => 'Failed to delete item.',
 ];

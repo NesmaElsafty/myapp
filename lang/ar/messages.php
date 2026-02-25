@@ -275,7 +275,7 @@ return [
     'blocklist_retrieved_success' => 'تم استرجاع قائمة الحظر بنجاح',
     'failed_retrieve_blocklist' => 'فشل استرجاع قائمة الحظر',
 
-    // Origin / Individual
+    // Origin / Individual / Items
     'failed_to_request_origin' => 'فشل طلب المصدر',
     'you_are_not_an_origin' => 'حسابك ليس من نوع مصدر.',
     'individual_not_found' => 'الفرد غير موجود.',
@@ -297,4 +297,15 @@ return [
     'you_are_not_in_this_origin' => 'أنت لست في هذا المصدر.',
     'signout_from_origin_success' => 'تم إنهاء الانضمام إلى المصدر بنجاح.',
     'failed_to_signout_from_origin' => 'فشل إنهاء الانضمام إلى المصدر.',
+    'items_retrieved_success' => 'تم استرجاع العناصر بنجاح.',
+    'failed_retrieve_items' => 'فشل استرجاع العناصر.',
+    'item_created_success' => 'تم إنشاء العنصر بنجاح.',
+    'failed_create_item' => 'فشل إنشاء العنصر.',
+    'item_not_found' => 'العنصر غير موجود.',
+    'item_retrieved_success' => 'تم استرجاع العنصر بنجاح.',
+    'failed_retrieve_item' => 'فشل استرجاع العنصر.',
+    'item_updated_success' => 'تم تحديث العنصر بنجاح.',
+    'failed_update_item' => 'فشل تحديث العنصر.',
+    'item_deleted_success' => 'تم حذف العنصر بنجاح.',
+    'failed_delete_item' => 'فشل حذف العنصر.',
 ];

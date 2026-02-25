@@ -1,0 +1,191 @@
+{
+  "info": {
+    "_postman_id": "items-crud-origin-individual",
+    "name": "Items (origin & individual)",
+    "description": "CRUD for items with dynamic inputs. Only users with type `origin` or `individual` can access these endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000/api" },
+    { "key": "auth_token", "value": "" },
+    { "key": "lang", "value": "ar" },
+    { "key": "item_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Get category screens & inputs (use to get real input IDs)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "lang", "value": "{{lang}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/categories/1/screens",
+          "host": ["{{base_url}}"],
+          "path": ["categories", "1", "screens"]
+        },
+        "description": "Returns all screens for category 1 with their inputs. Use each input's 'id' as the key in the 'inputs' object when creating an item (e.g. \"1\": \"residential\")."
+      }
+    },
+    {
+      "name": "List my items",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/items",
+          "host": ["{{base_url}}"],
+          "path": ["items"]
+        }
+      }
+    },
+
+    {
+      "name": "Create item - Annual Rental Property (category_id = 1)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"category_id\": 1,\n  \"name\": \"شقة 3 غرف للإيجار السنوي بحي النرجس\",\n  \"description\": \"شقة جديدة مؤثثة بالكامل قريبة من الخدمات.\",\n  \"price\": \"35000\",\n  \"location\": \"الرياض، حي النرجس\",\n  \"city_id\": 1,\n  \"region_id\": 1,\n  \"inputs\": {\n    \"1\": \"residential\",\n    \"2\": \"apartment\",\n    \"3\": \"ready\",\n    \"4\": \"furnished\",\n    \"5\": \"new\",\n    \"6\": \"2020-01-01\",\n    \"7\": 120,\n    \"8\": \"east\",\n    \"9\": 20,\n    \"10\": [{\"name\": \"مسجد\", \"distance\": \"300m\"}, {\"name\": \"مدرسة\", \"distance\": \"600m\"}],\n    \"11\": 3,\n    \"12\": 1,\n    \"13\": 2,\n    \"14\": \"ground_floor\",\n    \"15\": true,\n    \"16\": true,\n    \"17\": true,\n    \"18\": false,\n    \"19\": true,\n    \"20\": false,\n    \"21\": false\n  }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/items",
+          "host": ["{{base_url}}"],
+          "path": ["items"]
+        }
+      }
+    },
+
+    {
+      "name": "Create item - Property for Sale (category_id = 5)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"category_id\": 5,\n  \"name\": \"فيلا للبيع في حي الياسمين\",\n  \"description\": \"فيلا فخمة 5 غرف مع حوش كبير ومسبح.\",\n  \"price\": \"2500000\",\n  \"location\": \"الرياض، حي الياسمين\",\n  \"city_id\": 1,\n  \"region_id\": 1,\n  \"inputs\": {\n    \"201\": \"villa\",                  \n    \"202\": \"luxury\",                 \n    \"203\": 450,                        \n    \"204\": 5,                          \n    \"205\": 2,                          \n    \"206\": 4                           \n  }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/items",
+          "host": ["{{base_url}}"],
+          "path": ["items"]
+        }
+      }
+    },
+
+    {
+      "name": "Create item - Property for Rent (Daily/Monthly) (category_id = 6)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"category_id\": 6,\n  \"name\": \"شاليه للإيجار اليومي\",\n  \"description\": \"شاليه عائلي بمسبح خاص وحديقة.\",\n  \"price\": \"800\",\n  \"location\": \"الدمام\",\n  \"city_id\": 2,\n  \"region_id\": 3,\n  \"inputs\": {\n    \"301\": \"chalet\",                 \n    \"302\": \"daily\",                  \n    \"303\": 8,                          \n    \"304\": \"2026-03-01\",             \n    \"305\": \"2026-03-31\"              \n  }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/items",
+          "host": ["{{base_url}}"],
+          "path": ["items"]
+        }
+      }
+    },
+
+    {
+      "name": "Create item - Car (category_id = 7)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"category_id\": 7,\n  \"name\": \"تويوتا كامري 2019\",\n  \"description\": \"بحالة ممتازة، استعمال مستخدم واحد.\",\n  \"price\": \"78000\",\n  \"location\": \"جدة\",\n  \"city_id\": 3,\n  \"region_id\": 4,\n  \"inputs\": {\n    \"401\": \"toyota\",                 \n    \"402\": \"camry\",                  \n    \"403\": 2019,                      \n    \"404\": 85000,                     \n    \"405\": \"automatic\",              \n    \"406\": \"petrol\"                  \n  }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/items",
+          "host": ["{{base_url}}"],
+          "path": ["items"]
+        }
+      }
+    },
+
+    {
+      "name": "Show item",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/items/{{item_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["items", "{{item_id}}"]
+        }
+      }
+    },
+    {
+      "name": "Update item (generic)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated item name\",\n  \"inputs\": {\n    \"101\": \"commercial\" \n  }\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/items/{{item_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["items", "{{item_id}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete item",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" },
+          { "key": "lang", "value": "{{lang}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/items/{{item_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["items", "{{item_id}}"]
+        }
+      }
+    }
+  ]
+}
+
