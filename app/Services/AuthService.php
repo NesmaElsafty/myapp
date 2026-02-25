@@ -50,31 +50,69 @@ class AuthService
      */
     public function login(array $credentials): array
     {
-        $email = isset($credentials['email']) ? trim($credentials['email']) : '';
+        $type = $credentials['type'] ?? null;
 
-        $query = User::where('email', $email);
+        // Admin or user login: use phone + password
+        if (in_array($type, ['admin', 'user']) && !empty($credentials['phone'])) {
+            $phone = trim($credentials['phone']);
 
-        if (isset($credentials['type'])) {
-            $query->where('type', $credentials['type']);
+            $user = User::where('phone', $phone)
+                ->where('type', $type)
+                ->first();
+
+            if (!$user || !Hash::check($credentials['password'] ?? '', $user->getAuthPassword())) {
+                throw ValidationException::withMessages([
+                    'phone' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+        } elseif ($type === 'individual' && !empty($credentials['national_id'])) {
+            // Individual login: use national_id + password
+            $nationalId = trim($credentials['national_id']);
+
+            $user = User::where('national_id', $nationalId)
+                ->where('type', 'individual')
+                ->first();
+
+            if (!$user || !Hash::check($credentials['password'] ?? '', $user->getAuthPassword())) {
+                throw ValidationException::withMessages([
+                    'national_id' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+        } elseif ($type === 'origin' && !empty($credentials['commercial_number'])) {
+            // Origin login: use commercial_number + password
+            $commercialNumber = trim($credentials['commercial_number']);
+
+            $user = User::where('commercial_number', $commercialNumber)
+                ->where('type', 'origin')
+                ->first();
+
+            if (!$user || !Hash::check($credentials['password'] ?? '', $user->getAuthPassword())) {
+                throw ValidationException::withMessages([
+                    'commercial_number' => ['The provided credentials are incorrect.'],
+                ]);
+            }
+        } else {
+            // Default: email + password (for user, individual, origin, or admin without phone)
+            $email = isset($credentials['email']) ? trim($credentials['email']) : '';
+
+            $query = User::where('email', $email);
+
+            if (isset($credentials['type'])) {
+                $query->where('type', $credentials['type']);
+            }
+
+            $usersWithEmail = User::where('email', $email)->get();
+
+            if ($usersWithEmail->count() > 1 && !isset($credentials['type'])) {
+                throw ValidationException::withMessages([
+                    'type' => ['Multiple accounts found with this email. Please specify the user type.'],
+                ]);
+            }
+
+            $user = $query->first();
         }
-
-        $usersWithEmail = User::where('email', $email)->get();
-
-        if ($usersWithEmail->count() > 1 && !isset($credentials['type'])) {
-            throw ValidationException::withMessages([
-                'type' => ['Multiple accounts found with this email. Please specify the user type.'],
-            ]);
-        }
-
-        $user = $query->first();
 
         if (!$user) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
-        }
-
-        if (!Hash::check($credentials['password'], $user->getAuthPassword())) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
