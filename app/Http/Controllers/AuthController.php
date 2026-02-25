@@ -94,12 +94,27 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         try {
-            $request->validate([
-                'email' => 'required|string|email',
+            $rules = [
                 'password' => 'required|string',
                 'type' => 'nullable|in:user,admin,individual,origin',
-            ]);
-            $result = $this->authService->login($request->only('email', 'password', 'type'));
+            ];
+
+            // Admin & user: phone; individual: national_id; origin: commercial_number
+            if (in_array($request->input('type'), ['admin', 'user'])) {
+                $rules['phone'] = 'required|string|max:20';
+            } elseif ($request->input('type') === 'individual') {
+                $rules['national_id'] = 'required|string|max:255';
+            } elseif ($request->input('type') === 'origin') {
+                $rules['commercial_number'] = 'required|string|max:255';
+            } else {
+                $rules['email'] = 'required|string|email';
+            }
+
+            $request->validate($rules);
+
+            $result = $this->authService->login(
+                $request->only('email', 'phone', 'national_id', 'commercial_number', 'password', 'type')
+            );
 
             // Load relationships if needed (individual may have optional origin)
             if ($result['user']->type === 'individual' && $result['user']->origin_id) {
