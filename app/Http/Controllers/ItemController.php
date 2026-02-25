@@ -43,7 +43,8 @@ class ItemController extends Controller
         }
     }
 
-    public function store(Request $request)
+    // initiate item
+    public function update(Request $request, int $id)
     {
         try {
             // general item data
@@ -123,48 +124,21 @@ class ItemController extends Controller
         }
     }
 
-    public function update(Request $request, int $id)
+    public function store(Request $request)
     {
         try {
             $request->validate([
-                'category_id' => 'nullable|exists:categories,id',
-                'name' => 'nullable|string|max:255',
-                'description' => 'nullable|string',
-                'price' => 'nullable|string|max:255',
-                'price_after_discount' => 'nullable|string|max:255',
-                'location' => 'nullable|string|max:255',
-                'lat' => 'nullable|string|max:255',
-                'long' => 'nullable|string|max:255',
-                'available_datetime' => 'nullable|date',
-                'payment_platform' => 'nullable|in:cash,installment',
-                'city_id' => 'nullable|exists:cities,id',
-                'region_id' => 'nullable|exists:regions,id',
-                'district' => 'nullable|string|max:255',
-                'street' => 'nullable|string|max:255',
-                'is_active' => 'nullable|boolean',
-                'contact_name' => 'nullable|string|max:255',
-                'contact_phone' => 'nullable|string|max:50',
-                'contact_email' => 'nullable|email|max:255',
-                'contact_type' => 'nullable|in:whatsapp,phone,email',
-                'appear_in_item' => 'nullable|boolean',
-                'inputs' => 'nullable|array',
+                'category_id' => 'required|exists:categories,id',
             ]);
 
             $user = $request->user();
-            $item = $this->itemService->getByIdForUser($id, $user);
-
-            if (!$item) {
-                return response()->json([
-                    'message' => __('messages.item_not_found'),
-                ], 404);
-            }
-
-            $item = $this->itemService->updateForUser($item, $user, $request->all());
+            $item = $this->itemService->initiateItem($user->id, $request->category_id);
 
             return response()->json([
-                'message' => __('messages.item_updated_success'),
+                'message' => __('messages.item_initiated_success'),
                 'data' => new ItemResource($item),
-            ], 200);
+            ], 201);
+            
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_update_item'),
