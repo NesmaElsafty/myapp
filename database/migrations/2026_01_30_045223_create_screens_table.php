@@ -18,7 +18,10 @@ return new class extends Migration
             $table->longText('description_en')->nullable();
             $table->longText('description_ar')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->integer('position')->default(1);
             $table->timestamps();
+
+            $table->index(['category_id', 'position']);
         });
     }
 

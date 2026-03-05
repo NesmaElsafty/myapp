@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('item_data', function (Blueprint $table) {
+        Schema::create('item_input_values', function (Blueprint $table) {
             $table->id();
             $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
-            $table->string('name')->nullable();
-            $table->string('value')->nullable();
+            $table->foreignId('input_id')->constrained('inputs')->onDelete('cascade');
+            $table->longText('value')->nullable();
             $table->timestamps();
+
+            $table->unique(['item_id', 'input_id']);
         });
     }
 
@@ -25,6 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('item_data');
+        Schema::dropIfExists('item_input_values');
     }
 };
+

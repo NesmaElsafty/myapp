@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Models\Input;
 use App\Models\Item;
-use App\Models\ItemData;
+use App\Models\ItemInputValue;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +17,7 @@ class ItemService
 
     public function getAllForUser(User $user, array $filters = []): Builder
     {
-        $query = Item::with(['category', 'city', 'region', 'data.input'])
+            $query = Item::with(['category', 'city', 'region', 'data.input'])
             ->where('user_id', $user->id);
 
         if (!empty($filters['category_id'])) {
@@ -97,7 +97,7 @@ class ItemService
             ]);
 
             foreach ($validValues as $inputId => $value) {
-                ItemData::create([
+                ItemInputValue::create([
                     'item_id' => $item->id,
                     'input_id' => $inputId,
                     'value' => is_array($value) ? json_encode($value) : (string) $value,
@@ -161,9 +161,9 @@ class ItemService
             ]);
 
             // Refresh dynamic data: simple approach – delete and recreate
-            ItemData::where('item_id', $item->id)->delete();
+            ItemInputValue::where('item_id', $item->id)->delete();
             foreach ($validValues as $inputId => $value) {
-                ItemData::create([
+                ItemInputValue::create([
                     'item_id' => $item->id,
                     'input_id' => $inputId,
                     'value' => is_array($value) ? json_encode($value) : (string) $value,
@@ -258,37 +258,15 @@ class ItemService
         return [$validValues, $errors];
     }
 
-    // dynamic validation
-    public function dynamicValidation(Category $category, array $payload): array
-    {
-        $validator = Validator::make($payload, $inputs);
-        return [$validator->validated(), $validator->errors()];
-    }
-
     // initiate item
     public function initiateItem($userId, $categoryId): Item
     {
         $item = Item::create([
-            'user_id' => $user->id,
+            'user_id' => $userId,
             'category_id' => $categoryId,
         ]);
 
-        $this->initializeItemData($item, $categoryId);
-        return $item->load(['category', 'city', 'region', 'data.input']);
-    }
-
-    // initialize item data
-    public function initializeItemData(Item $item, $categoryId): void
-    {
-        $category = Category::find($categoryId);
-        $inputs = $category->getCategoryInputsNames($categoryId);
-        foreach ($inputs as $input) {
-            ItemData::create([
-                'item_id' => $item->id,
-                'name' => $input['name'],
-                'value' => null,
-            ]);
-        }
+        return $item;
     }
 }
 

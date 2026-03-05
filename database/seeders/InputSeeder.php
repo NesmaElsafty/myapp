@@ -2190,6 +2190,19 @@ class InputSeeder extends Seeder
      */
     public function run(): void
     {
+        Input::creating(function (Input $input) {
+            $source = $input->name ?: $input->key ?: $input->title_en ?: $input->title_ar;
+
+            if ($source !== null) {
+                $normalized = preg_replace('/\s+/', '_', trim($source));
+                $input->name = $normalized;
+
+                if (empty($input->key)) {
+                    $input->key = $normalized;
+                }
+            }
+        });
+
         $screens = Screen::all();
 
         if ($screens->isEmpty()) {
@@ -2205,13 +2218,27 @@ class InputSeeder extends Seeder
             if ($screen1) {
                 Input::where('screen_id', $screen1->id)->delete();
                 foreach ($this->inputsForBasicPropertyInfo() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
             if ($screen2) {
                 Input::where('screen_id', $screen2->id)->delete();
                 foreach ($this->inputsForPropertyDetails() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen2->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen2->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2224,13 +2251,27 @@ class InputSeeder extends Seeder
             if ($screen1Cat2) {
                 Input::where('screen_id', $screen1Cat2->id)->delete();
                 foreach ($this->inputsForBasicProjectInfo() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1Cat2->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1Cat2->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
             if ($screen2Cat2) {
                 Input::where('screen_id', $screen2Cat2->id)->delete();
                 foreach ($this->inputsForPropertyDetailsProject() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen2Cat2->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen2Cat2->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2244,13 +2285,27 @@ class InputSeeder extends Seeder
             if ($screen1Cat5) {
                 Input::where('screen_id', $screen1Cat5->id)->delete();
                 foreach ($this->inputsForBasicPropertyInfo() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1Cat5->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1Cat5->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
             if ($screen2Cat5) {
                 Input::where('screen_id', $screen2Cat5->id)->delete();
                 foreach ($this->inputsForPropertyDetails() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen2Cat5->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen2Cat5->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2262,7 +2317,14 @@ class InputSeeder extends Seeder
             if ($screen1Cat3) {
                 Input::where('screen_id', $screen1Cat3->id)->delete();
                 foreach ($this->inputsForCategoryThreeScreen1() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1Cat3->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1Cat3->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2274,7 +2336,14 @@ class InputSeeder extends Seeder
             if ($screen1Cat4) {
                 Input::where('screen_id', $screen1Cat4->id)->delete();
                 foreach ($this->inputsForCategoryFourScreen1() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1Cat4->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1Cat4->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2288,19 +2357,40 @@ class InputSeeder extends Seeder
             if ($screen1Cat6) {
                 Input::where('screen_id', $screen1Cat6->id)->delete();
                 foreach ($this->inputsForCategorySixScreen1() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1Cat6->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1Cat6->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
             if ($screen2Cat6) {
                 Input::where('screen_id', $screen2Cat6->id)->delete();
                 foreach ($this->inputsForCategorySixScreen2() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen2Cat6->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen2Cat6->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
             if ($screen3Cat6) {
                 Input::where('screen_id', $screen3Cat6->id)->delete();
                 foreach ($this->inputsForCategorySixScreen3() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen3Cat6->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen3Cat6->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2313,13 +2403,27 @@ class InputSeeder extends Seeder
             if ($screen1Cat7) {
                 Input::where('screen_id', $screen1Cat7->id)->delete();
                 foreach ($this->inputsForCategorySevenScreen1() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1Cat7->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1Cat7->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
             if ($screen2Cat7) {
                 Input::where('screen_id', $screen2Cat7->id)->delete();
                 foreach ($this->inputsForCategorySevenScreen2() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen2Cat7->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen2Cat7->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2331,7 +2435,14 @@ class InputSeeder extends Seeder
             if ($screen1Cat8) {
                 Input::where('screen_id', $screen1Cat8->id)->delete();
                 foreach ($this->inputsForCategoryEightScreen1() as $input) {
-                    Input::create(array_merge($input, ['screen_id' => $screen1Cat8->id]));
+                    Input::create(array_merge(
+                        $input,
+                        [
+                            'screen_id' => $screen1Cat8->id,
+                            'key' => $input['name'] ?? $input['title_en'],
+                            'is_active' => $input['is_active'] ?? true,
+                        ]
+                    ));
                 }
             }
         }
@@ -2353,6 +2464,7 @@ class InputSeeder extends Seeder
                 Input::create([
                     'screen_id' => $screen->id,
                     'name' => $template['name'],
+                    'key' => $template['name'],
                     'validation_rules' => $template['validation_rules'],
                     'title_en' => $template['title_en'],
                     'title_ar' => $template['title_ar'],
@@ -2363,6 +2475,7 @@ class InputSeeder extends Seeder
                     'type' => $template['type'],
                     'options' => $template['options'],
                     'is_required' => $template['is_required'],
+                    'is_active' => true,
                 ]);
             }
         }

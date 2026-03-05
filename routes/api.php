@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\Api\ItemWizardController;
 use App\Http\Controllers\Origin\IndividualController;
 use App\Http\Controllers\Individual\OriginController;
 use Illuminate\Support\Facades\Route;
@@ -272,4 +273,9 @@ Route::prefix('items')->middleware(['auth:sanctum', 'type:individual,origin'])->
     Route::get('/{id}', [ItemController::class, 'show']);
     Route::put('/{id}', [ItemController::class, 'update']);
     Route::delete('/{id}', [ItemController::class, 'destroy']);
+    Route::post('/init', [ItemWizardController::class, 'init']);
+    Route::get('/{item}/screens/{screen}', [ItemWizardController::class, 'showScreen']);
+    Route::patch('/updateInput', [ItemWizardController::class, 'updateInput']);
+     Route::delete('/{item}/inputs/{input}/media/{media}', [ItemWizardController::class, 'deleteMedia']);
+    Route::post('/{item}/finalize', [ItemWizardController::class, 'finalize']);
 });

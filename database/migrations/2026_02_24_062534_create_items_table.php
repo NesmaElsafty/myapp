@@ -26,8 +26,10 @@ return new class extends Migration
 
             $table->string('available_datetime')->nullable();
             $table->enum('payment_platform', ['cash', 'installment'])->nullable();
-            $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
-            $table->foreignId('region_id')->constrained('regions')->onDelete('cascade');
+            // make city and region nullable
+            $table->foreignId('city_id')->nullable()->constrained('cities');
+            $table->foreignId('region_id')->nullable()->constrained('regions');
+           
             $table->string('district')->nullable();
             $table->string('street')->nullable();
             $table->boolean('is_active')->default(true);
@@ -38,6 +40,9 @@ return new class extends Migration
             $table->string('contact_email')->nullable();
             $table->enum('contact_type', ['whatsapp', 'phone', 'email'])->nullable();
             $table->boolean('appear_in_item')->default(false);
+            $table->enum('status', ['draft', 'in_progress', 'completed'])->default('draft');
+            $table->foreignId('current_screen_id')->nullable()->constrained('screens')->nullOnDelete();
+            $table->dateTime('completed_at')->nullable();
             $table->timestamps();
         });
     }

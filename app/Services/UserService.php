@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use App\Helpers\PaginationHelper;
 use App\Helpers\ExportHelper;
 
 class UserService
@@ -115,7 +113,7 @@ class UserService
             'password' => Hash::make('123456'),
             'role_id' => $data['role_id'] ?? null,
             'origin_id' => ($data['type'] ?? null) === 'individual' ? ($data['origin_id'] ?? null) : null,
-            'specialty_areas' => $data['specialty_areas'] ?? [],
+            'specialty_areas' => $data['specialty_areas'] ?? [], 
             'major' => $data['major'] ?? null,
             'summary' => $data['summary'] ?? null,
             'bank_name' => $data['bank_name'] ?? null,

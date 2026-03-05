@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('inputs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('screen_id')->constrained('screens')->onDelete('cascade');
+            $table->string('key');
             $table->string('name')->nullable();
             $table->string('title_en')->nullable();
             $table->string('title_ar')->nullable();
@@ -21,12 +22,33 @@ return new class extends Migration
             $table->string('placeholder_ar')->nullable();
             $table->text('description_en')->nullable();
             $table->text('description_ar')->nullable();
-            $table->enum('type', ['text', 'textarea', 'select', 'radio', 'checkbox', 'date', 'time', 'number', 'email', 'phone', 'url', 'file', 'image', 'video', 'audio', 'link'])->nullable();
+            $table->enum('type', [
+                'text',
+                'textarea',
+                'select',
+                'radio',
+                'checkbox',
+                'date',
+                'time',
+                'number',
+                'email',
+                'phone',
+                'url',
+                'file',
+                'image',
+                'video',
+                'audio',
+                'link',
+                'multi_file',
+            ])->nullable();
             // options: one value per option (same for en/ar). select/radio: { choices: [{ value, label_en, label_ar }] }; checkbox: { label_en, label_ar }
             $table->json('options')->nullable();
             $table->boolean('is_required')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->json('validation_rules')->nullable();
             $table->timestamps();
+
+            $table->unique(['screen_id', 'key']);
         });
     }
 

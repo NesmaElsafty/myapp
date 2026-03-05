@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ItemData extends Model
+class ItemInputValue extends Model
 {
-    protected $table = 'item_data';
+    protected $table = 'item_input_values';
 
     protected $guarded = [];
 
@@ -21,3 +21,4 @@ class ItemData extends Model
         return $this->belongsTo(Input::class);
     }
 }
+

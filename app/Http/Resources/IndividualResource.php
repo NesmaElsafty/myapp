@@ -20,7 +20,7 @@ class IndividualResource extends JsonResource
         if ($this->hasMedia('profile')) {
             $image = str_replace('public/', '', $this->getFirstMediaUrl('profile'));
         }
-
+        
         return [
             'id' => $this->id,
             'f_name' => $this->f_name,
@@ -40,9 +40,11 @@ class IndividualResource extends JsonResource
             'bank_account_number' => $this->bank_account_number,
             'bank_account_iban' => $this->bank_account_iban,
             'bank_account_address' => $this->bank_account_address,
+            'location' => $this->location,
             'language' => $this->language ?? 'ar',
             'email_verified_at' => $this->email_verified_at,
             'image' => $image,
+            'items_count' => 0,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

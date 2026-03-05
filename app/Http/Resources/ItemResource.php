@@ -35,16 +35,14 @@ class ItemResource extends JsonResource
             'contact_email' => $this->contact_email,
             'contact_type' => $this->contact_type,
             'appear_in_item' => (bool) $this->appear_in_item,
-            'category' => $this->whenLoaded('category', fn () => new CategoryResource($this->category)),
+            'category_name' => $this->category->name,
             'city' => $this->whenLoaded('city', fn () => new CityResource($this->city)),
             'region' => $this->whenLoaded('region', fn () => new RegionResource($this->region)),
             'inputs' => $this->data->map(function ($itemData) {
                 return [
-                    'input_id' => $itemData->input_id,
+                    'input_id' => $itemData->input->id,
                     'value' => $itemData->value,
-                    'input' => $itemData->relationLoaded('input') && $itemData->input
-                        ? new InputResource($itemData->input)
-                        : null,
+                    'input_name' => $itemData->input->name
                 ];
             }),
             'created_at' => $this->created_at,

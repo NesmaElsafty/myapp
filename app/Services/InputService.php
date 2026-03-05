@@ -3,10 +3,126 @@
 namespace App\Services;
 
 use App\Models\Input;
-use Illuminate\Validation\ValidationException;
+use App\Models\Item;
+use App\Models\Screen;
+use App\Models\ItemInputValue;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\Rule;
 
 class InputService
 {
+    public function getInputsForScreen(Screen $screen): Collection
+    {
+        return $screen->inputs()
+            ->where('is_active', true)
+            ->orderBy('id')
+            ->get();
+    }
+
+    public function buildValidationRulesForInput(Input $input): array
+    {
+        // If explicit validation rules are defined for file-like inputs
+        if (is_array($input->validation_rules) && !empty($input->validation_rules)) {
+            if ($this->isMultiFile($input)) {
+                return [
+                    'value' => ['required', 'array', 'min:1'],
+                    'value.*' => $input->validation_rules,
+                ];
+            }
+
+            return ['value' => $input->validation_rules];
+        }
+
+        // Default rules when validation_rules is null
+        if ($this->isMultiFile($input)) {
+            return [
+                'value' => ['required', 'array', 'min:1'],
+                'value.*' => ['file', 'max:10240'],
+            ];
+        }
+
+        $rules = ['nullable'];
+
+        switch ($input->type) {
+            case 'text':
+            case 'textarea':
+            case 'email':
+            case 'phone':
+            case 'url':
+            case 'link':
+                $rules[] = 'string';
+                break;
+            case 'number':
+                $rules[] = 'numeric';
+                break;
+            case 'date':
+                $rules[] = 'date';
+                break;
+            case 'time':
+                $rules[] = 'date_format:H:i';
+                break;
+            case 'checkbox':
+                $rules[] = 'boolean';
+                break;
+            case 'select':
+            case 'radio':
+                $rules[] = $this->buildInRuleFromOptions($input);
+                break;
+            case 'file':
+            case 'image':
+            case 'video':
+            case 'audio':
+                $rules[] = 'file';
+                $rules[] = 'max:10240';
+                break;
+            default:
+                break;
+        }
+
+        return ['value' => $rules];
+    }
+
+    protected function isMultiFile(Input $input): bool
+    {
+        return $input->type === 'multi_file';
+    }
+
+    protected function buildInRuleFromOptions(Input $input): Rule
+    {
+        $values = [];
+        $options = $input->options ?? [];
+        if (isset($options['choices']) && is_array($options['choices'])) {
+            foreach ($options['choices'] as $choice) {
+                if (isset($choice['value'])) {
+                    $values[] = $choice['value'];
+                }
+            }
+        }
+
+        return Rule::in($values);
+    }
+
+    public function buildResponseInput(Input $input, Item $item, array $media = []): array
+    {
+        $valueRow = ItemInputValue::where('item_id', $item->id)
+            ->where('input_id', $input->id)
+            ->first();
+
+        return [
+            'id' => $input->id,
+            'key' => $input->key,
+            'type' => $input->type,
+            'is_required' => (bool) $input->is_required,
+            'validation_rules' => $input->validation_rules,
+            'options' => $input->options,
+            'value' => $valueRow?->value,
+            'media' => $media,
+        ];
+    }
+
+    /**
+     * Existing admin-facing methods (preserved).
+     */
     public function getAll(array $data, string $lang = 'ar')
     {
         $query = Input::with('screen');

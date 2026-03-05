@@ -8,7 +8,7 @@ use App\Services\AlertService;
 use App\Models\User;
 
 class OriginController extends Controller
-{
+{ 
     protected $alertService;
     public function __construct(AlertService $alertService)
     {

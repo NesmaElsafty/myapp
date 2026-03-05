@@ -10,6 +10,8 @@ use Illuminate\Validation\Rule;
 use App\Helpers\PaginationHelper;
 use Exception;
 use App\Models\User;
+use App\Http\Resources\IndividualResource;
+use App\Http\Resources\OriginResource;
 
 class UserController extends Controller
 {
@@ -34,9 +36,17 @@ class UserController extends Controller
             $users = $this->userService->getAll($request->all(), $request->type)->paginate(10);
             $stats = $this->userService->stats($request->type);
 
+            $users_resource = null;
+            if ($request->type === 'individual') {
+                $users_resource = IndividualResource::collection($users);
+            } elseif ($request->type === 'origin') {
+                $users_resource = OriginResource::collection($users);
+            } else {
+                $users_resource = UserResource::collection($users);
+            }
             return response()->json([
                 'message' => __('messages.users_retrieved_success'),
-                'users' => UserResource::collection($users),
+                'users' => $users_resource,
                 'pagination' => PaginationHelper::paginate($users),
                 'stats' => $request->type !== 'admin' ? $stats : null,
             ], 200);

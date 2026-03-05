@@ -136,7 +136,7 @@ class ItemController extends Controller
 
             return response()->json([
                 'message' => __('messages.item_initiated_success'),
-                'data' => new ItemResource($item),
+                'data' => $item,
             ], 201);
             
         } catch (Exception $e) {

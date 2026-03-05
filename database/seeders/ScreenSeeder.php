@@ -345,13 +345,14 @@ class ScreenSeeder extends Seeder
         $categoryOne = Category::find(1);
         if ($categoryOne) {
             Screen::where('category_id', 1)->delete();
-            foreach ($this->screensForCategoryOne() as $screenData) {
+            foreach ($this->screensForCategoryOne() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 1,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -360,13 +361,14 @@ class ScreenSeeder extends Seeder
         $categoryFive = Category::find(5);
         if ($categoryFive) {
             Screen::where('category_id', 5)->delete();
-            foreach ($this->screensForCategoryOne() as $screenData) {
+            foreach ($this->screensForCategoryOne() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 5,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -375,13 +377,14 @@ class ScreenSeeder extends Seeder
         $categoryTwo = Category::find(2);
         if ($categoryTwo) {
             Screen::where('category_id', 2)->delete();
-            foreach ($this->screensForCategoryTwo() as $screenData) {
+            foreach ($this->screensForCategoryTwo() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 2,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -390,13 +393,14 @@ class ScreenSeeder extends Seeder
         $categoryThree = Category::find(3);
         if ($categoryThree) {
             Screen::where('category_id', 3)->delete();
-            foreach ($this->screensForCategoryThree() as $screenData) {
+            foreach ($this->screensForCategoryThree() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 3,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -405,13 +409,14 @@ class ScreenSeeder extends Seeder
         $categoryFour = Category::find(4);
         if ($categoryFour) {
             Screen::where('category_id', 4)->delete();
-            foreach ($this->screensForCategoryFour() as $screenData) {
+            foreach ($this->screensForCategoryFour() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 4,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -420,13 +425,14 @@ class ScreenSeeder extends Seeder
         $categorySix = Category::find(6);
         if ($categorySix) {
             Screen::where('category_id', 6)->delete();
-            foreach ($this->screensForCategorySix() as $screenData) {
+            foreach ($this->screensForCategorySix() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 6,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -435,13 +441,14 @@ class ScreenSeeder extends Seeder
         $categorySeven = Category::find(7);
         if ($categorySeven) {
             Screen::where('category_id', 7)->delete();
-            foreach ($this->screensForCategorySeven() as $screenData) {
+            foreach ($this->screensForCategorySeven() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 7,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -450,13 +457,14 @@ class ScreenSeeder extends Seeder
         $categoryEight = Category::find(8);
         if ($categoryEight) {
             Screen::where('category_id', 8)->delete();
-            foreach ($this->screensForCategoryEight() as $screenData) {
+            foreach ($this->screensForCategoryEight() as $index => $screenData) {
                 Screen::create([
                     'category_id' => 8,
                     'name_en' => $screenData['name_en'],
                     'name_ar' => $screenData['name_ar'],
                     'description_en' => $screenData['description_en'],
                     'description_ar' => $screenData['description_ar'],
+                    'position' => $index + 1,
                 ]);
             }
         }
@@ -480,7 +488,7 @@ class ScreenSeeder extends Seeder
                 ];
             }
 
-            foreach ($screens as $screenData) {
+            foreach ($screens as $index => $screenData) {
                 Screen::firstOrCreate(
                     [
                         'category_id' => $category->id,
@@ -490,6 +498,7 @@ class ScreenSeeder extends Seeder
                         'name_ar' => $screenData['name_ar'],
                         'description_en' => $screenData['description_en'],
                         'description_ar' => $screenData['description_ar'],
+                        'position' => $index + 1,
                     ]
                 );
             }

@@ -16,7 +16,7 @@ class AdController extends Controller
     ) {}
 
     public function index(Request $request)
-    {
+    { 
         try {
             $request->validate([
                 'search' => 'nullable|string|max:255',

@@ -38,6 +38,9 @@ class OriginResource extends JsonResource
             'email_verified_at' => $this->email_verified_at,
             'image' => $image,
             'individuals' => IndividualResource::collection($individuals),
+            'items_count' => 0,
+            'individuals_count' => $individuals->count(),
+            'location' => $this->location,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

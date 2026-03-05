@@ -1,0 +1,459 @@
+{
+  "info": {
+    "name": "Item Wizard Cycle",
+    "_postman_id": "b7d4c3b0-0000-0000-0000-item-wizard",
+    "description": "End-to-end tests for Item Wizard (init, update inputs, media, finalize).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Login (get token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["api", "auth", "login"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{user_email}}\",\n  \"password\": \"{{user_password}}\"\n}"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Login successful', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var json = pm.response.json();",
+              "if (json.token) {",
+              "  pm.collectionVariables.set('auth_token', json.token);",
+              "}",
+              "",
+              "// if your API returns token in data.token or similar, adjust here",
+              "if (json.data && json.data.token) {",
+              "  pm.collectionVariables.set('auth_token', json.data.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Init Item",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/init",
+          "host": ["{{base_url}}"],
+          "path": ["api", "items", "init"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"category_id\": {{category_id}}\n}"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Init item success', function () {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "var json = pm.response.json();",
+              "pm.collectionVariables.set('item_id', json.item.id);",
+              "pm.collectionVariables.set('current_screen_id', json.current_screen.id);",
+              "",
+              "// pick first input id and key (assumes at least one input)",
+              "if (json.inputs && json.inputs.length > 0) {",
+              "  pm.collectionVariables.set('text_input_id', json.inputs[0].id);",
+              "  pm.collectionVariables.set('text_input_key', json.inputs[0].key);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Get Screen Inputs",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/{{item_id}}/screens/{{current_screen_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "items", "{{item_id}}", "screens", "{{current_screen_id}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Get screen inputs success', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var json = pm.response.json();",
+              "pm.collectionVariables.set('steps_count', json.steps_count);",
+              "",
+              "// Optionally, find specific input types and store their IDs",
+              "if (json.inputs && json.inputs.length) {",
+              "  json.inputs.forEach(function (inp) {",
+              "    if (inp.type === 'text' && !pm.collectionVariables.get('text_input_id')) {",
+              "      pm.collectionVariables.set('text_input_id', inp.id);",
+              "      pm.collectionVariables.set('text_input_key', inp.key);",
+              "    }",
+              "    if ((inp.type === 'image' || inp.type === 'file' || inp.type === 'video' || inp.type === 'audio') && !pm.collectionVariables.get('single_file_input_id')) {",
+              "      pm.collectionVariables.set('single_file_input_id', inp.id);",
+              "      pm.collectionVariables.set('single_file_input_key', inp.key);",
+              "    }",
+              "    if (inp.type === 'multi_file' && !pm.collectionVariables.get('multi_file_input_id')) {",
+              "      pm.collectionVariables.set('multi_file_input_id', inp.id);",
+              "      pm.collectionVariables.set('multi_file_input_key', inp.key);",
+              "    }",
+              "  });",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Update Text Input",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/{{item_id}}/inputs/{{text_input_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "items", "{{item_id}}", "inputs", "{{text_input_id}}"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"value\": \"My test title from Postman\"\n}"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Update text input success', function () {",
+              "  pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04b - Update Screen Inputs (batch)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/{{item_id}}/screens/{{current_screen_id}}/inputs",
+          "host": ["{{base_url}}"],
+          "path": ["api", "items", "{{item_id}}", "screens", "{{current_screen_id}}", "inputs"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"inputs\": {\n    \"{{text_input_key}}\": \"My batch-updated title\",\n    \"{{single_file_input_key}}\": null,\n    \"{{multi_file_input_key}}\": null\n  }\n}"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Batch update screen inputs status', function () {",
+              "  pm.expect([200, 422]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Update Single File Input",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/{{item_id}}/inputs/{{single_file_input_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "items", "{{item_id}}", "inputs", "{{single_file_input_id}}"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "value",
+              "type": "file",
+              "src": []
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Update single file input success', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var json = pm.response.json();",
+              "var singleKey = pm.collectionVariables.get('single_file_input_key');",
+              "",
+              "if (json.inputs && singleKey) {",
+              "  var found = json.inputs.find(i => i.key === singleKey);",
+              "  if (found && found.media && found.media.length > 0) {",
+              "    pm.collectionVariables.set('single_file_media_id', found.media[0].id);",
+              "  }",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Update Multi File Input (append)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/{{item_id}}/inputs/{{multi_file_input_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "items", "{{item_id}}", "inputs", "{{multi_file_input_id}}"]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "value",
+              "type": "file",
+              "src": []
+            },
+            {
+              "key": "value",
+              "type": "file",
+              "src": []
+            }
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Update multi_file input success', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var json = pm.response.json();",
+              "var multiKey = pm.collectionVariables.get('multi_file_input_key');",
+              "if (json.inputs && multiKey) {",
+              "  var found = json.inputs.find(i => i.key === multiKey);",
+              "  if (found && found.media) {",
+              "    pm.collectionVariables.set('multi_file_media_count', found.media.length);",
+              "  }",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Delete Single File Media",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/{{item_id}}/inputs/{{single_file_input_id}}/media/{{single_file_media_id}}",
+          "host": ["{{base_url}}"],
+          "path": [
+            "api",
+            "items",
+            "{{item_id}}",
+            "inputs",
+            "{{single_file_input_id}}",
+            "media",
+            "{{single_file_media_id}}"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Delete media success', function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "var json = pm.response.json();",
+              "pm.test('Delete response body', function () {",
+              "  pm.expect(json.success).to.eql(true);",
+              "  pm.expect(json.deleted_media_id).to.eql(parseInt(pm.collectionVariables.get('single_file_media_id')));",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Finalize Item",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{auth_token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/items/{{item_id}}/finalize",
+          "host": ["{{base_url}}"],
+          "path": ["api", "items", "{{item_id}}", "finalize"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Finalized Item\",\n  \"description\": \"Description from Postman\",\n  \"price\": 1000,\n  \"location\": \"Riyadh\",\n  \"payment_platform\": \"cash\"\n}"
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Finalize item status code', function () {",
+              "  pm.expect([200, 422]).to.include(pm.response.code);",
+              "});",
+              "",
+              "if (pm.response.code === 200) {",
+              "  var json = pm.response.json();",
+              "  pm.test('Item is completed', function () {",
+              "    pm.expect(json.item.status).to.eql('completed');",
+              "  });",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "user_email",
+      "value": "user@example.com"
+    },
+    {
+      "key": "user_password",
+      "value": "password"
+    },
+    {
+      "key": "category_id",
+      "value": "1"
+    },
+    {
+      "key": "auth_token",
+      "value": ""
+    },
+    {
+      "key": "item_id",
+      "value": ""
+    },
+    {
+      "key": "current_screen_id",
+      "value": ""
+    },
+    {
+      "key": "text_input_id",
+      "value": ""
+    },
+    {
+      "key": "text_input_key",
+      "value": ""
+    },
+    {
+      "key": "single_file_input_id",
+      "value": ""
+    },
+    {
+      "key": "single_file_input_key",
+      "value": ""
+    },
+    {
+      "key": "multi_file_input_id",
+      "value": ""
+    },
+    {
+      "key": "multi_file_input_key",
+      "value": ""
+    },
+    {
+      "key": "single_file_media_id",
+      "value": ""
+    }
+  ]
+}
+

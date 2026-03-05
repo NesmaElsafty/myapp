@@ -2,13 +2,38 @@
 
 namespace App\Services;
 
+use App\Models\Category;
+use App\Models\Item;
 use App\Models\Screen;
 use Illuminate\Validation\ValidationException;
 
 class ScreenService
 {
     /**
-     * Get all screens with optional filters.
+     * Wizard helpers
+     */
+    public function firstForCategory(Category $category): ?Screen
+    {
+        return $category->screens()
+            ->orderBy('position')
+            ->orderBy('id')
+            ->first();
+    }
+
+    public function stepsCountForCategory(Category $category): int
+    {
+        return $category->screens()->count();
+    }
+
+    public function ensureItemAndScreenMatch(Item $item, Screen $screen): void
+    {
+        if ($screen->category_id !== $item->category_id) {
+            abort(422, 'Screen does not belong to item category.');
+        }
+    }
+
+    /**
+     * Existing admin-facing methods
      */
     public function getAll($data, $lang = 'ar')
     {
@@ -52,7 +77,7 @@ class ScreenService
 
     public function update($id, $data)
     {
-        $screen = Screen::find($id); 
+        $screen = Screen::find($id);
         if (!$screen) {
             throw ValidationException::withMessages(['screen' => ['Screen not found']]);
         }
@@ -75,5 +100,4 @@ class ScreenService
         $screen->forceDelete();
         return $screen;
     }
-
 }

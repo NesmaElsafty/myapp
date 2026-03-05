@@ -21,6 +21,7 @@ class Input extends Model
 
     protected $fillable = [
         'screen_id',
+        'key',
         'name',
         'title_en',
         'title_ar',
@@ -38,6 +39,7 @@ class Input extends Model
         'options' => 'array',
         'validation_rules' => 'array',
         'is_required' => 'boolean',
+        'is_active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

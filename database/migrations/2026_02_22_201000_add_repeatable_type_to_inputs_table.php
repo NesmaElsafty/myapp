@@ -13,7 +13,7 @@ return new class extends Migration
         DB::statement("ALTER TABLE inputs MODIFY COLUMN type ENUM(
             'text', 'textarea', 'select', 'radio', 'checkbox', 'date', 'time',
             'number', 'email', 'phone', 'url', 'file', 'image', 'video', 'audio',
-            'link', 'repeatable'
+            'link', 'repeatable', 'multi_file'
         ) NULL");
     }
 
