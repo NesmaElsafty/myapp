@@ -55,12 +55,14 @@ class InputController extends Controller
     {
         try {
             $lang = app()->getLocale();
-            $inputs = $this->inputService->getAll($request->all(), $lang)->paginate(10);
+            $request->validate([
+                'screen_id' => 'required|exists:screens,id',
+            ]);
+            $inputs = $this->inputService->getAll($request->all(), $lang)->get();
 
             return response()->json([
                 'message' => __('messages.inputs_retrieved_success'),
                 'data' => InputResource::collection($inputs),
-                'pagination' => PaginationHelper::paginate($inputs),
             ], 200);
         } catch (Exception $e) {
             return response()->json([

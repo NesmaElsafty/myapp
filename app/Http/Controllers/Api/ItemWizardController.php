@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ItemResource;
 use App\Http\Requests\Items\FinalizeItemRequest;
 use App\Http\Requests\Items\InitItemRequest;
-use App\Http\Requests\Items\UpdateItemInputRequest;
 use App\Http\Requests\Items\DeleteItemInputMediaRequest;
 use Illuminate\Http\Request;
 use App\Models\Input;
@@ -19,7 +18,6 @@ use App\Models\Item;
 use App\Models\Screen;
 use Illuminate\Http\JsonResponse;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Illuminate\Validation\ValidationException;
 
 class ItemWizardController extends Controller
 {
@@ -84,7 +82,7 @@ class ItemWizardController extends Controller
             'inputs.*value' => 'required|string',
             
         ]);
-    //   dd($request->inputs);
+
         // make dynamic validation rules for the inputs
         foreach ($request->inputs as $input) {
             $inputModel = Input::find($input->id);

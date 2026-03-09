@@ -24,8 +24,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Api\ItemWizardController;
-use App\Http\Controllers\Origin\IndividualController;
-use App\Http\Controllers\Individual\OriginController;
+use App\Http\Controllers\Advertiser\IndividualController;
+use App\Http\Controllers\Advertiser\OriginController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -250,15 +250,12 @@ Route::prefix('user')->middleware(['auth:sanctum', 'type:user'])->group(function
     // Add user-type-only routes here, e.g. Route::get('/dashboard', ...);
 });
 
-// Individual type routes (only type 'individual')
-Route::prefix('individual')->middleware(['auth:sanctum', 'type:individual'])->group(function () {
-    // Add individual-type-only routes here
+
+// Advertiser routes (origin & individual accounts)
+// Note: advertiser = user.type in ['individual', 'origin']
+Route::prefix('advertiser')->middleware(['auth:sanctum', 'type:individual,origin'])->group(function () {
     Route::post('requestToJoinOrigin', [OriginController::class, 'requestToJoinOrigin']);
     Route::post('signoutFromOrigin', [OriginController::class, 'signoutFromOrigin']);
-});
-
-// Origin type routes (guarded by type 'origin', not individual)
-Route::prefix('origin')->middleware(['auth:sanctum', 'type:origin'])->group(function () {
     Route::post('addIndividual', [IndividualController::class, 'addIndividual']);
     Route::get('getIndividualRequests', [IndividualController::class, 'getIndividualRequests']);
     Route::post('changeRequestStatus', [IndividualController::class, 'changeRequestStatus']);
@@ -266,16 +263,9 @@ Route::prefix('origin')->middleware(['auth:sanctum', 'type:origin'])->group(func
     Route::post('removeIndividual', [IndividualController::class, 'removeIndividual']);
 });
 
-// Item routes (only for origin & individual types)
-Route::prefix('items')->middleware(['auth:sanctum', 'type:individual,origin'])->group(function () {
-    Route::get('/', [ItemController::class, 'index']);
-    Route::post('/', [ItemController::class, 'store']);
-    Route::get('/{id}', [ItemController::class, 'show']);
-    Route::put('/{id}', [ItemController::class, 'update']);
-    Route::delete('/{id}', [ItemController::class, 'destroy']);
-    Route::post('/init', [ItemWizardController::class, 'init']);
-    Route::get('/{item}/screens/{screen}', [ItemWizardController::class, 'showScreen']);
-    Route::patch('/updateInput', [ItemWizardController::class, 'updateInput']);
-     Route::delete('/{item}/inputs/{input}/media/{media}', [ItemWizardController::class, 'deleteMedia']);
-    Route::post('/{item}/finalize', [ItemWizardController::class, 'finalize']);
-});
+// Item routes (only for advertiser accounts: individual or origin)
+
+Route::get('myItems', [ItemController::class, 'myItems']);
+Route::get('allItems', [ItemController::class, 'allItems']);
+
+

@@ -1,0 +1,67 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    restart: unless-stopped
+    environment:
+      # خلي Laravel يقرأ من .env بتاعك - دي قيم اختيارية
+      - APP_ENV=local
+    volumes:
+      # علشان أي تعديل في الكود يبان فوراً
+      - ./:/var/www/html
+      # Named volumes علشان ما يتداسش عليهم مع الماونت
+      - laravel_vendor:/var/www/html/vendor
+      - laravel_storage:/var/www/html/storage
+      - laravel_cache:/var/www/html/bootstrap/cache
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - openreq-net
+
+  web:
+    image: nginx:alpine
+    container_name: laravel-web
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - openreq-net
+
+  db:
+    image: mysql:8.0
+    container_name: laravel-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_pass"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - openreq-net
+
+volumes:
+  mysql_data:
+  laravel_vendor:
+  laravel_storage:
+  laravel_cache:
+
+networks:
+  openreq-net:
+    external: true

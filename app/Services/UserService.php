@@ -314,18 +314,20 @@ class UserService
         return $media->getUrl();
     }
 
-    public function stats($userType)
+    public function usersStats()
     {
         $now = now();
+        $trendStart = $now->copy()->subDays(29)->startOfDay();
+        $trendEnd = $now->copy()->endOfDay();
         $currentMonthStart = $now->copy()->startOfMonth();
         $currentMonthEnd = $now->copy()->endOfMonth();
         $lastMonthStart = $now->copy()->subMonth()->startOfMonth();
         $lastMonthEnd = $now->copy()->subMonth()->endOfMonth();
 
-        // Base query for the user type
-        $baseQuery = User::where('type', $userType);
+        // Base query for users
+        $baseQuery = User::where('type', 'user');
 
-        // Total Blocked Accounts (is_active = false or '0')
+        // Total Blocked Accounts (is_active = '0')
         $totalBlocked = (clone $baseQuery)
             ->where('is_active', '0')
             ->count();
@@ -344,7 +346,7 @@ class UserService
 
         $blockedPercentage = $this->calculatePercentageChange($lastMonthBlocked, $currentMonthBlocked);
 
-        // Total Active Accounts (is_active = true or '1')
+        // Total Active Accounts (is_active = '1')
         $totalActive = (clone $baseQuery)
             ->where('is_active', '1')
             ->count();
@@ -363,7 +365,7 @@ class UserService
 
         $activePercentage = $this->calculatePercentageChange($lastMonthActive, $currentMonthActive);
 
-        // Total Accounts (all users of this type)
+        // Total Accounts (all users)
         $totalAccounts = (clone $baseQuery)->count();
 
         // Total accounts created in current month
@@ -378,52 +380,326 @@ class UserService
 
         $totalPercentage = $this->calculatePercentageChange($lastMonthTotal, $currentMonthTotal);
 
-        $result = [
+        // Trends for the last 30 days (based on created_at)
+        $blockedTrendData = (clone $baseQuery)
+            ->where('is_active', '0')
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $activeTrendData = (clone $baseQuery)
+            ->where('is_active', '1')
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $totalTrendData = (clone $baseQuery)
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $blockedTrend = $this->buildDailyTrend($trendStart, $trendEnd, $blockedTrendData);
+        $activeTrend = $this->buildDailyTrend($trendStart, $trendEnd, $activeTrendData);
+        $totalTrend = $this->buildDailyTrend($trendStart, $trendEnd, $totalTrendData);
+
+        return [
             'blocked_accounts' => [
                 'count' => $totalBlocked,
                 'percentage' => $blockedPercentage,
                 'label' => 'الحسابات المحظورة',
+                'trend' => $blockedTrend,
             ],
             'active_accounts' => [
                 'count' => $totalActive,
                 'percentage' => $activePercentage,
                 'label' => 'الحسابات النشطة',
+                'trend' => $activeTrend,
             ],
             'total_accounts' => [
                 'count' => $totalAccounts,
                 'percentage' => $totalPercentage,
                 'label' => 'إجمالي الأفراد',
+                'trend' => $totalTrend,
             ],
         ];
+    }
 
-        // If user type is origin, add total_individuals (individuals linked to origins)
-        if ($userType === 'origin') {
-            $originIds = User::where('type', 'origin')->pluck('id');
+    public function individualStats()
+    {
+        $now = now();
+        $trendStart = $now->copy()->subDays(29)->startOfDay();
+        $trendEnd = $now->copy()->endOfDay();
+        $currentMonthStart = $now->copy()->startOfMonth();
+        $currentMonthEnd = $now->copy()->endOfMonth();
+        $lastMonthStart = $now->copy()->subMonth()->startOfMonth();
+        $lastMonthEnd = $now->copy()->subMonth()->endOfMonth();
 
-            $totalIndividuals = User::where('type', 'individual')
-                ->whereIn('origin_id', $originIds)
-                ->count();
+        // Base query for individuals
+        $baseQuery = User::where('type', 'individual');
 
-            $currentMonthIndividuals = User::where('type', 'individual')
-                ->whereIn('origin_id', $originIds)
-                ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
-                ->count();
+        // Total Blocked Accounts (is_active = '0')
+        $totalBlocked = (clone $baseQuery)
+            ->where('is_active', '0')
+            ->count();
 
-            $lastMonthIndividuals = User::where('type', 'individual')
-                ->whereIn('origin_id', $originIds)
-                ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
-                ->count();
+        // Blocked accounts created in current month
+        $currentMonthBlocked = (clone $baseQuery)
+            ->where('is_active', '0')
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
 
-            $individualsPercentage = $this->calculatePercentageChange($lastMonthIndividuals, $currentMonthIndividuals);
+        // Blocked accounts created in last month
+        $lastMonthBlocked = (clone $baseQuery)
+            ->where('is_active', '0')
+            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
+            ->count();
 
-            $result['total_individuals'] = [
-                'count' => $totalIndividuals,
-                'percentage' => $individualsPercentage,
-                'label' => 'إجمالي الأفراد المرتبطين',
-            ];
-        }
+        $blockedPercentage = $this->calculatePercentageChange($lastMonthBlocked, $currentMonthBlocked);
 
-        return $result;
+        // Total Active Accounts (is_active = '1')
+        $totalActive = (clone $baseQuery)
+            ->where('is_active', '1')
+            ->count();
+
+        // Active accounts created in current month
+        $currentMonthActive = (clone $baseQuery)
+            ->where('is_active', '1')
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+
+        // Active accounts created in last month
+        $lastMonthActive = (clone $baseQuery)
+            ->where('is_active', '1')
+            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
+            ->count();
+
+        $activePercentage = $this->calculatePercentageChange($lastMonthActive, $currentMonthActive);
+
+        // Total Accounts (all individuals)
+        $totalAccounts = (clone $baseQuery)->count();
+
+        // Total accounts created in current month
+        $currentMonthTotal = (clone $baseQuery)
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+
+        // Total accounts created in last month
+        $lastMonthTotal = (clone $baseQuery)
+            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
+            ->count();
+
+        $totalPercentage = $this->calculatePercentageChange($lastMonthTotal, $currentMonthTotal);
+
+        // Trends for the last 30 days (based on created_at)
+        $blockedTrendData = (clone $baseQuery)
+            ->where('is_active', '0')
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $activeTrendData = (clone $baseQuery)
+            ->where('is_active', '1')
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $totalTrendData = (clone $baseQuery)
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $blockedTrend = $this->buildDailyTrend($trendStart, $trendEnd, $blockedTrendData);
+        $activeTrend = $this->buildDailyTrend($trendStart, $trendEnd, $activeTrendData);
+        $totalTrend = $this->buildDailyTrend($trendStart, $trendEnd, $totalTrendData);
+
+        return [
+            'blocked_accounts' => [
+                'count' => $totalBlocked,
+                'percentage' => $blockedPercentage,
+                'label' => 'الحسابات المحظورة',
+                'trend' => $blockedTrend,
+            ],
+            'active_accounts' => [
+                'count' => $totalActive,
+                'percentage' => $activePercentage,
+                'label' => 'الحسابات النشطة',
+                'trend' => $activeTrend,
+            ],
+            'total_accounts' => [
+                'count' => $totalAccounts,
+                'percentage' => $totalPercentage,
+                'label' => 'إجمالي الأفراد',
+                'trend' => $totalTrend,
+            ],
+        ];
+    }
+
+    public function originStats()
+    {
+        $now = now();
+        $trendStart = $now->copy()->subDays(29)->startOfDay();
+        $trendEnd = $now->copy()->endOfDay();
+        $currentMonthStart = $now->copy()->startOfMonth();
+        $currentMonthEnd = $now->copy()->endOfMonth();
+        $lastMonthStart = $now->copy()->subMonth()->startOfMonth();
+        $lastMonthEnd = $now->copy()->subMonth()->endOfMonth();
+
+        // Base query for origins (companies)
+        $originQuery = User::where('type', 'origin');
+
+        // Total Blocked Origins
+        $totalBlocked = (clone $originQuery)
+            ->where('is_active', '0')
+            ->count();
+
+        // Blocked origins created in current month
+        $currentMonthBlocked = (clone $originQuery)
+            ->where('is_active', '0')
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+
+        // Blocked origins created in last month
+        $lastMonthBlocked = (clone $originQuery)
+            ->where('is_active', '0')
+            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
+            ->count();
+
+        $blockedPercentage = $this->calculatePercentageChange($lastMonthBlocked, $currentMonthBlocked);
+
+        // Total Active Origins
+        $totalActive = (clone $originQuery)
+            ->where('is_active', '1')
+            ->count();
+
+        // Active origins created in current month
+        $currentMonthActive = (clone $originQuery)
+            ->where('is_active', '1')
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+
+        // Active origins created in last month
+        $lastMonthActive = (clone $originQuery)
+            ->where('is_active', '1')
+            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
+            ->count();
+
+        $activePercentage = $this->calculatePercentageChange($lastMonthActive, $currentMonthActive);
+
+        // Total Origins
+        $totalOrigins = (clone $originQuery)->count();
+
+        // Total origins created in current month
+        $currentMonthOrigins = (clone $originQuery)
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+
+        // Total origins created in last month
+        $lastMonthOrigins = (clone $originQuery)
+            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
+            ->count();
+
+        $originsPercentage = $this->calculatePercentageChange($lastMonthOrigins, $currentMonthOrigins);
+
+        // Agents (individuals with non-null origin_id)
+        $agentQuery = User::where('type', 'individual')
+            ->whereNotNull('origin_id');
+
+        $totalAgents = (clone $agentQuery)->count();
+
+        $currentMonthAgents = (clone $agentQuery)
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+
+        $lastMonthAgents = (clone $agentQuery)
+            ->whereBetween('created_at', [$lastMonthStart, $lastMonthEnd])
+            ->count();
+
+        $agentsPercentage = $this->calculatePercentageChange($lastMonthAgents, $currentMonthAgents);
+
+        // Trends for the last 30 days (based on created_at)
+        $blockedTrendData = (clone $originQuery)
+            ->where('is_active', '0')
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $activeTrendData = (clone $originQuery)
+            ->where('is_active', '1')
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $originsTrendData = (clone $originQuery)
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $agentsTrendData = (clone $agentQuery)
+            ->whereBetween('created_at', [$trendStart, $trendEnd])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->pluck('count', 'date')
+            ->toArray();
+
+        $blockedTrend = $this->buildDailyTrend($trendStart, $trendEnd, $blockedTrendData);
+        $activeTrend = $this->buildDailyTrend($trendStart, $trendEnd, $activeTrendData);
+        $originsTrend = $this->buildDailyTrend($trendStart, $trendEnd, $originsTrendData);
+        $agentsTrend = $this->buildDailyTrend($trendStart, $trendEnd, $agentsTrendData);
+
+        return [
+            'blocked_accounts' => [
+                'count' => $totalBlocked,
+                'percentage' => $blockedPercentage,
+                'label' => 'الحسابات المحظورة',
+                'trend' => $blockedTrend,
+            ],
+            'active_accounts' => [
+                'count' => $totalActive,
+                'percentage' => $activePercentage,
+                'label' => 'الحسابات النشطة',
+                'trend' => $activeTrend,
+            ],
+            'total_agents' => [
+                'count' => $totalAgents,
+                'percentage' => $agentsPercentage,
+                'label' => 'إجمالي الوكلاء',
+                'trend' => $agentsTrend,
+            ],
+            'total_origins' => [
+                'count' => $totalOrigins,
+                'percentage' => $originsPercentage,
+                'label' => 'إجمالي المنشآت',
+                'trend' => $originsTrend,
+            ],
+        ];
     }
 
     /**
@@ -437,6 +713,31 @@ class UserService
 
         $change = (($newValue - $oldValue) / $oldValue) * 100;
         return round($change, 2);
+    }
+
+    /**
+     * Build a continuous daily trend array between two dates.
+     *
+     * @param  \Carbon\Carbon|\Illuminate\Support\Carbon  $start
+     * @param  \Carbon\Carbon|\Illuminate\Support\Carbon  $end
+     * @param  array  $data  ['Y-m-d' => count]
+     * @return array
+     */
+    protected function buildDailyTrend($start, $end, array $data): array
+    {
+        $trend = [];
+
+        $current = $start->copy();
+        while ($current <= $end) {
+            $dateString = $current->format('Y-m-d');
+            $trend[] = [
+                'date' => $dateString,
+                'count' => $data[$dateString] ?? 0,
+            ];
+            $current->addDay();
+        }
+
+        return $trend;
     }
 
     /**

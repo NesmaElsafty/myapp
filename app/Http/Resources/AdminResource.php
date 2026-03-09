@@ -26,6 +26,7 @@ class AdminResource extends JsonResource
             'type' => $this->type,
             'language' => $this->language ?? 'ar',
             'image' => $image,
+            'is_active' => filter_var($this->is_active, FILTER_VALIDATE_BOOLEAN),
             'email_verified_at' => $this->email_verified_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

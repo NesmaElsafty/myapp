@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignId('origin_id')->nullable()->constrained('users'); // optional: only for type individual
 
             // for individuals & origins
-            $table->json('specialty_areas')->nullable()->default('[]');
+            $table->json('specialty_areas')->nullable();
             $table->string('major')->nullable();
             $table->longText('summary')->nullable();
 

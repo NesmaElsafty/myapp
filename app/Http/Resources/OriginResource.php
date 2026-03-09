@@ -39,6 +39,7 @@ class OriginResource extends JsonResource
             'image' => $image,
             'individuals' => IndividualResource::collection($individuals),
             'items_count' => 0,
+            'is_active' => filter_var($this->is_active, FILTER_VALIDATE_BOOLEAN),
             'individuals_count' => $individuals->count(),
             'location' => $this->location,
             'created_at' => $this->created_at,

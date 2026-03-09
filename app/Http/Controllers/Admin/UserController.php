@@ -12,6 +12,7 @@ use Exception;
 use App\Models\User;
 use App\Http\Resources\IndividualResource;
 use App\Http\Resources\OriginResource;
+use App\Http\Resources\AdminResource;
 
 class UserController extends Controller
 {
@@ -34,16 +35,29 @@ class UserController extends Controller
             ]);
 
             $users = $this->userService->getAll($request->all(), $request->type)->paginate(10);
-            $stats = $this->userService->stats($request->type);
+            // $stats = $this->userService->stats($request->type);
 
             $users_resource = null;
-            if ($request->type === 'individual') {
-                $users_resource = IndividualResource::collection($users);
-            } elseif ($request->type === 'origin') {
-                $users_resource = OriginResource::collection($users);
-            } else {
-                $users_resource = UserResource::collection($users);
+            $stats = [];
+            
+            switch($request->type) {
+                case 'user':
+                    $stats = $this->userService->usersStats();
+                    $users_resource = UserResource::collection($users);
+                    break;
+                    case 'admin':
+                        $users_resource = AdminResource::collection($users);
+                        break;
+                    case 'individual':
+                        $stats = $this->userService->individualStats();
+                        $users_resource = IndividualResource::collection($users);
+                        break;
+                    case 'origin':
+                        $stats = $this->userService->originStats();
+                        $users_resource = OriginResource::collection($users);
+                    break;
             }
+
             return response()->json([
                 'message' => __('messages.users_retrieved_success'),
                 'users' => $users_resource,

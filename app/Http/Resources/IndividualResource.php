@@ -44,9 +44,10 @@ class IndividualResource extends JsonResource
             'language' => $this->language ?? 'ar',
             'email_verified_at' => $this->email_verified_at,
             'image' => $image,
+            'is_active' => filter_var($this->is_active, FILTER_VALIDATE_BOOLEAN),
             'items_count' => 0,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-        ];
+            ];
+        }
     }
-}
