@@ -12,23 +12,20 @@ class TermSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Terms for different types
-        Term::factory()
-            ->count(3)
-            ->forTerms()
-            ->active()
-            ->create();
+        // Active "terms" entries with 1..3 target types
+        Term::factory()->count(1)->forTerms()->active()->forUsers()->create();
+        Term::factory()->count(1)->forTerms()->active()->forIndividuals()->create();
+        Term::factory()->count(1)->forTerms()->active()->forOrigins()->create();
+        Term::factory()->count(1)->forTerms()->active()->forUsersAndIndividuals()->create();
+        Term::factory()->count(1)->forTerms()->active()->forAllTargets()->create();
 
-        Term::factory()
-            ->count(2)
-            ->forPrivacy()
-            ->active()
-            ->create();
+        // Active "privacy" entries with 1..3 target types
+        Term::factory()->count(1)->forPrivacy()->active()->forUsers()->create();
+        Term::factory()->count(1)->forPrivacy()->active()->forIndividualsAndOrigins()->create();
+        Term::factory()->count(1)->forPrivacy()->active()->forUsersAndOrigins()->create();
+        Term::factory()->count(1)->forPrivacy()->active()->forAllTargets()->create();
 
-        // Create some inactive Terms
-        Term::factory()
-            ->count(1)
-            ->inactive()
-            ->create();
+        // Inactive "terms" example (still carries one or more targets)
+        Term::factory()->count(1)->forTerms()->inactive()->forAllTargets()->create();
     }
 }

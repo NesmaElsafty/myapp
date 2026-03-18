@@ -45,7 +45,6 @@ class CategoryController extends Controller
             
             $category = Category::find($id);
             
-            dd($category->getCategoryInputsName($id));
             if (!$category) {
                 return response()->json(['message' => __('messages.category_not_found')], 404);
             }

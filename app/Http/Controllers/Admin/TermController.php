@@ -42,6 +42,14 @@ class TermController extends Controller
         }
     }
 
+    /* "title_en": "Terms and Conditions",
+    "title_ar": "الشروط والأحكام",
+    "content_en": "These terms and conditions outline the rules and regulations for the use of our service.",
+    "content_ar": "تحدد هذه الشروط والأحكام القواعد واللوائح لاستخدام خدمتنا.",
+    "type": "terms", // can be "terms" or "privacy"
+    "target_type": ["user", "admin"], // user,individual,origin,admin
+    "is_active": true
+    */
     public function store(Request $request)
     {
         try {
@@ -50,8 +58,9 @@ class TermController extends Controller
                 'title_ar' => 'required|string|max:255',
                 'content_en' => 'required|string',
                 'content_ar' => 'required|string',
-                'type' => 'nullable|string|in:terms,privacy',
-                'is_active' => 'nullable|boolean',
+                'type' => 'required|string|in:terms,privacy',
+                'target_type' => 'required|array|min:1|max:3',
+                'target_type.*' => 'required|in:user,individual,origin',
             ]);
 
             $term = $this->termService->create($request->all());

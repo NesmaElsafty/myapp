@@ -17,6 +17,7 @@ class Ad extends Model implements HasMedia
     {
         return [
             'is_active' => 'boolean',
+            'is_all' => 'boolean',
             'btn_is_active' => 'boolean',
         ];
     }

@@ -54,14 +54,16 @@ class TermService
 
     public function create($data)
     {
-        return Term::create([
-            'title_en' => $data['title_en'],
-            'title_ar' => $data['title_ar'],
-            'content_en' => $data['content_en'],
-            'content_ar' => $data['content_ar'],
-            'type' => $data['type'] ?? null,
-            'is_active' => $data['is_active'] ?? true,
-        ]);
+        $term = new Term();
+        $term->title_en = $data['title_en'];
+        $term->title_ar = $data['title_ar'];
+        $term->content_en = $data['content_en'];
+        $term->content_ar = $data['content_ar'];
+        $term->type = $data['type'];
+        $term->target_type = json_encode($data['target_type']);
+        $term->is_active = $data['is_active'] ?? true;
+        $term->save();
+        return $term;
     }
 
     public function update($id, $data)
@@ -71,13 +73,13 @@ class TermService
             throw ValidationException::withMessages(['term' => ['Term not found']]);
         }
 
-        $term->title_en = $data['title_en'] ?? $term->title_en;
-        $term->title_ar = $data['title_ar'] ?? $term->title_ar;
-        $term->content_en = $data['content_en'] ?? $term->content_en;
-        $term->content_ar = $data['content_ar'] ?? $term->content_ar;
-        $term->type = $data['type'] ?? $term->type;
-        $term->is_active = $data['is_active'] ?? $term->is_active;
-
+        $term->title_en = $data['title_en'];
+        $term->title_ar = $data['title_ar'];
+        $term->content_en = $data['content_en'];
+        $term->content_ar = $data['content_ar'];
+        $term->type = $data['type'];
+        $term->target_type = json_encode($data['target_type']);
+        $term->is_active = $data['is_active'];
         $term->save();
 
         return $term;

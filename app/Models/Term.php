@@ -17,6 +17,7 @@ class Term extends Model implements HasMedia
     {
         return [
             'is_active' => 'boolean',
+            'target_type' => 'array',
         ];
     }
 }

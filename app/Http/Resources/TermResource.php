@@ -25,10 +25,10 @@ class TermResource extends JsonResource
             'title_ar' => $this->title_ar,
             'content_en' => $this->content_en,
             'content_ar' => $this->content_ar,
-
             'title' => $title,
             'content' => $content,
             'type' => $this->type,
+            'target_type' => json_decode($this->target_type),
             'is_active' => (bool) $this->is_active,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

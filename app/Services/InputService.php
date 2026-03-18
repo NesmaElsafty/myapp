@@ -8,6 +8,7 @@ use App\Models\Screen;
 use App\Models\ItemInputValue;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class InputService
 {
@@ -154,8 +155,17 @@ class InputService
 
     public function create(array $data): Input
     {
+
+        // generate key depending on the title_en
+        $key = strtolower(str_replace(' ', '_', $data['title_en']));
+        // check if key is already exists throw validation exception
+        if (Input::where('key', $key)->exists()) {
+        throw ValidationException::withMessages(['key' => [__('messages.input_key_already_exists_in_screen')]]);
+        }
+
         $input = new Input();
         $input->screen_id = $data['screen_id'];
+        $input->key = $key;
         $input->title_en = $data['title_en'] ?? null;
         $input->title_ar = $data['title_ar'] ?? null;
         $input->placeholder_en = $data['placeholder_en'] ?? null;

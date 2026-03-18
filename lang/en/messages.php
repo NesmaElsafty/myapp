@@ -30,6 +30,7 @@ return [
     'failed_update_input' => 'Failed to update input',
     'input_deleted_success' => 'Input deleted successfully',
     'failed_delete_input' => 'Failed to delete input',
+    'input_key_already_exists_in_screen' => 'This input key already exists in the selected screen.',
 
     // Category
     'categories_retrieved_success' => 'Categories retrieved successfully',

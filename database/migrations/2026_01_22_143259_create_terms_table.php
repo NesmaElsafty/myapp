@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('content_en')->nullable();
             $table->text('content_ar')->nullable();
             $table->enum('type', ['terms','privacy'])->nullable();
+            $table->json('target_type')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

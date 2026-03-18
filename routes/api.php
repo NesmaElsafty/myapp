@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\ItemWizardController;
 use App\Http\Controllers\Advertiser\IndividualController;
 use App\Http\Controllers\Advertiser\OriginController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdController as PublicAdController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -63,8 +64,8 @@ Route::prefix('contact-info')->group(function () {
 
 // Public ads routes (index and show)
 Route::prefix('ads')->group(function () {
-    Route::get('/', [AdController::class, 'index']);
-    Route::get('/{id}', [AdController::class, 'show']);
+    Route::get('/', [PublicAdController::class, 'index']);
+    Route::get('/{id}', [PublicAdController::class, 'show']);
 });
 
 // Public blogs routes (index and show)
@@ -153,34 +154,51 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(functi
     Route::apiResource('roles', RoleController::class);
     Route::get('permissions', [RoleController::class, 'permissions']);
     Route::get('exportRoles', [RoleController::class, 'export']);
+
+
     // Protected cities routes (store, update, destroy)
     Route::post('cities', [CityController::class, 'store']);
     Route::put('cities/{id}', [CityController::class, 'update']);
     Route::delete('cities/{id}', [CityController::class, 'destroy']);
+
+
     // Protected regions routes (store, update, destroy)
     Route::post('regions', [RegionController::class, 'store']);
     Route::put('regions/{id}', [RegionController::class, 'update']);
     Route::delete('regions/{id}', [RegionController::class, 'destroy']);
+
+    
     // Protected contact info routes (store, update)
     Route::post('contact-info', [ContactInfoController::class, 'store']);
+
+
     // Protected ads routes (store, update, destroy)
+    Route::get('ads', [AdController::class, 'index']);
     Route::post('ads', [AdController::class, 'store']);
     Route::put('ads/{id}', [AdController::class, 'update']);
     Route::delete('ads/{id}', [AdController::class, 'destroy']);
+
+
     // Protected blogs routes (store, update, destroy)
     Route::post('blogs', [BlogController::class, 'store']);
     Route::put('blogs/{id}', [BlogController::class, 'update']);
     Route::delete('blogs/{id}', [BlogController::class, 'destroy']);
+
+
     // Protected FAQs routes (store, update, destroy)
     Route::post('faqs', [FaqController::class, 'store']);
     Route::put('faqs/{id}', [FaqController::class, 'update']);
     Route::delete('faqs/{id}', [FaqController::class, 'destroy']);
     Route::post('faqsBulkActions', [FaqController::class, 'bulkActions']);
+
+
     // Protected Terms routes (store, update, destroy)
     Route::post('terms', [TermController::class, 'store']);
     Route::put('terms/{id}', [TermController::class, 'update']);
     Route::delete('terms/{id}', [TermController::class, 'destroy']);
     Route::post('termsBulkActions', [TermController::class, 'bulkActions']);
+
+
     // Protected Support routes (index, show, update, reply, destroy)
     Route::get('supports', [SupportController::class, 'index']);
     Route::get('supports/{id}', [SupportController::class, 'show']);
@@ -188,6 +206,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(functi
     Route::post('supports/{id}/reply', [SupportController::class, 'reply']);
     Route::delete('supports/{id}', [SupportController::class, 'destroy']);
     Route::post('supportsBulkActions', [SupportController::class, 'bulkActions']);
+
+
     // Protected Inquiry routes (index, show, update, reply, destroy)
     Route::get('inquiries', [InquiryController::class, 'index']);
     Route::get('inquiries/{id}', [InquiryController::class, 'show']);
@@ -264,8 +284,10 @@ Route::prefix('advertiser')->middleware(['auth:sanctum', 'type:individual,origin
 });
 
 // Item routes (only for advertiser accounts: individual or origin)
-
-Route::get('myItems', [ItemController::class, 'myItems']);
-Route::get('allItems', [ItemController::class, 'allItems']);
-
-
+Route::prefix('items')->middleware(['auth:sanctum', 'type:individual,origin'])->group(function () {
+    Route::post('store', [ItemController::class, 'store']);
+    Route::put('{id}', [ItemController::class, 'update']);
+    Route::delete('{id}', [ItemController::class, 'destroy']);
+    Route::get('{id}', [ItemController::class, 'show']);
+    Route::get('myItems', [ItemController::class, 'myItems']);
+});

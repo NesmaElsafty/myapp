@@ -20,6 +20,8 @@ class TermFactory extends Factory
     public function definition(): array
     {
         $types = ['terms', 'privacy'];
+        $targetTypes = ['individual', 'origin', 'user'];
+        $selectedTargets = fake()->randomElements($targetTypes, fake()->numberBetween(1, 3));
         
         return [
             'title_en' => fake()->sentence(4),
@@ -27,6 +29,8 @@ class TermFactory extends Factory
             'content_en' => fake()->paragraphs(5, true),
             'content_ar' => fake()->paragraphs(5, true),
             'type' => fake()->randomElement($types),
+            // Stored in a JSON column; we keep it as an array to support "one or more" targets.
+            'target_type' => $selectedTargets,
             'is_active' => fake()->boolean(80),
         ];
     }
@@ -49,5 +53,40 @@ class TermFactory extends Factory
     public function forPrivacy(): static
     {
         return $this->state(fn (array $attributes) => ['type' => 'privacy']);
+    }
+
+    public function forUsers(): static
+    {
+        return $this->state(fn (array $attributes) => ['target_type' => ['user']]);
+    }
+
+    public function forIndividuals(): static
+    {
+        return $this->state(fn (array $attributes) => ['target_type' => ['individual']]);
+    }
+
+    public function forOrigins(): static
+    {
+        return $this->state(fn (array $attributes) => ['target_type' => ['origin']]);
+    }
+
+    public function forUsersAndIndividuals(): static
+    {
+        return $this->state(fn (array $attributes) => ['target_type' => ['user', 'individual']]);
+    }
+
+    public function forUsersAndOrigins(): static
+    {
+        return $this->state(fn (array $attributes) => ['target_type' => ['user', 'origin']]);
+    }
+
+    public function forIndividualsAndOrigins(): static
+    {
+        return $this->state(fn (array $attributes) => ['target_type' => ['individual', 'origin']]);
+    }
+
+    public function forAllTargets(): static
+    {
+        return $this->state(fn (array $attributes) => ['target_type' => ['user', 'individual', 'origin']]);
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\AuthService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;

@@ -20,17 +20,24 @@ class AdController extends Controller
         try {
             $request->validate([
                 'search' => 'nullable|string|max:255',
-                'type' => 'nullable|string|in:promotion,interface',
+                'type' => 'required|string|in:promotion,interface',
                 'is_active' => 'nullable|boolean',
                 'sorted_by' => 'nullable|string|in:title,newest,oldest,all',
+                'is_all' => 'required|boolean',
             ]);
+            
+            $ads = $this->adService->getAll($request->all());
 
-            $ads = $this->adService->getAll($request->all())->paginate(10);
+            if($request->is_all == true) {
+                $ads = $ads->get();
+            } else {
+                $ads = $ads->paginate(10);
+            }
 
             return response()->json([
                 'message' => __('messages.ads_retrieved_success'),
                 'data' => AdResource::collection($ads),
-                'pagination' => PaginationHelper::paginate($ads),
+                'pagination' => $request->is_all == false ? PaginationHelper::paginate($ads) : [],
             ], 200);
         } catch (Exception $e) {
             return response()->json([

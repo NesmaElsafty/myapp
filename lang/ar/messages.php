@@ -30,6 +30,7 @@ return [
     'failed_update_input' => 'فشل تحديث المدخل',
     'input_deleted_success' => 'تم حذف المدخل بنجاح',
     'failed_delete_input' => 'فشل حذف المدخل',
+    'input_key_already_exists_in_screen' => 'مفتاح هذا المدخل موجود بالفعل في الشاشة المحددة.',
 
     // Category
     'categories_retrieved_success' => 'تم استرجاع التصنيفات بنجاح',
