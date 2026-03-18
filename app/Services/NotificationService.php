@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Notification;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class NotificationService
 {
@@ -91,5 +92,83 @@ class NotificationService
     public function export(array $ids)
     {
         return Notification::whereIn('id', $ids)->get();
+    }
+
+    /**
+     * Get statistics for notifications by status (sent, scheduled, unsent).
+     *
+     * - Compares current month vs previous month counts.
+     * - Generates daily trend data for the current month based on created_at.
+     */
+    public function stats(): array
+    {
+        $now = Carbon::now();
+
+        $currentStart = $now->copy()->startOfMonth();
+        $currentEnd = $now->copy()->endOfMonth();
+
+        $previousStart = $now->copy()->subMonthNoOverflow()->startOfMonth();
+        $previousEnd = $now->copy()->subMonthNoOverflow()->endOfMonth();
+
+        $statuses = ['sent', 'scheduled', 'unsent'];
+
+        $result = [];
+
+        foreach ($statuses as $status) {
+            // Total counts for current and previous month
+            $currentCount = Notification::where('status', $status)
+                ->whereBetween('created_at', [$currentStart, $currentEnd])
+                ->count();
+
+            $previousCount = Notification::where('status', $status)
+                ->whereBetween('created_at', [$previousStart, $previousEnd])
+                ->count();
+
+            $difference = $currentCount - $previousCount;
+            $percentageChange = $previousCount > 0
+                ? round(($difference / $previousCount) * 100, 2)
+                : null;
+
+            // Trend data for the current month (per day)
+            $rawTrend = Notification::select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('COUNT(*) as total')
+                )
+                ->where('status', $status)
+                ->whereBetween('created_at', [$currentStart, $currentEnd])
+                ->groupBy(DB::raw('DATE(created_at)'))
+                ->orderBy('date')
+                ->pluck('total', 'date')
+                ->toArray();
+
+            $trend = [];
+            $cursor = $currentStart->copy();
+            while ($cursor->lte($currentEnd)) {
+                $dateKey = $cursor->toDateString();
+                $trend[] = [
+                    'date' => $dateKey,
+                    'count' => isset($rawTrend[$dateKey]) ? (int) $rawTrend[$dateKey] : 0,
+                ];
+                $cursor->addDay();
+            }
+
+            $result[$status] = [
+                'current_month' => [
+                    'from' => $currentStart->toDateString(),
+                    'to' => $currentEnd->toDateString(),
+                    'count' => $currentCount,
+                ],
+                'previous_month' => [
+                    'from' => $previousStart->toDateString(),
+                    'to' => $previousEnd->toDateString(),
+                    'count' => $previousCount,
+                ],
+                'difference' => $difference,
+                'percentage_change' => $percentageChange,
+                'trend' => $trend,
+            ];
+        }
+
+        return $result;
     }
 }

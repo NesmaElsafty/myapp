@@ -101,6 +101,8 @@ class TermController extends Controller
                 'content_ar' => 'nullable|string',
                 'type' => 'nullable|string|in:terms,privacy',
                 'is_active' => 'nullable|boolean',
+                'target_type' => 'nullable|array',
+                'target_type.*' => 'nullable|in:user,individual,origin',
             ]);
 
             $term = $this->termService->update($id, $request->all());

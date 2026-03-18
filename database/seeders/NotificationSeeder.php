@@ -32,5 +32,8 @@ class NotificationSeeder extends Seeder
         Notification::factory()->count(3)->notificationType()->forOrigins()->sent()->create();
         Notification::factory()->count(2)->notificationType()->forUsersAndIndividuals()->sent()->create();
         Notification::factory()->count(1)->notificationType()->forAll()->scheduled()->create();
+
+        // Additional random notifications across all types/statuses in the last 3 months
+        Notification::factory()->count(60)->create();
     }
 }

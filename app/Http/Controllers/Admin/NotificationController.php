@@ -34,11 +34,12 @@ class NotificationController extends Controller
             ]);
 
             $notifications = $this->notificationService->getAll($request->all(), app()->getLocale())->paginate(10);
-
+            $stats = $this->notificationService->stats();
             return response()->json([
                 'message' => __('messages.notifications_retrieved_success'),
                 'data' => NotificationResource::collection($notifications),
                 'pagination' => PaginationHelper::paginate($notifications),
+                'stats' => $stats,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -202,6 +203,24 @@ class NotificationController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_bulk_action_notifications'),
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // statistics for dashboard
+    public function stats()
+    {
+        try {
+            $stats = $this->notificationService->stats();
+
+            return response()->json([
+                'message' => __('messages.notifications_retrieved_success'),
+                'data' => $stats,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => __('messages.failed_retrieve_notifications'),
                 'error' => $e->getMessage(),
             ], 500);
         }

@@ -79,7 +79,7 @@ class TermService
         $term->content_ar = $data['content_ar'] ?? null;
         $term->type = $data['type'] ?? $term->type;
         $term->target_type = json_encode($data['target_type']) ?? $term->target_type;
-        $term->is_active = $data['is_active'] ?? $term->is_active;
+        $term->is_active = filter_var($data['is_active'], FILTER_VALIDATE_BOOLEAN) ? '1' : '0';
         $term->save();
 
         return $term;

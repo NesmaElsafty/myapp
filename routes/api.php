@@ -230,6 +230,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(functi
     Route::post('notifications/{id}/updateStatus', [NotificationController::class, 'updateStatus']);
     Route::post('notificationsBulkActions', [NotificationController::class, 'bulkActions']);
     Route::post('notify', [NotificationController::class, 'notify']);
+    Route::get('notifications/stats', [NotificationController::class, 'stats']);
 
     
     // Protected Plans routes (store, update, destroy, bulkActions)

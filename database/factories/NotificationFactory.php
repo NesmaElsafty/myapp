@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Notification;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Carbon\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Notification>
@@ -26,6 +27,9 @@ class NotificationFactory extends Factory
         // Randomly select 1-3 target types
         $selectedTargets = fake()->randomElements($targetTypes, fake()->numberBetween(1, 3));
 
+        // Random created_at/updated_at within the last 3 months (including today)
+        $createdAt = Carbon::now()->subDays(fake()->numberBetween(0, 90));
+
         return [
             'title_en' => fake()->sentence(),
             'title_ar' => fake()->sentence(),
@@ -35,6 +39,8 @@ class NotificationFactory extends Factory
             'type' => fake()->randomElement($types),
             'target_type' => $selectedTargets,
             'status' => fake()->randomElement($statuses),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 
