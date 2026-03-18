@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\Notification;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class NotificationService
 {

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,11 +17,17 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'type' => \App\Http\Middleware\EnsureUserType::class,
+            'auth' => \App\Http\Middleware\Authenticate::class,
         ]);
         $middleware->api(prepend: [
             \App\Http\Middleware\SetLocaleFromHeader::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (AuthenticationException $e, $request) {
+            // Always return JSON for unauthenticated API calls, no redirect to login route
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        });
     })->create();
