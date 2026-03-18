@@ -73,13 +73,13 @@ class TermService
             throw ValidationException::withMessages(['term' => ['Term not found']]);
         }
 
-        $term->title_en = $data['title_en'];
-        $term->title_ar = $data['title_ar'];
-        $term->content_en = $data['content_en'];
-        $term->content_ar = $data['content_ar'];
-        $term->type = $data['type'];
-        $term->target_type = json_encode($data['target_type']);
-        $term->is_active = $data['is_active'];
+        $term->title_en = $data['title_en'] ?? null;
+        $term->title_ar = $data['title_ar'] ?? null;
+        $term->content_en = $data['content_en'] ?? null;
+        $term->content_ar = $data['content_ar'] ?? null;
+        $term->type = $data['type'] ?? $term->type;
+        $term->target_type = json_encode($data['target_type']) ?? $term->target_type;
+        $term->is_active = $data['is_active'] ?? $term->is_active;
         $term->save();
 
         return $term;
