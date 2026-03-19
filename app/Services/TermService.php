@@ -25,6 +25,7 @@ class TermService
         if (isset($data['type'])) {
             $query->where('type', $data['type']);
         }
+
         if (isset($data['sorted_by']) && $data['sorted_by'] !== 'all') {
             switch ($data['sorted_by']) {
                 case 'name':
@@ -37,8 +38,11 @@ class TermService
                     $query->orderBy('id', 'asc');
                     break;
             }
-        } else {
-            $query->orderBy('id', 'desc');
+        } 
+
+        if (isset($data['target_type']) && $data['target_type'] !== 'all') {
+            // target type is array
+            $query->whereJsonContains('target_type', $data['target_type']);
         }
 
         if (isset($data['is_active'])) {

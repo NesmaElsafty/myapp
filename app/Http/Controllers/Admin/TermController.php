@@ -23,6 +23,7 @@ class TermController extends Controller
             $request->validate([
                 'search' => 'nullable|string|max:255',
                 'type' => 'nullable|string|in:terms,privacy',
+                'target_type' => 'nullable|string|in:user,individual,origin,all',
                 'is_active' => 'nullable|boolean',
                 'sorted_by' => 'nullable|string|in:newest,oldest,all,name',
             ]);

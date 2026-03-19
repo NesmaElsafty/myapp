@@ -26,6 +26,10 @@ class SupportService
             $query->where('account_type', $data['account_type']);
         }
 
+        if (isset($data['is_replied']) && $data['is_replied'] !== 'all') {
+            $query->where('is_replied', $data['is_replied']);
+        }
+
         if (isset($data['sorted_by']) && $data['sorted_by'] !== 'all') {
             switch ($data['sorted_by']) {
                 case 'name':

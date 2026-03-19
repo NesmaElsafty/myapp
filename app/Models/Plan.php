@@ -14,6 +14,8 @@ class Plan extends Model
 
     protected $casts = [
         'price' => 'decimal:2',
+        'free_trial_duration' => 'integer',
+        'posts_limit' => 'integer',
         'is_active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

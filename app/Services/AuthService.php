@@ -211,6 +211,18 @@ class AuthService
         if (array_key_exists('language', $data)) {
             $user->language = $data['language'];
         }
+
+        // for individuals & origins
+        if (array_key_exists('specialty_areas', $data)) {
+            $user->specialty_areas = json_encode($data['specialty_areas']);
+        }
+        if (array_key_exists('major', $data)) {
+            $user->major = $data['major'] ?? null;
+        }
+        if (array_key_exists('summary', $data)) {
+            $user->summary = $data['summary'] ?? null;
+        }
+
         $user->save();
         return $user;
     }

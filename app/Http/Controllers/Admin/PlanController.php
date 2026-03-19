@@ -26,7 +26,8 @@ class PlanController extends Controller
                 'target_user' => 'nullable|string|in:individual,origin,all',
                 'is_active' => 'nullable|in:1,0,all',
                 'sorted_by' => 'nullable|string|in:name,newest,oldest,all',
-                'official_duration' => 'nullable|string|in:1,3,6,12,all',
+                'duration_type' => 'nullable|string|in:days,months,years,all',
+                'duration' => 'nullable|string|max:255',
             ]);
 
             $plans = $this->planService->getAll($request->all(), app()->getLocale())->paginate(10);
@@ -70,9 +71,11 @@ class PlanController extends Controller
                 'name_en' => 'required|string|max:255',
                 'name_ar' => 'required|string|max:255',
                 'price' => 'required|numeric|min:0',
-                'official_duration' => 'nullable|string|max:255',
-                'free_duration' => 'nullable|string|max:255',
-                'posts_limit' => 'nullable|string|max:255',
+                'duration' => 'required|string|max:255',
+                'duration_type' => 'required|in:days,months,years',
+                'free_trial_duration' => 'nullable|integer|min:0',
+                'free_trial_duration_type' => 'nullable|required_with:free_trial_duration|in:days,months,years',
+                'posts_limit' => 'nullable|integer|min:0',
                 'target_user' => 'required|in:individual,origin',
                 'is_active' => 'nullable|boolean',
                 'features' => 'nullable|array',
@@ -109,15 +112,16 @@ class PlanController extends Controller
                 'name_en' => 'nullable|string|max:255',
                 'name_ar' => 'nullable|string|max:255',
                 'price' => 'nullable|numeric|min:0',
-                'official_duration' => 'nullable|string|max:255',
-                'free_duration' => 'nullable|string|max:255',
-                'posts_limit' => 'nullable|string|max:255',
+                'duration' => 'nullable|string|max:255',
+                'duration_type' => 'nullable|in:days,months,years',
+                'free_trial_duration' => 'nullable|integer|min:0',
+                'free_trial_duration_type' => 'nullable|required_with:free_trial_duration|in:days,months,years',
+                'posts_limit' => 'nullable|integer|min:0',
                 'target_user' => 'nullable|in:individual,origin',
                 'is_active' => 'nullable|boolean',
                 'features' => 'nullable|array',
                 'features.*' => 'exists:features,id',
             ]);
-
             $plan = $this->planService->update((int) $id, $request->all());
 
             if($request->has('features')) {

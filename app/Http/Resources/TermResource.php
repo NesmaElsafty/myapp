@@ -17,7 +17,7 @@ class TermResource extends JsonResource
         $lang = app()->getLocale();
         $title = $lang == 'ar' ? $this->title_ar : $this->title_en;
         $content = $lang == 'ar' ? $this->content_ar : $this->content_en;
-        
+        // dd($this->target_type);
         return [
             'id' => $this->id,
 
@@ -28,7 +28,7 @@ class TermResource extends JsonResource
             'title' => $title,
             'content' => $content,
             'type' => $this->type,
-            'target_type' => json_decode($this->target_type),
+            'target_type' => $this->target_type,
             'is_active' => (bool) $this->is_active,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

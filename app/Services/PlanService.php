@@ -36,6 +36,13 @@ class PlanService
             $query->where('target_user', $data['target_user']);
         }
 
+        if (isset($data['duration_type']) && $data['duration_type'] !== 'all') {
+            $query->where('duration_type', $data['duration_type']);
+        }
+
+        if (isset($data['duration']) && $data['duration'] !== '') {
+            $query->where('duration', $data['duration']);
+        }
         
 
         if (isset($data['sorted_by']) && $data['sorted_by'] !== 'all') {
@@ -53,10 +60,6 @@ class PlanService
             }
         } 
 
-        if(isset($data['official_duration']) && $data['official_duration'] !== 'all') {
-            $query->where('official_duration', $data['official_duration']);
-        }
-
         return $query;
     }
 
@@ -66,9 +69,11 @@ class PlanService
         $plan->name_en = $data['name_en'];
         $plan->name_ar = $data['name_ar'];
         $plan->price = $data['price'];
-        $plan->official_duration = $data['official_duration'];
-        $plan->free_duration = $data['free_duration'];
-        $plan->posts_limit = $data['posts_limit'];
+        $plan->duration = $data['duration'];
+        $plan->duration_type = $data['duration_type'];
+        $plan->free_trial_duration = $data['free_trial_duration'] ?? null;
+        $plan->free_trial_duration_type = $data['free_trial_duration_type'] ?? null;
+        $plan->posts_limit = $data['posts_limit'] ?? null;
         $plan->target_user = $data['target_user'];
         $plan->is_active = $data['is_active'] ?? true;
         $plan->save();
@@ -82,8 +87,10 @@ class PlanService
         $plan->name_en = $data['name_en'] ?? $plan->name_en;
         $plan->name_ar = $data['name_ar'] ?? $plan->name_ar;
         $plan->price = $data['price'] ?? $plan->price;
-        $plan->official_duration = $data['official_duration'] ?? $plan->official_duration;
-        $plan->free_duration = $data['free_duration'] ?? $plan->free_duration;
+        $plan->duration = $data['duration'] ?? $plan->duration;
+        $plan->duration_type = $data['duration_type'] ?? $plan->duration_type;
+        $plan->free_trial_duration = $data['free_trial_duration'] ?? $plan->free_trial_duration;
+        $plan->free_trial_duration_type = $data['free_trial_duration_type'] ?? $plan->free_trial_duration_type;
         $plan->posts_limit = $data['posts_limit'] ?? $plan->posts_limit;
         $plan->target_user = $data['target_user'] ?? $plan->target_user;
         $plan->is_active = $data['is_active'] ?? $plan->is_active;
@@ -119,8 +126,10 @@ class PlanService
             $csvData[] = [
                 'name' => $language == 'en' ? $plan->name_en : $plan->name_ar,
                 'price' => $plan->price,
-                'official_duration' => $plan->official_duration,
-                'free_duration' => $plan->free_duration,
+                'duration' => $plan->duration,
+                'duration_type' => $plan->duration_type,
+                'free_trial_duration' => $plan->free_trial_duration,
+                'free_trial_duration_type' => $plan->free_trial_duration_type,
                 'posts_limit' => $plan->posts_limit,
                 'target_user' => $plan->target_user,
                 'is_active' => $plan->is_active,
