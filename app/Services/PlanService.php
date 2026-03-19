@@ -33,14 +33,10 @@ class PlanService
         }
 
         if (isset($data['target_user']) && $data['target_user'] !== 'all') {
-            $query->where('target_user', $data['target_user']);
+            $query->whereJsonContains('target_user', $data['target_user']);
         }
 
-        if (isset($data['duration_type']) && $data['duration_type'] !== 'all') {
-            $query->where('duration_type', $data['duration_type']);
-        }
-
-        if (isset($data['duration']) && $data['duration'] !== '') {
+        if (isset($data['duration']) && $data['duration'] !== 'all') {
             $query->where('duration', $data['duration']);
         }
         
@@ -74,7 +70,7 @@ class PlanService
         $plan->free_trial_duration = $data['free_trial_duration'] ?? null;
         $plan->free_trial_duration_type = $data['free_trial_duration_type'] ?? null;
         $plan->posts_limit = $data['posts_limit'] ?? null;
-        $plan->target_user = $data['target_user'];
+        $plan->target_user = array_values(array_unique($data['target_user']));
         $plan->is_active = $data['is_active'] ?? true;
         $plan->save();
 
@@ -92,7 +88,9 @@ class PlanService
         $plan->free_trial_duration = $data['free_trial_duration'] ?? $plan->free_trial_duration;
         $plan->free_trial_duration_type = $data['free_trial_duration_type'] ?? $plan->free_trial_duration_type;
         $plan->posts_limit = $data['posts_limit'] ?? $plan->posts_limit;
-        $plan->target_user = $data['target_user'] ?? $plan->target_user;
+        if (isset($data['target_user'])) {
+            $plan->target_user = array_values(array_unique($data['target_user']));
+        }
         $plan->is_active = $data['is_active'] ?? $plan->is_active;
         $plan->save();
 
@@ -131,12 +129,20 @@ class PlanService
                 'free_trial_duration' => $plan->free_trial_duration,
                 'free_trial_duration_type' => $plan->free_trial_duration_type,
                 'posts_limit' => $plan->posts_limit,
-                'target_user' => $plan->target_user,
+                'target_user' => implode(',', $plan->target_user ?? []),
                 'is_active' => $plan->is_active,
             ];
         }
         $filename = 'plans_export_' . now()->format('Ymd_His') . '.csv';
         $media = ExportHelper::exportToMedia($csvData, auth()->user(), 'exports', $filename);
-        return $media->getUrl();
+        $url = $media->getUrl();
+
+        // Build an absolute URL based on the current request to avoid scheme/host
+        // mismatches (e.g. APP_URL=https://localhost while local server is http://).
+        if (!str_starts_with($url, 'http://') && !str_starts_with($url, 'https://')) {
+            $url = rtrim(request()->getSchemeAndHttpHost(), '/') . '/' . ltrim($url, '/');
+        }
+
+        return $url;
     }
 }

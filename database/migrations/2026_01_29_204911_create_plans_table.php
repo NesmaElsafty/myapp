@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedInteger('free_trial_duration');
             $table->enum('free_trial_duration_type', ['days', 'months', 'years']);
             $table->unsignedInteger('posts_limit');
-            $table->enum('target_user', ['individual', 'origin']);
+            $table->json('target_user');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });

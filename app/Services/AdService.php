@@ -19,6 +19,10 @@ class AdService
             });
         }
 
+        if(isset($data['type']) && $data['type'] !== 'all') {
+            $query->where('type', $data['type']);
+        }
+
         return $query;
     }
 
@@ -60,6 +64,8 @@ class AdService
         $ad->btn_link = $data['btn_link'] ?? $ad->btn_link;
         $ad->btn_is_active = $data['btn_is_active'] ?? $ad->btn_is_active;
         $ad->type = $data['type'] ?? $ad->type;
+
+        $ad->save();
 
         return $ad;
     }

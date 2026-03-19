@@ -37,6 +37,8 @@ class PlanFactory extends Factory
             'years' => fake()->randomElement([0, 1]),
         };
 
+        $selectedTargetUsers = fake()->randomElements($targetUsers, fake()->numberBetween(1, 2));
+
         return [
             'name_en' => fake()->words(3, true),
             'name_ar' => fake()->words(3, true),
@@ -46,7 +48,7 @@ class PlanFactory extends Factory
             'free_trial_duration' => $freeTrialValue,
             'free_trial_duration_type' => $freeTrialType,
             'posts_limit' => fake()->randomElement([10, 50, 100, 200, 500, 1000]),
-            'target_user' => fake()->randomElement($targetUsers),
+            'target_user' => $selectedTargetUsers,
             'is_active' => fake()->boolean(80),
         ];
     }
@@ -57,7 +59,7 @@ class PlanFactory extends Factory
     public function forIndividual(): static
     {
         return $this->state(fn (array $attributes) => [
-            'target_user' => 'individual',
+            'target_user' => ['individual'],
         ]);
     }
 
@@ -67,7 +69,14 @@ class PlanFactory extends Factory
     public function forOrigin(): static
     {
         return $this->state(fn (array $attributes) => [
-            'target_user' => 'origin',
+            'target_user' => ['origin'],
+        ]);
+    }
+
+    public function forAllTargets(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'target_user' => ['individual', 'origin'],
         ]);
     }
 

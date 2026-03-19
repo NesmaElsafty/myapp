@@ -16,6 +16,7 @@ class Plan extends Model
         'price' => 'decimal:2',
         'free_trial_duration' => 'integer',
         'posts_limit' => 'integer',
+        'target_user' => 'array',
         'is_active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

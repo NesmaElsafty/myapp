@@ -26,8 +26,7 @@ class PlanController extends Controller
                 'target_user' => 'nullable|string|in:individual,origin,all',
                 'is_active' => 'nullable|in:1,0,all',
                 'sorted_by' => 'nullable|string|in:name,newest,oldest,all',
-                'duration_type' => 'nullable|string|in:days,months,years,all',
-                'duration' => 'nullable|string|max:255',
+                'duration' => 'nullable|string|in:1,3,6,12,all',
             ]);
 
             $plans = $this->planService->getAll($request->all(), app()->getLocale())->paginate(10);
@@ -66,6 +65,7 @@ class PlanController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         try {
             $request->validate([
                 'name_en' => 'required|string|max:255',
@@ -76,7 +76,8 @@ class PlanController extends Controller
                 'free_trial_duration' => 'nullable|integer|min:0',
                 'free_trial_duration_type' => 'nullable|required_with:free_trial_duration|in:days,months,years',
                 'posts_limit' => 'nullable|integer|min:0',
-                'target_user' => 'required|in:individual,origin',
+                'target_user' => 'required|array|min:1',
+                'target_user.*' => 'required|in:individual,origin',
                 'is_active' => 'nullable|boolean',
                 'features' => 'nullable|array',
                 'features.*' => 'exists:features,id',
@@ -117,7 +118,8 @@ class PlanController extends Controller
                 'free_trial_duration' => 'nullable|integer|min:0',
                 'free_trial_duration_type' => 'nullable|required_with:free_trial_duration|in:days,months,years',
                 'posts_limit' => 'nullable|integer|min:0',
-                'target_user' => 'nullable|in:individual,origin',
+                'target_user' => 'nullable|array|min:1',
+                'target_user.*' => 'required|in:individual,origin',
                 'is_active' => 'nullable|boolean',
                 'features' => 'nullable|array',
                 'features.*' => 'exists:features,id',

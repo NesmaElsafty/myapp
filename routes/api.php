@@ -23,11 +23,11 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
-use App\Http\Controllers\Api\ItemWizardController;
 use App\Http\Controllers\Advertiser\IndividualController;
 use App\Http\Controllers\Advertiser\OriginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController as PublicAdController;
+use App\Http\Controllers\PlanController as PublicPlanController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -96,12 +96,11 @@ Route::prefix('inquiries')->group(function () {
     Route::post('/', [InquiryController::class, 'store']);
 });
 
-// Public plans routes (index and show)
-Route::prefix('plans')->group(function () {
-    Route::get('/', [PlanController::class, 'index']);
-    Route::get('/{id}', [PlanController::class, 'show']);
-});
-Route::get('/features', [PlanController::class, 'features']);
+// // Public plans routes (index and show)
+// Route::prefix('plans')->group(function () {
+//     Route::get('/', [PublicPlanController::class, 'index']);
+//     Route::get('/{id}', [PublicPlanController::class, 'show']);
+// });
 
 // Public users (individuals and origins) - for guests, no auth
 Route::prefix('users')->group(function () {
@@ -234,6 +233,8 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(functi
 
     
     // Protected Plans routes (store, update, destroy, bulkActions)
+    Route::get('plans', [PlanController::class, 'index']);
+    Route::get('plans/{id}', [PlanController::class, 'show']);
     Route::post('plans', [PlanController::class, 'store']);
     Route::put('plans/{id}', [PlanController::class, 'update']);
     Route::delete('plans/{id}', [PlanController::class, 'destroy']);
@@ -264,6 +265,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(functi
     Route::post('contents', [ContentController::class, 'store']);
     Route::put('contents/{id}', [ContentController::class, 'update']);
     Route::delete('contents/{id}', [ContentController::class, 'destroy']);
+
 });
 
 // User type routes (only type 'user')

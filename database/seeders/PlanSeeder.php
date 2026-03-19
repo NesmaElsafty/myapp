@@ -19,5 +19,8 @@ class PlanSeeder extends Seeder
         // Origin plans
         Plan::factory()->count(4)->forOrigin()->active()->create();
         Plan::factory()->count(1)->forOrigin()->inactive()->create();
+
+        // Plans that target both user types
+        Plan::factory()->count(2)->forAllTargets()->active()->create();
     }
 }

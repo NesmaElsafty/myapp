@@ -20,7 +20,7 @@ class AdController extends Controller
         try {
             $request->validate([
                 'search' => 'nullable|string|max:255',
-                'type' => 'required|string|in:promotion,interface',
+                'type' => 'required|string|in:promotion,interface,all',
                 'is_active' => 'nullable|boolean',
                 'sorted_by' => 'nullable|string|in:title,newest,oldest,all',
                 'is_all' => 'required|boolean',

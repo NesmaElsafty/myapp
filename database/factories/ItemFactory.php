@@ -27,7 +27,8 @@ class ItemFactory extends Factory
             'user_id' => $user?->id ?? User::factory(),
             'category_id' => $category?->id ?? Category::factory(),
             'name' => fake()->sentence(3),
-            'description' => fake()->paragraph(),
+            // items.description is a string column, keep generated text short
+            'description' => fake()->sentence(12),
             'price' => (string) fake()->numberBetween(1000, 100000),
             'price_after_discount' => null,
             'location' => $city?->name_ar ?? 'الرياض',

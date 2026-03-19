@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\FeatureResource;
 class PlanResource extends JsonResource
 {
     /**
@@ -30,7 +29,7 @@ class PlanResource extends JsonResource
             'posts_limit' => (int) $this->posts_limit,
             'target_user' => $this->target_user,
             'is_active' => (bool) $this->is_active,
-            'features' => FeatureResource::collection($this->features),
+            'users_count' => 0,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
         ];
