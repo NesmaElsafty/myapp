@@ -43,4 +43,9 @@ class Category extends Model implements HasMedia
             });
         })->toArray();
     }
+
+    public function planDetails(): HasMany
+    {
+        return $this->hasMany(PlanDetails::class);
+    }
 }

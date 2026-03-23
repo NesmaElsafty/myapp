@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Advertiser\OriginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController as PublicAdController;
 use App\Http\Controllers\PlanController as PublicPlanController;
+use App\Http\Controllers\PromotionController as PublicPromotionController;
 
 Route::prefix('auth')->group(function () {
     // Public routes
@@ -97,10 +99,10 @@ Route::prefix('inquiries')->group(function () {
 });
 
 // // Public plans routes (index and show)
-// Route::prefix('plans')->group(function () {
-//     Route::get('/', [PublicPlanController::class, 'index']);
-//     Route::get('/{id}', [PublicPlanController::class, 'show']);
-// });
+Route::prefix('plans')->group(function () {
+    Route::get('/', [PublicPlanController::class, 'index']);
+    Route::get('/{id}', [PublicPlanController::class, 'show']);
+});
 
 // Public users (individuals and origins) - for guests, no auth
 Route::prefix('users')->group(function () {
@@ -143,6 +145,12 @@ Route::prefix('users')->group(function () {
 Route::prefix('contents')->group(function () {
     Route::get('/', [ContentController::class, 'index']);
     Route::get('/{id}', [ContentController::class, 'show']);
+});
+
+// Public promotions routes (index and show)
+Route::prefix('promotions')->group(function () {
+    Route::get('/', [PublicPromotionController::class, 'index']);
+    Route::get('/{id}', [PublicPromotionController::class, 'show']);
 });
 
 // Admin routes
@@ -265,6 +273,9 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(functi
     Route::post('contents', [ContentController::class, 'store']);
     Route::put('contents/{id}', [ContentController::class, 'update']);
     Route::delete('contents/{id}', [ContentController::class, 'destroy']);
+
+    // Protected Promotions routes (update)
+    Route::put('promotions/{id}', [PromotionController::class, 'update']);
 
 });
 

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Plan extends Model
 {
@@ -13,24 +13,14 @@ class Plan extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'free_trial_duration' => 'integer',
         'posts_limit' => 'integer',
-        'target_user' => 'array',
         'is_active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
-    protected static function booted(): void
+    public function details(): HasMany
     {
-        static::deleting(function (Plan $plan) {
-            $plan->features()->detach();
-        });
-    }
-
-    public function features(): BelongsToMany
-    {
-        return $this->belongsToMany(Feature::class);
+        return $this->hasMany(PlanDetails::class);
     }
 }

@@ -19,22 +19,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionsSeeder::class,
             RoleSeeder::class,
-        ]);
-
-        // Seed cities and regions
-        $this->call([
             CitySeeder::class,
             RegionSeeder::class, // Must be after CitySeeder
-        ]);
-
-        // Seed contact info and social media
-        $this->call([
             ContactInfoSeeder::class,
             SocialMediaSeeder::class,
-        ]);
-
-        // Seed ads, blogs, FAQs, Terms, Supports, Inquiries, Notifications, and Plans
-        $this->call([
             AdSeeder::class,
             BlogSeeder::class,
             FaqSeeder::class,
@@ -42,56 +30,20 @@ class DatabaseSeeder extends Seeder
             SupportSeeder::class,
             InquirySeeder::class,
             NotificationSeeder::class,
-            PlanSeeder::class,
-        ]);
-
-        // Seed users in order: origin first (optional for individuals), then others
-        $this->call([
             OriginSeeder::class,
             UserSeeder::class,
             AdminSeeder::class,
             IndividualSeeder::class,
-        ]);
-
-        // Seed alerts (must be after users)
-        $this->call([
             AlertSeeder::class,
-        ]);
-
-        // Seed features
-        $this->call([
-            FeatureSeeder::class,
-        ]);
-
-        // Seed categories
-        $this->call([
             CategorySeeder::class,
-        ]);
-
-        // Seed screens (must be after categories)
-        $this->call([
             ScreenSeeder::class,
-        ]);
-
-        // Seed inputs (must be after screens)
-        $this->call([
             InputSeeder::class,
-        ]);
-
-        // Seed pages and contents (contents must be after pages)
-        $this->call([
             PageSeeder::class,
             ContentSeeder::class,
-        ]);
-
-        // Seed system settings
-        $this->call([
             SystemSettingSeeder::class,
-        ]);
-
-        // Seed sample items for origins & individuals
-        $this->call([
             ItemSeeder::class,
+            PlanSeeder::class,
+            PromotionSeeder::class,
         ]);
     }
 }

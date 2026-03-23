@@ -61,9 +61,11 @@ return [
 
     // Plan
     'plans_retrieved_success' => 'Plans retrieved successfully',
+    'failed_to_get_plans' => 'Failed to retrieve plans',
     'failed_retrieve_plans' => 'Failed to retrieve plans',
     'plan_not_found' => 'Plan not found',
     'plan_retrieved_success' => 'Plan retrieved successfully',
+    'failed_to_get_plan' => 'Failed to retrieve plan',
     'failed_retrieve_plan' => 'Failed to retrieve plan',
     'plan_created_success' => 'Plan created successfully',
     'failed_create_plan' => 'Failed to create plan',
@@ -71,8 +73,15 @@ return [
     'failed_update_plan' => 'Failed to update plan',
     'plan_deleted_success' => 'Plan deleted successfully',
     'failed_delete_plan' => 'Failed to delete plan',
-    'features_retrieved_success' => 'Features retrieved successfully',
-    'failed_retrieve_features' => 'Failed to retrieve features',
+
+    // Promotion
+    'promotions_retrieved_success' => 'Promotions retrieved successfully',
+    'failed_to_get_promotions' => 'Failed to retrieve promotions',
+    'promotion_not_found' => 'Promotion not found',
+    'promotion_retrieved_success' => 'Promotion retrieved successfully',
+    'failed_to_get_promotion' => 'Failed to retrieve promotion',
+    'promotion_updated_success' => 'Promotion updated successfully',
+    'failed_to_update_promotion' => 'Failed to update promotion',
 
     // Alert
     'not_authorized_mark_alert_read' => 'You are not authorized to mark this alert as read',

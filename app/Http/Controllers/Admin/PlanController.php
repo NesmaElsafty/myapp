@@ -10,8 +10,7 @@ use App\Services\PlanService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use App\Models\Feature;
-use App\Http\Resources\FeatureResource;
+
 class PlanController extends Controller
 {
     public function __construct(
@@ -22,11 +21,10 @@ class PlanController extends Controller
     {
         try {
             $request->validate([
-                'search' => 'nullable|string|max:255',
                 'target_user' => 'nullable|string|in:individual,origin,all',
                 'is_active' => 'nullable|in:1,0,all',
-                'sorted_by' => 'nullable|string|in:name,newest,oldest,all',
-                'duration' => 'nullable|string|in:1,3,6,12,all',
+                'plan_type' => 'nullable|string|in:one_post,many_posts,all',
+                'sorted_by' => 'nullable|string|in:newest,oldest,all',
             ]);
 
             $plans = $this->planService->getAll($request->all(), app()->getLocale())->paginate(10);
@@ -65,29 +63,39 @@ class PlanController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        // dd($request->details[0]['duration']);
         try {
             $request->validate([
-                'name_en' => 'required|string|max:255',
-                'name_ar' => 'required|string|max:255',
-                'price' => 'required|numeric|min:0',
-                'duration' => 'required|string|max:255',
-                'duration_type' => 'required|in:days,months,years',
-                'free_trial_duration' => 'nullable|integer|min:0',
-                'free_trial_duration_type' => 'nullable|required_with:free_trial_duration|in:days,months,years',
-                'posts_limit' => 'nullable|integer|min:0',
-                'target_user' => 'required|array|min:1',
-                'target_user.*' => 'required|in:individual,origin',
-                'is_active' => 'nullable|boolean',
-                'features' => 'nullable|array',
-                'features.*' => 'exists:features,id',
+                'target_user' => 'required|in:individual,origin',
+                'plan_type' => 'required|in:one_post,many_posts',
+                'posts_limit' => 'required|integer|min:1',
+                'is_active' => 'required|boolean',
+                'details' => 'required|array',
             ]);
 
-            $plan = $this->planService->create($request->all());
+            $onePostData = [
+                'details.*.price' => 'required|numeric|min:0',
+                'details.*.duration' => 'required|integer|min:0',
+                'details.*.category_id' => 'required|exists:categories,id',
+                'details.*.is_promoted' => 'required|boolean',
+                'details.*.promotion_type' => 'nullable|in:gold,silver',
+            ];
 
-            if($request->has('features')) {
-                $plan->features()->attach($request->features);
+            $manyPostsData = [
+                'details.*.price' => 'required|numeric|min:0',
+                'details.*.duration' => 'required|integer|min:0',
+                'details.*.free_trial_duration' => 'required|integer|min:0',
+                'details.*.free_trial_duration_type' => 'required|in:days,months,years',
+            ];
+
+            
+            if($request->plan_type === 'one_post') {
+                $request->validate($onePostData);
+            } else {
+                $request->validate($manyPostsData);
             }
+
+            $plan = $this->planService->create($request->all());
 
             return response()->json([
                 'message' => __('messages.plan_created_success'),
@@ -109,26 +117,41 @@ class PlanController extends Controller
     public function update(Request $request,$id)
     {
         try {
-            $request->validate([
-                'name_en' => 'nullable|string|max:255',
-                'name_ar' => 'nullable|string|max:255',
-                'price' => 'nullable|numeric|min:0',
-                'duration' => 'nullable|string|max:255',
-                'duration_type' => 'nullable|in:days,months,years',
-                'free_trial_duration' => 'nullable|integer|min:0',
-                'free_trial_duration_type' => 'nullable|required_with:free_trial_duration|in:days,months,years',
-                'posts_limit' => 'nullable|integer|min:0',
-                'target_user' => 'nullable|array|min:1',
-                'target_user.*' => 'required|in:individual,origin',
-                'is_active' => 'nullable|boolean',
-                'features' => 'nullable|array',
-                'features.*' => 'exists:features,id',
-            ]);
-            $plan = $this->planService->update((int) $id, $request->all());
-
-            if($request->has('features')) {
-                $plan->features()->sync($request->features);
+            $plan = Plan::find($id);
+            if (!$plan) {
+                return response()->json(['message' => __('messages.plan_not_found')], 404);
             }
+            $request->validate([
+                'target_user' => 'required|in:individual,origin',
+                'plan_type' => 'required|in:one_post,many_posts',
+                'posts_limit' => 'required|integer|min:1',
+                'is_active' => 'required|boolean',
+                'details' => 'required|array',
+            ]);
+
+            $onePostData = [
+                'details.*.price' => 'required|numeric|min:0',
+                'details.*.duration' => 'required|integer|min:0',
+                'details.*.category_id' => 'required|exists:categories,id',
+                'details.*.is_promoted' => 'required|boolean',
+                'details.*.promotion_type' => 'nullable|in:gold,silver',
+            ];
+
+            $manyPostsData = [
+                'details.*.price' => 'required|numeric|min:0',
+                'details.*.duration' => 'required|integer|min:0',
+                'details.*.free_trial_duration' => 'required|integer|min:0',
+                'details.*.free_trial_duration_type' => 'required|in:days,months,years',
+            ];
+
+            
+            if($request->plan_type === 'one_post') {
+                $request->validate($onePostData);
+            } else {
+                $request->validate($manyPostsData);
+            }
+
+            $plan = $this->planService->update($plan, $request->all());
 
             return response()->json([
                 'message' => __('messages.plan_updated_success'),
@@ -206,22 +229,6 @@ class PlanController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_bulk_action'),
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
-
-    public function features(Request $request)
-    {
-        try {
-            $features = Feature::all();
-            return response()->json([
-                'message' => __('messages.features_retrieved_success'),
-                'data' => FeatureResource::collection($features),
-            ], 200);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => __('messages.failed_retrieve_features'),
                 'error' => $e->getMessage(),
             ], 500);
         }

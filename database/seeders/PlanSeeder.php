@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PlanSeeder extends Seeder
 {
@@ -12,15 +14,116 @@ class PlanSeeder extends Seeder
      */
     public function run(): void
     {
-        // Individual plans
-        Plan::factory()->count(4)->forIndividual()->active()->create();
-        Plan::factory()->count(1)->forIndividual()->inactive()->create();
+        // In DatabaseSeeder, CategorySeeder currently runs after PlanSeeder.
+        // Ensure categories exist so one_post plan details can be created per category.
+        if (Category::count() === 0) {
+            Category::create([
+                'name_en' => 'Default category',
+                'name_ar' => 'فئة افتراضية',
+                'is_active' => true,
+            ]);
+        }
 
-        // Origin plans
-        Plan::factory()->count(4)->forOrigin()->active()->create();
-        Plan::factory()->count(1)->forOrigin()->inactive()->create();
+        $categories = Category::pluck('id');
+        $allaowedCategories = [3,4,7,8];
 
-        // Plans that target both user types
-        Plan::factory()->count(2)->forAllTargets()->active()->create();
+
+        // 1) individual / many_posts / 30
+        $individualMany30 = Plan::factory()->create([
+            'target_user' => 'individual',
+            'plan_type' => 'many_posts',
+            'posts_limit' => 30,
+            'is_active' => true,
+        ]);
+
+        foreach ([1, 3, 6, 12] as $duration) {
+            DB::table('plan_details')->insert([
+                'plan_id' => $individualMany30->id,
+                'price' => fake()->randomFloat(2, 20, 500),
+                'duration' => $duration,
+                'free_trial_duration' => fake()->numberBetween(0, 14),
+                'free_trial_duration_type' => 'days',
+                'category_id' => null,
+                'is_promoted' => false,
+                'promotion_type' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Same again with posts_limit 60
+        $individualMany60 = Plan::factory()->create([
+            'target_user' => 'individual',
+            'plan_type' => 'many_posts',
+            'posts_limit' => 60,
+            'is_active' => true,
+        ]);
+
+        foreach ([1, 3, 6, 12] as $duration) {
+            DB::table('plan_details')->insert([
+                'plan_id' => $individualMany60->id,
+                'price' => fake()->randomFloat(2, 20, 500),
+                'duration' => $duration,
+                'free_trial_duration' => fake()->numberBetween(0, 14),
+                'free_trial_duration_type' => 'days',
+                'category_id' => null,
+                'is_promoted' => false,
+                'promotion_type' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // 2) individual / one_post / 1
+        $individualOnePost = Plan::factory()->create([
+            'target_user' => 'individual',
+            'plan_type' => 'one_post',
+            'posts_limit' => 1,
+            'is_active' => true,
+        ]);
+
+        foreach ($categories as $categoryId) {
+            if (!in_array($categoryId, $allaowedCategories)) {
+                continue;
+            }
+            DB::table('plan_details')->insert([
+                'plan_id' => $individualOnePost->id,
+                'price' => fake()->randomFloat(2, 20, 500),
+                'duration' => 30,
+                'free_trial_duration' => 0,
+                'free_trial_duration_type' => 'days',
+                'category_id' => $categoryId,
+                'is_promoted' => fake()->boolean(),
+                'promotion_type' => fake()->randomElement(['gold', 'silver']),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Same for origin / one_post / 1
+        $originOnePost = Plan::factory()->create([
+            'target_user' => 'origin',
+            'plan_type' => 'one_post',
+            'posts_limit' => 1,
+            'is_active' => true,
+        ]);
+
+        foreach ($categories as $categoryId) {
+            if (!in_array($categoryId, $allaowedCategories)) {
+                continue;
+            }
+            DB::table('plan_details')->insert([
+                'plan_id' => $originOnePost->id,
+                'price' => fake()->randomFloat(2, 20, 500),
+                'duration' => 30,
+                'free_trial_duration' => 0,
+                'free_trial_duration_type' => 'days',
+                'category_id' => $categoryId,
+                'is_promoted' => fake()->boolean(),
+                'promotion_type' => fake()->randomElement(['gold', 'silver']),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 }

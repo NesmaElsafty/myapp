@@ -61,9 +61,11 @@ return [
 
     // Plan
     'plans_retrieved_success' => 'تم استرجاع الباقات بنجاح',
+    'failed_to_get_plans' => 'فشل استرجاع الباقات',
     'failed_retrieve_plans' => 'فشل استرجاع الباقات',
     'plan_not_found' => 'الباقة غير موجودة',
     'plan_retrieved_success' => 'تم استرجاع الباقة بنجاح',
+    'failed_to_get_plan' => 'فشل استرجاع الباقة',
     'failed_retrieve_plan' => 'فشل استرجاع الباقة',
     'plan_created_success' => 'تم إنشاء الباقة بنجاح',
     'failed_create_plan' => 'فشل إنشاء الباقة',
@@ -71,8 +73,15 @@ return [
     'failed_update_plan' => 'فشل تحديث الباقة',
     'plan_deleted_success' => 'تم حذف الباقة بنجاح',
     'failed_delete_plan' => 'فشل حذف الباقة',
-    'features_retrieved_success' => 'تم استرجاع المميزات بنجاح',
-    'failed_retrieve_features' => 'فشل استرجاع المميزات',
+
+    // Promotion
+    'promotions_retrieved_success' => 'تم استرجاع العروض الترويجية بنجاح',
+    'failed_to_get_promotions' => 'فشل استرجاع العروض الترويجية',
+    'promotion_not_found' => 'العرض الترويجي غير موجود',
+    'promotion_retrieved_success' => 'تم استرجاع العرض الترويجي بنجاح',
+    'failed_to_get_promotion' => 'فشل استرجاع العرض الترويجي',
+    'promotion_updated_success' => 'تم تحديث العرض الترويجي بنجاح',
+    'failed_to_update_promotion' => 'فشل تحديث العرض الترويجي',
 
     // Alert
     'not_authorized_mark_alert_read' => 'غير مصرح لك بتحديد هذا التنبيه كمقروء',

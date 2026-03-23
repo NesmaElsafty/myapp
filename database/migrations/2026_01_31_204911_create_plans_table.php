@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('features', function (Blueprint $table) {
+        Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->string('name_en')->nullable();
-            $table->string('name_ar')->nullable();
+            $table->enum('target_user', ['individual', 'origin']);
+            $table->enum('plan_type', ['one_post', 'many_posts']);
+            $table->unsignedInteger('posts_limit');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('features');
+        Schema::dropIfExists('plans');
     }
 };

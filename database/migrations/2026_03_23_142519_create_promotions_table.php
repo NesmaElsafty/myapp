@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('feature_plan', function (Blueprint $table) {
+        Schema::create('promotions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('feature_id')->constrained('features')->onDelete('cascade');
-            $table->foreignId('plan_id')->constrained('plans')->onDelete('cascade');
+            $table->string('title_en')->nullable();
+            $table->string('title_ar')->nullable();
+            $table->text('description_en')->nullable();
+            $table->text('description_ar')->nullable();
+            $table->decimal('price', 10, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('feature_plan');
+        Schema::dropIfExists('promotions');
     }
 };
