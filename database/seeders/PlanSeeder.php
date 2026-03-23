@@ -6,9 +6,39 @@ use App\Models\Category;
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class PlanSeeder extends Seeder
 {
+    private ?string $targetUserColumnType = null;
+
+    private function createPlan(array $attributes): Plan
+    {
+        if (!Schema::hasColumn('plans', 'plan_type')) {
+            unset($attributes['plan_type']);
+        }
+
+        if (isset($attributes['target_user'])) {
+            $attributes['target_user'] = $this->formatTargetUser((string) $attributes['target_user']);
+        }
+
+        return Plan::factory()->create($attributes);
+    }
+
+    private function formatTargetUser(string $value): string
+    {
+        if ($this->targetUserColumnType === null) {
+            $column = DB::selectOne("SHOW COLUMNS FROM `plans` LIKE 'target_user'");
+            $this->targetUserColumnType = $column->Type ?? '';
+        }
+
+        if (str_starts_with(strtolower($this->targetUserColumnType), 'enum(')) {
+            return $value;
+        }
+
+        return json_encode([$value], JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * Run the database seeds.
      */
@@ -29,7 +59,7 @@ class PlanSeeder extends Seeder
 
 
         // 1) individual / many_posts / 30
-        $individualMany30 = Plan::factory()->create([
+        $individualMany30 = $this->createPlan([
             'target_user' => 'individual',
             'plan_type' => 'many_posts',
             'posts_limit' => 30,
@@ -52,7 +82,7 @@ class PlanSeeder extends Seeder
         }
 
         // Same again with posts_limit 60
-        $individualMany60 = Plan::factory()->create([
+        $individualMany60 = $this->createPlan([
             'target_user' => 'individual',
             'plan_type' => 'many_posts',
             'posts_limit' => 60,
@@ -75,7 +105,7 @@ class PlanSeeder extends Seeder
         }
 
         // 2) individual / one_post / 1
-        $individualOnePost = Plan::factory()->create([
+        $individualOnePost = $this->createPlan([
             'target_user' => 'individual',
             'plan_type' => 'one_post',
             'posts_limit' => 1,
@@ -101,7 +131,7 @@ class PlanSeeder extends Seeder
         }
 
         // Same for origin / one_post / 1
-        $originOnePost = Plan::factory()->create([
+        $originOnePost = $this->createPlan([
             'target_user' => 'origin',
             'plan_type' => 'one_post',
             'posts_limit' => 1,
