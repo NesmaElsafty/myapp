@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Plan;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -13,7 +12,6 @@ use Illuminate\Support\Facades\Schema;
 class PlanFactory extends Factory
 {
     protected $model = Plan::class;
-    private static ?string $targetUserColumnType = null;
 
     /**
      * Define the model's default state.
@@ -29,7 +27,7 @@ class PlanFactory extends Factory
             'posts_limit' => $planType === 'one_post'
                 ? fake()->randomElement([1, 2, 3])
                 : fake()->randomElement([30, 60, 90, 120]),
-            'target_user' => $this->formatTargetUser($targetUser),
+            'target_user' => $targetUser,
             'is_active' => fake()->boolean(80),
         ];
 
@@ -38,7 +36,7 @@ class PlanFactory extends Factory
             $data['price'] = fake()->randomFloat(2, 20, 500);
         }
         if (Schema::hasColumn('plans', 'duration')) {
-            $data['duration'] = fake()->randomElement([1, 3, 6, 12, 30]);
+            $data['duration'] = fake()->randomElement([1, 3, 6, 12]);
         }
         if (Schema::hasColumn('plans', 'duration_type')) {
             $data['duration_type'] = fake()->randomElement(['days', 'months', 'years']);
@@ -58,21 +56,6 @@ class PlanFactory extends Factory
         }
 
         return $data;
-    }
-
-    private function formatTargetUser(string $value): string
-    {
-        // Some environments have target_user as ENUM, others as JSON-valid text.
-        if (self::$targetUserColumnType === null) {
-            $column = DB::selectOne("SHOW COLUMNS FROM `plans` LIKE 'target_user'");
-            self::$targetUserColumnType = $column->Type ?? '';
-        }
-
-        if (str_starts_with(strtolower(self::$targetUserColumnType), 'enum(')) {
-            return $value;
-        }
-
-        return json_encode([$value], JSON_UNESCAPED_UNICODE);
     }
 
     /**

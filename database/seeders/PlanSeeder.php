@@ -19,23 +19,25 @@ class PlanSeeder extends Seeder
         }
 
         if (isset($attributes['target_user'])) {
-            $attributes['target_user'] = $this->formatTargetUser((string) $attributes['target_user']);
+            $attributes['target_user'] = $this->normalizeTargetUser((string) $attributes['target_user']);
         }
 
         return Plan::factory()->create($attributes);
     }
 
-    private function formatTargetUser(string $value): string
+    private function normalizeTargetUser(string $value): string
     {
         if ($this->targetUserColumnType === null) {
             $column = DB::selectOne("SHOW COLUMNS FROM `plans` LIKE 'target_user'");
-            $this->targetUserColumnType = $column->Type ?? '';
+            $this->targetUserColumnType = strtolower((string) ($column->Type ?? ''));
         }
 
-        if (str_starts_with(strtolower($this->targetUserColumnType), 'enum(')) {
+        // Enum schema: store as plain scalar value
+        if (str_starts_with($this->targetUserColumnType, 'enum(')) {
             return $value;
         }
 
+        // JSON/check schema: store as JSON array string
         return json_encode([$value], JSON_UNESCAPED_UNICODE);
     }
 
