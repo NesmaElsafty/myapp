@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Advertiser;
+namespace App\Http\Controllers\advertiser;
 
 use App\Helpers\PaginationHelper;
 use App\Http\Controllers\Controller;

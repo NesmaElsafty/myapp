@@ -38,6 +38,22 @@ class PlanService
         return $query;
     }
 
+    public function advertisedPlansManyPosts($data, ?string $language = 'en')
+    {
+
+        $query = Plan::query();
+        $query->where(['is_active'=> true, 'plan_type'=> $data['plan_type'], 'target_user'=> $data['target_user']]);        
+        return $query;
+    }
+
+    public function advertisedPlansOnePost($data, ?string $language = 'en')
+    {
+        $query = PlanDetails::whereHas('plan', function ($query) use ($data) {
+            $query->where(['is_active'=> true, 'plan_type'=> $data['plan_type'], 'target_user'=> $data['target_user']]);
+        })->where('is_promoted', $data['is_promoted']);
+        return $query->get();
+    }
+
     public function create($data)
     {
         $plan = new Plan();

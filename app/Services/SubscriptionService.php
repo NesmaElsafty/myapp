@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 
 class SubscriptionService
 {
-    public function mySubscriptions(User $user, string $type = 'current')
+    public function mySubscriptions(User $user, string $type = 'current', bool $is_promo = false)
     {
         $baseQuery = Subscription::with(['plan', 'planDetail'])
             ->where('user_id', $user->id);
@@ -27,8 +27,6 @@ class SubscriptionService
         } else {
             $baseQuery->where('status', '!=', 'active');
         }
-
-        
 
         return $baseQuery->paginate(10);
     }

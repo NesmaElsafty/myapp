@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Helpers\PaginationHelper;
 use App\Models\Plan;
+use App\Http\Resources\PlanDetailsResource;
 class PlanController extends Controller
 {
     //
@@ -20,21 +21,36 @@ class PlanController extends Controller
 
     public function index(Request $request)
     {
-        $request->validate([
-            'target_user' => 'nullable|string|in:individual,origin',
-            'plan_type' => 'nullable|string|in:one_post,many_posts',
-        ]);
-
-        // add is_active filter
-        $request->merge(['is_active' => true]);
-
         try {
-            $plans = $this->planService->getAll($request->all(), app()->getLocale())->paginate(10);
-            return response()->json([
-                'message' => __('messages.plans_retrieved_success'),
-                'data' => PlanResource::collection($plans),
-                'pagination' => PaginationHelper::paginate($plans),
-            ], 200);
+            $request->validate([
+                'target_user' => 'required|string|in:individual,origin',
+                'plan_type' => 'required|string|in:one_post,many_posts',
+            ]);
+            
+            if($request->plan_type === 'one_post') {
+
+                $request->validate([
+                    'target_user' => 'required|string|in:individual,origin',
+                    'plan_type' => 'required|string|in:one_post,many_posts',
+                    'is_promoted' => 'required|boolean',
+                ]);
+
+                $plans = $this->planService->advertisedPlansOnePost($request->all(), app()->getLocale());
+                
+                return response()->json([
+                    'message' => __('messages.plans_retrieved_success'),
+                    'data' => PlanDetailsResource::collection($plans),
+                ], 200);    
+            
+            } else {
+            
+                $plans = $this->planService->advertisedPlansManyPosts($request->all(), app()->getLocale())->get();
+            
+                return response()->json([
+                    'message' => __('messages.plans_retrieved_success'),
+                    'data' => PlanResource::collection($plans),
+                ], 200);
+            }
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_to_get_plans'),
