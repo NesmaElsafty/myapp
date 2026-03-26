@@ -6,6 +6,7 @@ use App\Models\PlanDetails;
 use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -109,6 +110,130 @@ class SubscriptionService
 
             return $subscription;
         });
+    }
+
+    public function getAll($data)
+    {
+        $query = Subscription::query();
+
+        if(isset($data['search'])) {
+            $query->where('user_id', 'like', "%{$data['search']}%");
+        }
+
+        if(isset($data['status']) && $data['status'] !== 'all') {
+            if($data['status'] == 'expired') {
+                $query->where('status', 'expired')->orWhere('status', 'cancelled');
+            }else{
+                $query->where('status', $data['status']);
+            }
+        }
+
+        if(isset($data['user_type']) && $data['user_type'] !== 'all') {
+            $query->whereHas('user', function ($query) use ($data) {
+                $query->where('type', $data['user_type']);
+            });
+        }
+        
+        if(isset($data['plan_type']) && $data['plan_type'] !== 'all') {
+            $query->where('plan_type', $data['plan_type']);
+        }
+
+        return $query;
+    }
+
+    public function stats(): array
+    {
+        $now = Carbon::now();
+
+        $currentMonthStart = $now->copy()->startOfMonth();
+        $currentMonthEnd = $now->copy()->endOfMonth();
+        $previousMonthStart = $now->copy()->subMonth()->startOfMonth();
+        $previousMonthEnd = $now->copy()->subMonth()->endOfMonth();
+
+        $totalCurrent = Subscription::whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])->count();
+        $totalPrevious = Subscription::whereBetween('created_at', [$previousMonthStart, $previousMonthEnd])->count();
+
+        $activeCurrent = Subscription::where('status', 'active')
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+        $activePrevious = Subscription::where('status', 'active')
+            ->whereBetween('created_at', [$previousMonthStart, $previousMonthEnd])
+            ->count();
+
+        $expiredCurrent = Subscription::where('status', '!=', 'active')
+            ->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd])
+            ->count();
+        $expiredPrevious = Subscription::where('status', '!=', 'active')
+            ->whereBetween('created_at', [$previousMonthStart, $previousMonthEnd])
+            ->count();
+
+        $currentMonthSeries = $this->buildDailySeries($currentMonthStart, $currentMonthEnd);
+
+        return [
+            'period' => $currentMonthStart->format('Y-m'),
+            'total_subscriptions' => [
+                'value' => $totalCurrent,
+                'trend' => $this->calculateTrend($totalCurrent, $totalPrevious),
+                'chart' => $currentMonthSeries['total'],
+            ],
+            'active_subscriptions' => [
+                'value' => $activeCurrent,
+                'trend' => $this->calculateTrend($activeCurrent, $activePrevious),
+                'chart' => $currentMonthSeries['active'],
+            ],
+            'expired_subscriptions' => [
+                'value' => $expiredCurrent,
+                'trend' => $this->calculateTrend($expiredCurrent, $expiredPrevious),
+                'chart' => $currentMonthSeries['expired'],
+            ],
+        ];
+    }
+
+    protected function calculateTrend(int $current, int $previous): array
+    {
+        if ($previous === 0) {
+            $percentage = $current > 0 ? 100.0 : 0.0;
+        } else {
+            $percentage = (($current - $previous) / $previous) * 100;
+        }
+
+        return [
+            
+            'difference' => $current - $previous,
+            'percentage' => round($percentage, 2),
+            'direction' => $current > $previous ? 'up' : ($current < $previous ? 'down' : 'stable'),
+        ];
+    }
+
+    protected function buildDailySeries(Carbon $monthStart, Carbon $monthEnd): array
+    {
+        $rows = Subscription::selectRaw('DATE(created_at) as day')
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw("SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) as active")
+            ->selectRaw("SUM(CASE WHEN status != 'active' THEN 1 ELSE 0 END) as expired")
+            ->whereBetween('created_at', [$monthStart, $monthEnd])
+            ->groupBy('day')
+            ->get()
+            ->keyBy('day');
+
+        $total = [];
+        $active = [];
+        $expired = [];
+
+        foreach (CarbonPeriod::create($monthStart, $monthEnd) as $date) {
+            $day = $date->format('Y-m-d');
+            $row = $rows->get($day);
+
+            $total[] = (int) ($row->total ?? 0);
+            $active[] = (int) ($row->active ?? 0);
+            $expired[] = (int) ($row->expired ?? 0);
+        }
+
+        return [
+            'total' => $total,
+            'active' => $active,
+            'expired' => $expired,
+        ];
     }
 
 }

@@ -24,7 +24,11 @@ class SubscriptionResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'user_id' => [
+                'id' => $this->user->id,
+                'name' => $this->user->f_name . ' ' . $this->user->l_name,
+                'type' => $this->user->type,
+            ],
             'plan_id' => $this->plan_id,
             'plan_detail_id' => $this->plan_detail_id,
             'plan_name' => $planName,
@@ -34,6 +38,7 @@ class SubscriptionResource extends JsonResource
             'price' => (float) $this->price,
             'available_posts_limit' => $this->available_posts_limit,
             'plan_posts_limit' => $this->plan_posts_limit,
+            'used_posts' => $this->plan_posts_limit - $this->available_posts_limit,
             'golde_posts' => $this->golde_posts,
             'silver_posts' => $this->silver_posts,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),

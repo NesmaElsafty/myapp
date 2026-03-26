@@ -32,11 +32,6 @@ class SubscriptionController extends Controller
                 'data' => SubscriptionResource::collection($result),
                 'pagination' => PaginationHelper::paginate($result),
             ], 200);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => __('messages.validation_failed'),
-                'errors' => $e->errors(),
-            ], 422);
         } catch (Exception $e) {
             return response()->json([
                 'message' => __('messages.failed_retrieve_subscriptions'),

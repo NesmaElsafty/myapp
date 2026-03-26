@@ -336,4 +336,6 @@ return [
     'unauthorized_cancel_subscription' => 'You are not authorized to cancel this subscription.',
     'subscription_cancelled_success' => 'Subscription cancelled successfully.',
     'failed_cancel_subscription' => 'Failed to cancel subscription.',
+    'subscriptions_exported_success' => 'Subscriptions exported successfully.',
+    'failed_export_subscriptions' => 'Failed to export subscriptions.',
 ];

@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Admin\TermController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\PromotionController;
@@ -278,6 +279,9 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(functi
     // Protected Promotions routes (update)
     Route::put('promotions/{id}', [PromotionController::class, 'update']);
 
+    // Protected Subscriptions routes (index)
+    Route::get('subscriptions', [SubscriptionController::class, 'index']);
+    Route::get('subscriptionsExport', [SubscriptionController::class, 'export']);
 });
 
 // User type routes (only type 'user')

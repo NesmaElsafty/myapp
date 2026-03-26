@@ -336,4 +336,6 @@ return [
     'unauthorized_cancel_subscription' => 'غير مصرح لك بإلغاء هذا الاشتراك.',
     'subscription_cancelled_success' => 'تم إلغاء الاشتراك بنجاح.',
     'failed_cancel_subscription' => 'فشل إلغاء الاشتراك.',
+    'subscriptions_exported_success' => 'تم تصدير الاشتراكات بنجاح.',
+    'failed_export_subscriptions' => 'فشل تصدير الاشتراكات.',
 ];
