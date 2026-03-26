@@ -43,6 +43,14 @@ return new class extends Migration
             $table->enum('status', ['draft', 'in_progress', 'completed'])->default('draft');
             $table->foreignId('current_screen_id')->nullable()->constrained('screens')->nullOnDelete();
             $table->dateTime('completed_at')->nullable();
+
+            $table->boolean('need_licence')->default(false);
+            $table->boolean('has_licence')->default(false);
+            
+            $table->string('licence_number')->nullable();
+            $table->string('licence_type')->nullable();
+            
+
             $table->timestamps();
         });
     }
