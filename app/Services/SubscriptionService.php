@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Plan;
 use App\Models\PlanDetails;
 use App\Models\Subscription;
 use App\Models\User;
