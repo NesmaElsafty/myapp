@@ -299,7 +299,7 @@ Route::prefix('advertiser')->middleware(['auth:sanctum', 'type:individual,origin
 
     Route::get('mySubscriptions', [AdvertiserSubscriptionController::class, 'mySubscriptions']);
     Route::post('subscriptions', [AdvertiserSubscriptionController::class, 'store']);
-    Route::put('subscriptions/{id}', [AdvertiserSubscriptionController::class, 'update']);
+    Route::post('cancel/{id}', [AdvertiserSubscriptionController::class, 'cancel']);
 });
 
 // Item routes (only for advertiser accounts: individual or origin)

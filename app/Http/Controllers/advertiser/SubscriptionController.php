@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SubscriptionResource;
 use App\Models\Subscription;
 use App\Services\SubscriptionService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -27,7 +28,7 @@ class SubscriptionController extends Controller
             $result = $this->subscriptionService->mySubscriptions(auth()->user(), $request->type);
 
             return response()->json([
-                'message' => 'Subscriptions retrieved successfully.',
+                'message' => __('messages.subscriptions_retrieved_success'),
                 'data' => SubscriptionResource::collection($result),
                 'pagination' => PaginationHelper::paginate($result),
             ], 200);
@@ -38,7 +39,7 @@ class SubscriptionController extends Controller
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve subscriptions.',
+                'message' => __('messages.failed_retrieve_subscriptions'),
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -57,7 +58,7 @@ class SubscriptionController extends Controller
             $subscription = $this->subscriptionService->createSubscription(auth()->user(), $request->all());
 
             return response()->json([
-                'message' => 'Subscription created successfully.',
+                'message' => __('messages.subscription_created_success'),
                 'data' => new SubscriptionResource($subscription),
             ], 201);
         } catch (ValidationException $e) {
@@ -67,46 +68,41 @@ class SubscriptionController extends Controller
             ], 422);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create subscription.',
+                'message' => __('messages.failed_create_subscription'),
                 'error' => $e->getMessage(),
             ], 500);
         }
     }
 
-    public function update(Request $request, $id)
+    public function cancel($id)
     {
         try {
-            $request->validate([
-                'action' => 'required|in:renew,cancel',
-                'plan_id' => 'nullable|exists:plans,id',
-                'plan_detail_id' => 'nullable|exists:plan_details,id',
-            ]);
-
             $subscription = Subscription::find($id);
-            if (!$subscription) {
+
+            if(!$subscription) {
                 return response()->json([
-                    'message' => 'Subscription not found.',
+                    'message' => __('messages.subscription_not_found'),
                 ], 404);
             }
 
-            $updatedSubscription = $this->subscriptionService->updateSubscription(
-                $request->user(),
-                $subscription,
-                $request->all()
-            );
+            if($subscription->user_id !== auth()->user()->id) {
+                return response()->json([
+                    'message' => __('messages.unauthorized_cancel_subscription'),
+                ], 404);
+            }
+
+            $subscription->status = 'cancelled';
+            $subscription->end_date = Carbon::today();
+            $subscription->save();
 
             return response()->json([
-                'message' => 'Subscription updated successfully.',
-                'data' => new SubscriptionResource($updatedSubscription),
+                'message' => __('messages.subscription_cancelled_success'),
+                'data' => new SubscriptionResource($subscription),
             ], 200);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'message' => __('messages.validation_failed'),
-                'errors' => $e->errors(),
-            ], 422);
+
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update subscription.',
+                'message' => __('messages.failed_cancel_subscription'),
                 'error' => $e->getMessage(),
             ], 500);
         }
