@@ -17,13 +17,18 @@ class PlanDetails extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function plan(): BelongsTo
+    public function plan()
     {
         return $this->belongsTo(Plan::class);
     }
 
-    public function category(): BelongsTo
+    public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
     }
 }

@@ -301,6 +301,7 @@ return [
     'individual_removed_from_origin_success' => 'تم إزالة الفرد من المصدر بنجاح.',
     'failed_to_remove_individual' => 'فشل إزالة الفرد من المصدر.',
     'origin_not_found' => 'المصدر غير موجود.',
+    'origin_has_reached_max_individuals' => 'لقد وصل المصدر إلى الحد الأقصى لعدد الأفراد.',
     'you_are_already_in_this_origin' => 'أنت بالفعل في هذا المصدر.',
     'request_to_join_origin_success' => 'تم إرسال طلب الانضمام إلى المصدر بنجاح.',
     'failed_to_request_to_join_origin' => 'فشل إرسال طلب الانضمام إلى المصدر.',
@@ -318,4 +319,10 @@ return [
     'failed_update_item' => 'فشل تحديث العنصر.',
     'item_deleted_success' => 'تم حذف العنصر بنجاح.',
     'failed_delete_item' => 'فشل حذف العنصر.',
+
+    // Subscription
+    'selected_plan_detail_invalid' => 'تفاصيل الخطة المحددة غير صالحة.',
+    'selected_plan_account_type_mismatch' => 'الخطة المحددة لا تتطابق مع نوع حسابك.',
+    'gold_posts_exceed_plan_limit' => 'يجب أن يكون عدد المنشورات الذهبية أقل من أو يساوي الحد المسموح به في الخطة.',
+    'silver_posts_exceed_plan_limit' => 'يجب أن يكون عدد المنشورات الفضية أقل من أو يساوي الحد المسموح به في الخطة.',
 ];

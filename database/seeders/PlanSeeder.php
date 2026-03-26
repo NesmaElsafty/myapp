@@ -157,5 +157,39 @@ class PlanSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
+
+        // 3) origin / many_posts / 30
+        $originMany30 = $this->createPlan([
+            'target_user' => 'origin',
+            'plan_type' => 'many_posts',
+            'posts_limit' => 30,
+            'is_active' => true,
+        ]);
+        
+        foreach ([1, 3, 6, 12] as $duration) {
+            DB::table('plan_details')->insert([
+                'plan_id' => $originMany30->id,
+                'price' => fake()->randomFloat(2, 20, 500),
+                'duration' => $duration,
+                'free_trial_duration' => fake()->numberBetween(0, 14),
+                'free_trial_duration_type' => 'days',
+            ]);
+        }
+
+        // Same again with posts_limit 60
+        $originMany60 = $this->createPlan([
+            'target_user' => 'origin',
+            'plan_type' => 'many_posts',
+            'posts_limit' => 60,
+            'is_active' => true,
+        ]);
+
+        foreach ([1, 3, 6, 12] as $duration) {
+            DB::table('plan_details')->insert([
+                'plan_id' => $originMany60->id,
+                'price' => fake()->randomFloat(2, 20, 500),
+                'duration' => $duration,
+            ]);
+        }
     }
 }

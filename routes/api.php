@@ -26,6 +26,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Advertiser\IndividualController;
 use App\Http\Controllers\Advertiser\OriginController;
+use App\Http\Controllers\Advertiser\SubscriptionController as AdvertiserSubscriptionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController as PublicAdController;
 use App\Http\Controllers\PlanController as PublicPlanController;
@@ -295,6 +296,10 @@ Route::prefix('advertiser')->middleware(['auth:sanctum', 'type:individual,origin
     Route::post('changeRequestStatus', [IndividualController::class, 'changeRequestStatus']);
     Route::get('myIndividuals', [IndividualController::class, 'myIndividuals']);
     Route::post('removeIndividual', [IndividualController::class, 'removeIndividual']);
+
+    Route::get('mySubscriptions', [AdvertiserSubscriptionController::class, 'mySubscriptions']);
+    Route::post('subscriptions', [AdvertiserSubscriptionController::class, 'store']);
+    Route::put('subscriptions/{id}', [AdvertiserSubscriptionController::class, 'update']);
 });
 
 // Item routes (only for advertiser accounts: individual or origin)

@@ -71,6 +71,7 @@ class AuthController extends Controller
 
             $resourceClass = $this->getResourceClass($result['user']->type);
             $userResource = new $resourceClass($result['user']);
+            // dd($userResource);
 
             return response()->json([
                 'message' => __('messages.user_registered_success'),

@@ -26,6 +26,12 @@ class OriginController extends Controller
             $individual = auth()->user();
             $origin = User::find($request->origin_id);
 
+            if(count($origin->individuals) >= 5) {
+                return response()->json([
+                    'message' => __('messages.origin_has_reached_max_individuals'),
+                ], 400);
+            }
+
             if ($origin->type !== 'origin') {
                 return response()->json([
                     'message' => __('messages.origin_not_found'),

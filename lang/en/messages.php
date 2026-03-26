@@ -301,6 +301,7 @@ return [
     'individual_removed_from_origin_success' => 'Individual removed from origin successfully.',
     'failed_to_remove_individual' => 'Failed to remove individual from origin.',
     'origin_not_found' => 'Origin not found.',
+    'origin_has_reached_max_individuals' => 'Origin has reached the maximum number of individuals.',
     'you_are_already_in_this_origin' => 'You are already in this origin.',
     'request_to_join_origin_success' => 'Request to join origin sent successfully.',
     'failed_to_request_to_join_origin' => 'Failed to send request to join origin.',
@@ -318,4 +319,10 @@ return [
     'failed_update_item' => 'Failed to update item.',
     'item_deleted_success' => 'Item deleted successfully.',
     'failed_delete_item' => 'Failed to delete item.',
+
+    // Subscription
+    'selected_plan_detail_invalid' => 'Selected plan detail is invalid.',
+    'selected_plan_account_type_mismatch' => 'Selected plan does not match your account type.',
+    'gold_posts_exceed_plan_limit' => 'Gold posts must be less than or equal to the plan posts limit.',
+    'silver_posts_exceed_plan_limit' => 'Silver posts must be less than or equal to the plan posts limit.',
 ];

@@ -27,6 +27,11 @@ class IndividualController extends Controller
             ]);
 
             $origin = auth()->user();
+            if(count($origin->individuals) >= 5) {
+                return response()->json([
+                    'message' => __('messages.origin_has_reached_max_individuals'),
+                ], 400);
+            }
             $individual = User::find($request->individual_id);
 
             if ($origin->type !== 'origin') {

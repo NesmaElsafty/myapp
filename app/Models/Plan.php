@@ -23,4 +23,9 @@ class Plan extends Model
     {
         return $this->hasMany(PlanDetails::class);
     }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
 }

@@ -14,8 +14,9 @@ class PromotionController extends Controller
     public function update(Request $request, $id)
     {
         try {
+
             $request->validate([
-                'id' => 'required|exists:promotions,id',
+                // 'id' => 'required|exists:promotions,id',
                 'description_en' => 'nullable|string',
                 'description_ar' => 'nullable|string',
                 'price' => 'nullable|numeric|min:0',

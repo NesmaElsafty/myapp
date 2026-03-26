@@ -17,6 +17,7 @@ class PromotionResource extends JsonResource
         $lang = app()->getLocale();
         $title = $lang === 'ar' ? $this->title_ar : $this->title_en;
         $description = $lang === 'ar' ? $this->description_ar : $this->description_en;
+        
         return [
             'id' => $this->id,
             'title' => $title,
@@ -27,6 +28,8 @@ class PromotionResource extends JsonResource
             'title_ar' => $this->title_ar,
             'description_en' => $this->description_en,
             'description_ar' => $this->description_ar,
+
+
 
         ];
     }

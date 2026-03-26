@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             SystemSettingSeeder::class,
             ItemSeeder::class,
             PlanSeeder::class,
+            SubscriptionSeeder::class,
             PromotionSeeder::class,
         ]);
     }
