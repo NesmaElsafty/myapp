@@ -11,8 +11,6 @@ use App\Models\Plan;
 use App\Http\Resources\PlanDetailsResource;
 class PlanController extends Controller
 {
-    //
-
     public function __construct(
         protected PlanService $planService
     ) {}

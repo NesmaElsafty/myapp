@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdController as PublicAdController;
 use App\Http\Controllers\PlanController as PublicPlanController;
 use App\Http\Controllers\PromotionController as PublicPromotionController;
-
+use App\Http\Controllers\CarModelController;
 Route::prefix('auth')->group(function () {
     // Public routes
     Route::post('/register', [AuthController::class, 'register']);
@@ -129,6 +129,12 @@ Route::prefix('screens')->group(function () {
 Route::prefix('inputs')->group(function () {
     Route::get('/', [InputController::class, 'index']);
     Route::get('/{id}', [InputController::class, 'show']);
+});
+
+// Public car brands routes (index and show)
+Route::prefix('carBrands')->group(function () {
+    Route::get('/', [CarModelController::class, 'getAllBrands']);
+    Route::get('/{id}/models', [CarModelController::class, 'getByBrandId']);
 });
 
 // Public pages routes (index and show)

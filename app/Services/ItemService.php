@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Models\ItemInputValue;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
@@ -224,11 +225,40 @@ class ItemService
                             }
                         }
                     }
-                    if (!in_array($value, $allowed, true)) {
+                    if (is_array($value)) {
+                        if ($input->type === 'radio') {
+                            $errors['inputs.' . $key][] = __('validation.in', ['attribute' => $input->title_en ?? 'input']);
+                            continue 2;
+                        }
+                        foreach ($value as $v) {
+                            if (! in_array($v, $allowed, true)) {
+                                $errors['inputs.' . $key][] = __('validation.in', ['attribute' => $input->title_en ?? 'input']);
+                                continue 3;
+                            }
+                        }
+                    } elseif (! in_array($value, $allowed, true)) {
                         $errors['inputs.' . $key][] = __('validation.in', ['attribute' => $input->title_en ?? 'input']);
                         continue 2;
                     }
                     break;
+                case 'image':
+                case 'video':
+                case 'file':
+                case 'audio':
+                    if ($value instanceof UploadedFile) {
+                        break;
+                    }
+                    if (is_array($value)) {
+                        foreach ($value as $v) {
+                            if (! $v instanceof UploadedFile) {
+                                $errors['inputs.' . $key][] = __('validation.file', ['attribute' => $input->title_en ?? 'input']);
+                                continue 3;
+                            }
+                        }
+                        break;
+                    }
+                    $errors['inputs.' . $key][] = __('validation.file', ['attribute' => $input->title_en ?? 'input']);
+                    continue 2;
                 case 'checkbox':
                     if (!is_array($value) && !is_bool($value)) {
                         $errors['inputs.' . $key][] = __('validation.boolean', ['attribute' => $input->title_en ?? 'input']);

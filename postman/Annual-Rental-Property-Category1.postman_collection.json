@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "annual-rental-cat1-item-form",
+		"name": "Annual Rental Property — Category 1 (Item form-data)",
+		"description": "Tests **PUT** `{{base_url}}/items/{{item_id}}` with **multipart/form-data** (not raw JSON).\n\n**Dynamic input IDs**  \nThe API expects `inputs` keyed by **numeric `inputs.id`** from your database (not by `name`). Import `Category1-Input-Ids.postman_environment.json`, fill every `id_*` value, then select this environment before sending.\n\nExample SQL (run after seeding):\n```sql\nSELECT i.id, i.name\nFROM inputs i\nINNER JOIN screens s ON s.id = i.screen_id\nWHERE s.category_id = 1\nORDER BY s.id, i.id;\n```\n\n**Auth**  \nSet `token` (Sanctum bearer) on the environment.\n\n**Fixture files (workspace-relative)**  \nFile fields point at `postman/fixtures/sample.png`. You can move or replace them; in Apidog/Postman, re-pick files from the workspace if paths break after moving the collection.\n\n**Notes**  \n- `property_condition` sample value uses `renovated` to match `validation_rules` (`in:new,used,renovated`). If your radio `value` in DB is `renewed`, align seeder or request.\n- `benefits`: send multiple rows with the same key `inputs[ID][]` (one value per selected benefit).\n- `nearby_landmarks`: repeatable rows use `inputs[ID][0][name]`, `inputs[ID][0][distance]`, etc.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api"
+		},
+		{
+			"key": "item_id",
+			"value": "1"
+		}
+	],
+	"item": [
+		{
+			"name": "Items — Create/update (Category 1, form-data)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "category_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Test listing — annual rental",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Created via Postman/Apidog form-data test.",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "120000",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "Riyadh",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_purpose}}]",
+							"value": "residential",
+							"type": "text",
+							"description": "Screen 1: purpose"
+						},
+						{
+							"key": "inputs[{{id_property_type}}]",
+							"value": "apartment",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_property_status}}]",
+							"value": "ready",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_furnishing}}]",
+							"value": "furnished",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_property_condition}}]",
+							"value": "renovated",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_construction_date}}]",
+							"value": "2020-01-15",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_area}}]",
+							"value": "150",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_facade}}]",
+							"value": "east",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_street_width}}]",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_nearby_landmarks}}][0][name]",
+							"value": "King Fahd Road",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_nearby_landmarks}}][0][distance]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_bedrooms}}]",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_number_of_halls}}]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_number_of_bathrooms}}]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_apartment_arrangement}}]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_benefits}}][]",
+							"value": "water",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_benefits}}][]",
+							"value": "electricity",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_benefits}}][]",
+							"value": "balcony",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_ac_type}}]",
+							"value": "split",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_warranty_period}}]",
+							"value": "12",
+							"type": "text"
+						},
+						{
+							"key": "inputs[{{id_property_photos_video}}][]",
+							"type": "file",
+							"src": "postman/fixtures/sample.png"
+						},
+						{
+							"key": "inputs[{{id_property_photos_video}}][]",
+							"type": "file",
+							"src": "postman/fixtures/sample.png"
+						},
+						{
+							"key": "inputs[{{id_property_photos_video}}][]",
+							"type": "file",
+							"src": "postman/fixtures/sample.png"
+						},
+						{
+							"key": "inputs[{{id_property_photos_video}}][]",
+							"type": "file",
+							"src": "postman/fixtures/sample.png"
+						},
+						{
+							"key": "inputs[{{id_miniature_plan_blueprint}}]",
+							"type": "file",
+							"src": "postman/fixtures/sample.png"
+						}
+					]
+				},
+				"url": "{{base_url}}/items/{{item_id}}",
+				"description": "Requires `Category1-Input-Ids` environment: `token` + all `id_*` variables. File paths are relative to the project root so fixtures stay outside the collection JSON."
+			},
+			"response": []
+		}
+	]
+}
