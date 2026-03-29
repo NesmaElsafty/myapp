@@ -27,6 +27,7 @@ class PlanDetailsResource extends JsonResource
             ],
             'is_promoted' => (bool) $this->is_promoted,
             'promotion_type' => $this->promotion_type,
+            'plan_id' => $this->plan?->id,
         ];
 
         $manyPostsData = [
