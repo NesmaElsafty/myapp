@@ -19,6 +19,9 @@ class OriginResource extends JsonResource
             $image = str_replace('public/', '', $this->getFirstMediaUrl('profile'));
         }
 
+        $isSubscribed = $this->isSubscribed() ? true : false;
+        $subscription = $this->activeSubscription();
+
         return [
             'id' => $this->id,
             'f_name' => $this->f_name,
@@ -40,6 +43,15 @@ class OriginResource extends JsonResource
             'individuals' => $this->whenLoaded('individuals', function () {
                 return IndividualResource::collection($this->individuals);
             }),
+            'is_subscribed' => $isSubscribed,
+            'subscription' => $isSubscribed ? [
+                'id' => $subscription->id,
+                'plan_posts_limit' => $subscription->plan_posts_limit,
+                'available_posts_limit' => $subscription->available_posts_limit,
+                'golden_posts' => $subscription->golden_posts,
+                'silver_posts' => $subscription->silver_posts,
+                'expiry_date' => $subscription->end_date,
+            ] : null,
             'items_count' => 0,
             'is_active' => filter_var($this->is_active, FILTER_VALIDATE_BOOLEAN),
             'individuals_count' => $individuals->count(),

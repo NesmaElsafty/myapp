@@ -46,7 +46,7 @@ class SubscriptionFactory extends Factory
             'status' => $status,
             'available_posts_limit' => fake()->numberBetween(0, 120),
             'plan_posts_limit' => fake()->numberBetween(1, 120),
-            'golde_posts' => fake()->numberBetween(0, 5),
+            'golden_posts' => fake()->numberBetween(0, 5),
             'silver_posts' => fake()->numberBetween(0, 5),
             'created_at' => $startDate,
             'updated_at' => fake()->dateTimeBetween($startDate, 'now'),

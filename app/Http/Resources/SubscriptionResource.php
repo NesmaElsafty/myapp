@@ -39,7 +39,7 @@ class SubscriptionResource extends JsonResource
             'available_posts_limit' => $this->available_posts_limit,
             'plan_posts_limit' => $this->plan_posts_limit,
             'used_posts' => $this->plan_posts_limit - $this->available_posts_limit,
-            'golde_posts' => $this->golde_posts,
+            'golden_posts' => $this->golden_posts,
             'silver_posts' => $this->silver_posts,
             'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
         ];

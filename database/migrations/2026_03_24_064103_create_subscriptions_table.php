@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('status', ['active', 'expired', 'cancelled']);
             $table->unsignedInteger('available_posts_limit')->default(0);
             $table->unsignedInteger('plan_posts_limit')->default(1);
-            $table->unsignedInteger('golde_posts')->default(0);
+            $table->unsignedInteger('golden_posts')->default(0);
             $table->unsignedInteger('silver_posts')->default(0);
             $table->timestamps();
         });

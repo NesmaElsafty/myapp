@@ -323,7 +323,7 @@ return [
     // Subscription
     'selected_plan_detail_invalid' => 'Selected plan detail is invalid.',
     'selected_plan_account_type_mismatch' => 'Selected plan does not match your account type.',
-    'gold_posts_exceed_plan_limit' => 'Gold posts must be less than or equal to the plan posts limit.',
+    'golden_posts_exceed_plan_limit' => 'Golden posts must be less than or equal to the plan posts limit.',
     'silver_posts_exceed_plan_limit' => 'Silver posts must be less than or equal to the plan posts limit.',
     'subscriptions_retrieved_success' => 'Subscriptions retrieved successfully.',
     'failed_retrieve_subscriptions' => 'Failed to retrieve subscriptions.',

@@ -46,7 +46,7 @@ class SubscriptionController extends Controller
             $request->validate([
                 'plan_id' => 'required|exists:plans,id',
                 'plan_detail_id' => 'required|exists:plan_details,id',
-                'gold_posts' => 'nullable|integer|min:0',
+                'golden_posts' => 'nullable|integer|min:0',
                 'silver_posts' => 'nullable|integer|min:0',
             ]);
 

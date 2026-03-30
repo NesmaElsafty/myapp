@@ -17,7 +17,7 @@ class Subscription extends Model
         'price' => 'decimal:2',
         'available_posts_limit' => 'integer',
         'plan_posts_limit' => 'integer',
-        'golde_posts' => 'integer',
+        'golden_posts' => 'integer',
         'silver_posts' => 'integer',
     ];
 

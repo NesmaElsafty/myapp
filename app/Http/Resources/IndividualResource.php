@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request;            
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Models\User;
+use App\Models\Subscription;
 class IndividualResource extends JsonResource
 {
     /**
@@ -20,7 +21,15 @@ class IndividualResource extends JsonResource
         if ($this->hasMedia('profile')) {
             $image = str_replace('public/', '', $this->getFirstMediaUrl('profile'));
         }
-        
+
+        $isSubscribed = $this->isSubscribed() ? true : false;
+        $subscription = $this->activeSubscription();
+
+        if($this->origin_id != null) {
+            $isSubscribed = $this->origin?->isSubscribed() ? true : false;
+        }
+
+
         return [
             'id' => $this->id,
             'f_name' => $this->f_name,
@@ -29,6 +38,7 @@ class IndividualResource extends JsonResource
             'phone' => $this->phone,
             'type' => $this->type,
             'origin_id' => $this->origin_id,
+            
             'origin' => $this->origin_id ? [
                 'id' => $this->origin?->id,
                 'f_name' => $this->origin?->f_name,
@@ -39,6 +49,16 @@ class IndividualResource extends JsonResource
                 'specialty_areas' => $this->origin?->specialty_areas ?? [],
                 'major' => $this->origin?->major,
             ] : null,
+            'is_subscribed' => $isSubscribed,
+            'subscription' => $isSubscribed ? [
+                'id' => $subscription->id,
+                'plan_posts_limit' => $subscription->plan_posts_limit,
+                'available_posts_limit' => $subscription->available_posts_limit,
+                'golden_posts' => $subscription->golden_posts,
+                'silver_posts' => $subscription->silver_posts,
+                'expiry_date' => $subscription->end_date,
+            ] : null,
+
             'national_id' => $this->national_id,
             'specialty_areas' => $this->specialty_areas ?? [],
             'major' => $this->major,

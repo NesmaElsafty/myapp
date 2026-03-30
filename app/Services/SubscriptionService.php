@@ -56,9 +56,9 @@ class SubscriptionService
             }
 
             // gold_posts + silver_posts must be less than or equal to the plan_posts_limit
-            if ((int) $data['gold_posts'] + (int) $data['silver_posts'] > (int) $plan->posts_limit) {
+            if ((int) $data['golden_posts'] + (int) $data['silver_posts'] > (int) $plan->posts_limit) {
                 throw ValidationException::withMessages([
-                    'gold_posts' => [__('messages.gold_posts_exceed_plan_limit')],
+                    'golden_posts' => [__('messages.golden_posts_exceed_plan_limit')],
                     'silver_posts' => [__('messages.silver_posts_exceed_plan_limit')],
                 ]);
             }
@@ -102,7 +102,7 @@ class SubscriptionService
             $subscription->status = 'active';
             $subscription->available_posts_limit = $plan->posts_limit;
             $subscription->plan_posts_limit = $plan->posts_limit;
-            $subscription->golde_posts = $data['gold_posts'] ?? 0;
+            $subscription->golden_posts = $data['golden_posts'] ?? 0;
             $subscription->silver_posts = $data['silver_posts'] ?? 0;
 
             $subscription->save();

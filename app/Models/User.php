@@ -79,8 +79,21 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(Alert::class);
     }
 
-    public function items(): HasMany
+    public function items()
     {
         return $this->hasMany(Item::class);
     }
+
+    public function subscriptions(){
+        return $this->hasMany(Subscription::class);
+    }
+
+    // is subscribed
+    public function isSubscribed(){
+        return $this->subscriptions()->where('status', 'active')->exists();
+    }
+
+    public function activeSubscription(){
+        return $this->subscriptions()->where('status', 'active')->first();
+    }   
 }

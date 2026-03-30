@@ -323,7 +323,7 @@ return [
     // Subscription
     'selected_plan_detail_invalid' => 'تفاصيل الخطة المحددة غير صالحة.',
     'selected_plan_account_type_mismatch' => 'الخطة المحددة لا تتطابق مع نوع حسابك.',
-    'gold_posts_exceed_plan_limit' => 'يجب أن يكون عدد المنشورات الذهبية أقل من أو يساوي الحد المسموح به في الخطة.',
+    'golden_posts_exceed_plan_limit' => 'يجب أن يكون عدد المنشورات الذهبية أقل من أو يساوي الحد المسموح به في الخطة.',
     'silver_posts_exceed_plan_limit' => 'يجب أن يكون عدد المنشورات الفضية أقل من أو يساوي الحد المسموح به في الخطة.',
     'subscriptions_retrieved_success' => 'تم استرجاع الاشتراكات بنجاح.',
     'failed_retrieve_subscriptions' => 'فشل استرجاع الاشتراكات.',
