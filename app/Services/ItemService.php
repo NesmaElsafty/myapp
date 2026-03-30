@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\Validator;
 
 class ItemService
 {
+    /**
+     * All inputs for a category: same order as seeders (insertion order ⇒ id), grouped by screen position.
+     */
+    protected function inputsForCategory(Category $category)
+    {
+        return Input::query()
+            ->join('screens', 'inputs.screen_id', '=', 'screens.id')
+            ->where('screens.category_id', $category->id)
+            ->orderBy('screens.position')
+            ->orderBy('screens.id')
+            ->orderBy('inputs.id')
+            ->select('inputs.*')
+            ->get();
+    }
 
     public function getAllForUser(User $user, array $filters = []): Builder
     {
@@ -61,10 +75,7 @@ class ItemService
 
         $inputsPayload = $data['inputs'] ?? [];
 
-        // All inputs for this category (across its screens)
-        $inputs = Input::whereHas('screen', function (Builder $q) use ($category) {
-            $q->where('category_id', $category->id);
-        })->get();
+        $inputs = $this->inputsForCategory($category);
 
         [$validValues, $errors] = $this->validateDynamicInputs($inputs, $inputsPayload);
 
@@ -127,9 +138,7 @@ class ItemService
         }
 
         $inputsPayload = $data['inputs'] ?? [];
-        $inputs = Input::whereHas('screen', function (Builder $q) use ($category) {
-            $q->where('category_id', $category->id);
-        })->get();
+        $inputs = $this->inputsForCategory($category);
 
         [$validValues, $errors] = $this->validateDynamicInputs($inputs, $inputsPayload);
 

@@ -16,7 +16,6 @@ class InputService
     {
         return $screen->inputs()
             ->where('is_active', true)
-            ->orderBy('id')
             ->get();
     }
 
@@ -145,7 +144,7 @@ class InputService
             $query->where('type', $data['type']);
         }
 
-        return $query;
+        return $query->orderBy('id');
     }
 
     public function getById(int $id): ?Input

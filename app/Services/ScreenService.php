@@ -58,6 +58,7 @@ class ScreenService
     {
         return Screen::where('category_id', $categoryId)
             ->with('inputs')
+            ->orderBy('position')
             ->orderBy('id')
             ->get();
     }

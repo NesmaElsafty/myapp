@@ -25,6 +25,6 @@ class Screen extends Model
 
     public function inputs(): HasMany
     {
-        return $this->hasMany(Input::class);
+        return $this->hasMany(Input::class)->orderBy('id');
     }
 }

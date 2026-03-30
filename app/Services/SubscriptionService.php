@@ -102,8 +102,8 @@ class SubscriptionService
             $subscription->status = 'active';
             $subscription->available_posts_limit = $plan->posts_limit;
             $subscription->plan_posts_limit = $plan->posts_limit;
-            $subscription->golde_posts = $data['gold_posts'];
-            $subscription->silver_posts = $data['silver_posts'];
+            $subscription->golde_posts = $data['gold_posts'] ?? 0;
+            $subscription->silver_posts = $data['silver_posts'] ?? 0;
 
             $subscription->save();
             
