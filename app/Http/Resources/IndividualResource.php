@@ -27,6 +27,7 @@ class IndividualResource extends JsonResource
 
         if($this->origin_id != null) {
             $isSubscribed = $this->origin?->isSubscribed() ? true : false;
+            $subscription = $this->origin?->activeSubscription();
         }
 
 
