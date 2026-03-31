@@ -18,7 +18,7 @@ class SubscriptionService
 
         if($user->origin_id !== null) {
             $origin = User::find($user->origin_id);
-            if($origin->subscriptions?->status === 'active') {
+            if($origin && $origin->isSubscribed()) {
                 $baseQuery = Subscription::where('user_id', $origin->id);
             }else{
                 $baseQuery = Subscription::where('user_id', $user->id);

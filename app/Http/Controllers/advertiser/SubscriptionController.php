@@ -25,7 +25,7 @@ class SubscriptionController extends Controller
                 'type' => 'nullable|string|in:current,history',
             ]);
 
-            $result = $this->subscriptionService->mySubscriptions(auth()->user(), $request->type);
+            $result = $this->subscriptionService->mySubscriptions(auth()->user(), $request->input('type', 'current'));
 
             return response()->json([
                 'message' => __('messages.subscriptions_retrieved_success'),
