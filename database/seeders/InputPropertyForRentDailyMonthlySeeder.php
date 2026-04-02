@@ -37,7 +37,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'period',
                 'validation_rules' => ['required', 'in:daily,weekly,monthly'],
-                'type' => 'select', 'options' => [
+                'type' => 'mu   ', 'options' => [
                     'choices' => [
                         ['value' => 'daily', 'label_en' => 'Daily', 'label_ar' => 'يومي'],
                         ['value' => 'weekly', 'label_en' => 'Weekly', 'label_ar' => 'أسبوعي'],
@@ -67,20 +67,19 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'validation_rules' => ['required', 'in:villa,room,apartment,townhouse,studio,floor,duplex,resort_hotel,farm,rest_house,chalet,camp,hotel,premium_apartment'],
                 'type' => 'radio', 'options' => [
                     'choices' => [
-                        ['value' => 'villa', 'label_en' => 'Villa', 'label_ar' => 'فيلا'],
-                        ['value' => 'room', 'label_en' => 'Room', 'label_ar' => 'غرفة'],
                         ['value' => 'apartment', 'label_en' => 'Apartment', 'label_ar' => 'شقة'],
-                        ['value' => 'townhouse', 'label_en' => 'Townhouse', 'label_ar' => 'تاون هاوس'],
                         ['value' => 'studio', 'label_en' => 'Studio', 'label_ar' => 'استديو'],
-                        ['value' => 'floor', 'label_en' => 'Floor', 'label_ar' => 'دور'],
+                        ['value' => 'townhouse', 'label_en' => 'Townhouse', 'label_ar' => 'تاون هاوس'],
                         ['value' => 'duplex', 'label_en' => 'Duplex', 'label_ar' => 'شقة من دورين'],
+                        ['value' => 'room', 'label_en' => 'Room', 'label_ar' => 'غرفة'],
+                        ['value' => 'villa', 'label_en' => 'Villa', 'label_ar' => 'فيلا'],
                         ['value' => 'resort_hotel', 'label_en' => 'Resort hotel', 'label_ar' => 'منتجع فندقي'],
                         ['value' => 'farm', 'label_en' => 'Farm', 'label_ar' => 'مزرعة'],
                         ['value' => 'rest_house', 'label_en' => 'Rest house', 'label_ar' => 'استراحة'],
                         ['value' => 'chalet', 'label_en' => 'Chalet', 'label_ar' => 'شاليه'],
                         ['value' => 'camp', 'label_en' => 'Camp', 'label_ar' => 'مخيم'],
                         ['value' => 'hotel', 'label_en' => 'Hotel', 'label_ar' => 'فندق'],
-                        ['value' => 'premium_apartment', 'label_en' => 'Premium apartment', 'label_ar' => 'شقة مميزة'],
+                        ['value' => 'premium_apartment', 'label_en' => 'Premium apartment', 'label_ar' => 'شقة مخدومه'],
                     ],
                 ], 'is_required' => true,
             ],
@@ -98,7 +97,41 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => 'Repeater: add rows with landmark name (text) and distance (number). Actions: Add button + Delete per row.', 'description_ar' => 'صفوف قابلة للتكرار: اسم المعلم (ادخل اسم المعلم)، المسافة (ادخل المسافة). زر اضف + حذف لكل صف.',
                 'name' => 'nearby_landmarks',
                 'validation_rules' => ['nullable', 'array'],
-                'type' => 'textarea', 'options' => null, 'is_required' => false,
+                'type' => 'nearby_landmarks_input', 'options' => [
+                    'fields' => [
+                        [
+                            'key' => 'name',
+                            'label_en' => 'Landmark name',
+                            'label_ar' => 'اسم المعلم',
+                            'placeholder_en' => 'Enter landmark name',
+                            'placeholder_ar' => 'ادخل اسم المعلم',
+                            'type' => 'text',
+                            'name' => 'name',
+                            'validation_rules' => ['nullable', 'string'],
+                        ],
+                        [
+                            'key' => 'distance',
+                            'label_en' => 'Distance',
+                            'label_ar' => 'المسافة',
+                            'placeholder_en' => 'Enter distance',
+                            'placeholder_ar' => 'ادخل المسافة',
+                            'type' => 'text',
+                            'name' => 'distance',
+                            'validation_rules' => ['nullable', 'numeric'],
+                        ],
+                        [
+                            'key' => 'image',
+                            'label_en' => 'Image',
+                            'label_ar' => 'الصورة',
+                            'placeholder_en' => 'Attach image',
+                            'placeholder_ar' => 'صورة المعلم',
+                            'type' => 'file',
+                            'name' => 'image',
+                            'validation_rules' => ['nullable', 'image'],
+                        ],
+                    ],
+                    'is_required' => false,
+                ],
             ],
         ];
     }
@@ -117,7 +150,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'bedrooms',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Number of Halls', 'title_ar' => 'عدد الصالات',
@@ -125,7 +158,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_halls',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Number of Bathrooms', 'title_ar' => 'عدد دورات المياه',
@@ -133,7 +166,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_bathrooms',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Number of Beds', 'title_ar' => 'عدد الأسرة',
@@ -141,7 +174,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_beds',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Features', 'title_ar' => 'المميزات',
@@ -149,7 +182,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => 'Show more if expandable.', 'description_ar' => 'شاهد المزيد.',
                 'name' => 'features',   
                 'validation_rules' => ['required', 'array'],
-                'type' => 'select', 'options' => [
+                'type' => 'multi_select', 'options' => [
                     'choices' => [
                         ['value' => 'master_bed', 'label_en' => 'Master bed', 'label_ar' => 'سرير ماستر'],
                         ['value' => 'self_checkin', 'label_en' => 'Self check-in', 'label_ar' => 'دخول ذاتي'],
@@ -167,7 +200,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => 'Show more if expandable.', 'description_ar' => 'شاهد المزيد.',
                 'name' => 'public_facilities',
                 'validation_rules' => ['required', 'array'],
-                'type' => 'checkbox', 'options' => [
+                'type' => 'multi_select', 'options' => [
                     'choices' => [
                         ['value' => 'kids_playground', 'label_en' => 'Kids playground', 'label_ar' => 'العاب أطفال'],
                         ['value' => 'bbq_area', 'label_en' => 'BBQ area', 'label_ar' => 'ركن شواء'],
@@ -188,7 +221,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => 'Show more if expandable.', 'description_ar' => 'شاهد المزيد.',
                 'name' => 'kitchen_facilities',
                 'validation_rules' => ['required', 'array'],
-                'type' => 'checkbox', 'options' => [
+                'type' => 'multi_select', 'options' => [
                     'choices' => [
                         ['value' => 'freezer', 'label_en' => 'Freezer', 'label_ar' => 'فريزر'],
                         ['value' => 'oven', 'label_en' => 'Oven', 'label_ar' => 'فرن'],
@@ -208,19 +241,19 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => 'Show more if expandable.', 'description_ar' => 'شاهد المزيد.',
                 'name' => 'bathroom_facilities',
                 'validation_rules' => ['required', 'array'],
-                'type' => 'checkbox', 'options' => [
+                'type' => 'multi_select', 'options' => [
                     'choices' => [
                         ['value' => 'jacuzzi', 'label_en' => 'Jacuzzi', 'label_ar' => 'جاكوزي'],
                         ['value' => 'sauna', 'label_en' => 'Sauna', 'label_ar' => 'ساونا'],
                         ['value' => 'bath', 'label_en' => 'Bath', 'label_ar' => 'بانيو'],
-                        ['value' => 'bathroom_tissues', 'label_en' => 'Bathroom tissues', 'label_ar' => 'من                                                                                                                                                                                                                                                 اديل الحمام'],
-                        ['value' => 'bathroom_soap', 'label_en' => 'Bathroom soap', 'label_ar' => 'صابون الحمام'],
-                        ['value' => 'bathroom_heater', 'label_en' => 'Bathroom heater', 'label_ar' => 'سخان الحمام'],
-                        ['value' => 'bathroom_shampoo', 'label_en' => 'Bathroom shampoo', 'label_ar' => 'شامبو الحمام'],
-                        ['value' => 'bathroom_towels', 'label_en' => 'Bathroom towels', 'label_ar' => 'مناشف الحمام'],
-                        ['value' => 'bathroom_shower', 'label_en' => 'Bathroom shower', 'label_ar' => 'دش الحمام'],
-                        ['value' => 'bathroom_bidet_spray', 'label_en' => 'Bathroom bidet spray', 'label_ar' => 'شطاف الحمام'],
-                        ['value' => 'bathroom_hair_dryer', 'label_en' => 'Bathroom hair dryer', 'label_ar' => 'مجفف شعر الحمام'],
+                        ['value' => 'bathroom_tissues', 'label_en' => 'tissues', 'label_ar' => 'مناديل'],
+                        ['value' => 'bathroom_soap', 'label_en' => 'soap', 'label_ar' => 'صابون'],
+                        ['value' => 'bathroom_heater', 'label_en' => 'heater', 'label_ar' => 'سخان'],
+                        ['value' => 'bathroom_shampoo', 'label_en' => 'shampoo', 'label_ar' => 'شامبو'],
+                        ['value' => 'bathroom_towels', 'label_en' => 'towels', 'label_ar' => 'مناشف'],
+                        ['value' => 'bathroom_shower', 'label_en' => 'shower', 'label_ar' => 'دش'],
+                        ['value' => 'bathroom_bidet_spray', 'label_en' => 'bidet spray', 'label_ar' => 'شطاف'],
+                        ['value' => 'bathroom_hair_dryer', 'label_en' => 'hair dryer', 'label_ar' => 'مجفف شعر'],
                     ],
                 ], 'is_required' => true,
             ],
@@ -243,39 +276,44 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
     private function inputsForCategorySixScreen3(): array
     {
         return [
-            // [
-            //     'title_en' => 'Financial Matters', 'title_ar' => 'الأمور المالية',
-            //     'placeholder_en' => 'Select', 'placeholder_ar' => 'حدد الأمور المالية',
-            //     'description_en' => 'Options loaded dynamically from backend/data.', 'description_ar' => 'الخيارات ديناميكية من الباك إند/الداتا.',
-            //     'name' => 'financial_matters',
-            //     'validation_rules' => ['required', 'array'],
-            //     'type' => 'select', 'options' => ['choices' => []], 'is_required' => true,
-            // ],
             [
-                'title_en' => 'Has discount', 'title_ar' => 'يوجد عروض',
-                'placeholder_en' => null, 'placeholder_ar' => null,
-                'description_en' => null, 'description_ar' => null,
-                'name' => 'has_discount',
-                'validation_rules' => ['nullable', 'boolean'],
-                'type' => 'checkbox', 
-                'options' => null,
-                'is_required' => false,
-            ],
-            [
-                'title_en' => 'Has insurance', 'title_ar' => 'يوجد تأمين',
-                'placeholder_en' => 'Has insurance / No insurance', 'placeholder_ar' => 'يوجد تأمين / بدون تأمين',
-                'description_en' => null, 'description_ar' => null,
-                'name' => 'has_insurance',
-                'validation_rules' => ['nullable', 'boolean'],
-                'type' => 'checkbox', 'options' => null, 'is_required' => false,
-            ],
-            [
-                'title_en' => 'Is cancellation or switch period possible', 'title_ar' => 'إمكانية إلغاء الحجز أو التأجيل',
-                'placeholder_en' => 'Cancellation or switch period possible / Not possible', 'placeholder_ar' => 'إمكانية إلغاء الحجز أو التأجيل / غير ممكن',
-                'description_en' => null, 'description_ar' => null,
-                'name' => 'cancellation_or_switch_possible',
-                'validation_rules' => ['nullable', 'boolean'],
-                'type' => 'checkbox', 'options' => null, 'is_required' => false,
+                'title_en' => 'Financial Matters', 'title_ar' => 'الأمور المالية',
+                'placeholder_en' => 'Select', 'placeholder_ar' => 'حدد الأمور المالية',
+                'description_en' => 'Options loaded dynamically from backend/data.', 'description_ar' => 'الخيارات ديناميكية من الباك إند/الداتا.',
+                'name' => 'financial_matters',
+                'validation_rules' => ['required', 'array'],
+                'type' => 'financial_options_input', 
+                'options' => [
+                    'fields' => [
+                        [
+                            'title_en' => 'Has discount', 'title_ar' => 'يوجد عروض',
+                            'placeholder_en' => null, 'placeholder_ar' => null,
+                            'description_en' => null, 'description_ar' => null,
+                            'name' => 'has_discount',
+                            'validation_rules' => ['nullable', 'boolean'],
+                            'type' => 'checkbox', 
+                            'options' => null,
+                            'is_required' => false,
+                        ],
+                        [
+                            'title_en' => 'Has insurance', 'title_ar' => 'يوجد تأمين',
+                            'placeholder_en' => 'Has insurance / No insurance', 'placeholder_ar' => 'يوجد تأمين / بدون تأمين',
+                            'description_en' => null, 'description_ar' => null,
+                            'name' => 'has_insurance',
+                            'validation_rules' => ['nullable', 'boolean'],
+                            'type' => 'checkbox', 'options' => null, 'is_required' => false,
+                        ],
+                        [
+                            'title_en' => 'Is cancellation or switch period possible', 'title_ar' => 'إمكانية إلغاء الحجز أو التأجيل',
+                            'placeholder_en' => 'Cancellation or switch period possible / Not possible', 'placeholder_ar' => 'إمكانية إلغاء الحجز أو التأجيل / غير ممكن',
+                            'description_en' => null, 'description_ar' => null,
+                            'name' => 'cancellation_or_switch_possible',
+                            'validation_rules' => ['nullable', 'boolean'],
+                            'type' => 'checkbox', 'options' => null, 'is_required' => false,
+                        ],
+                    ],
+                    'is_required' => false,
+                ],
             ],
             [
                 'title_en' => 'Cancellation or switch period', 'title_ar' => 'مدة إلغاء الحجز أو التأجيل',

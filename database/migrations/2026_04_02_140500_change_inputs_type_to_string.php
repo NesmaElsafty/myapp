@@ -21,25 +21,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('inputs', function (Blueprint $table) {
-            $table->enum('type', [
-                'text',
-                'textarea',
-                'select',
-                'radio',
-                'checkbox',
-                'date',
-                'time',
-                'number',
-                'email',
-                'phone',
-                'url',
-                'file',
-                'image',
-                'video',
-                'audio',
-                'link',
-                'multi_file',
-            ])->nullable()->change();
+            $table->string('type')->nullable()->change();
         });
     }
 };
