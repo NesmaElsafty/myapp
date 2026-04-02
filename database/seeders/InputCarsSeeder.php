@@ -36,27 +36,6 @@ class InputCarsSeeder extends Seeder
      */
     private function carBrandChoices(): array
     {
-        if (! CarBrand::query()->exists()) {
-            return [
-                ['value' => 'opel', 'label_en' => 'Opel', 'label_ar' => 'أوبل'],
-                ['value' => 'bmw', 'label_en' => 'BMW', 'label_ar' => 'بي إم دبليو'],
-                ['value' => 'mercedes', 'label_en' => 'Mercedes', 'label_ar' => 'مرسيدس'],
-                ['value' => 'porsche', 'label_en' => 'Porsche', 'label_ar' => 'بورش'],
-                ['value' => 'toyota', 'label_en' => 'Toyota', 'label_ar' => 'تويوتا'],
-                ['value' => 'nissan', 'label_en' => 'Nissan', 'label_ar' => 'نيسان'],
-                ['value' => 'hyundai', 'label_en' => 'Hyundai', 'label_ar' => 'هيونداي'],
-                ['value' => 'kia', 'label_en' => 'Kia', 'label_ar' => 'كيا'],
-                ['value' => 'honda', 'label_en' => 'Honda', 'label_ar' => 'هوندا'],
-                ['value' => 'ford', 'label_en' => 'Ford', 'label_ar' => 'فورد'],
-                ['value' => 'chevrolet', 'label_en' => 'Chevrolet', 'label_ar' => 'شيفروليه'],
-                ['value' => 'audi', 'label_en' => 'Audi', 'label_ar' => 'أودي'],
-                ['value' => 'volkswagen', 'label_en' => 'Volkswagen', 'label_ar' => 'فولكس فاجن'],
-                ['value' => 'lexus', 'label_en' => 'Lexus', 'label_ar' => 'لكزس'],
-                ['value' => 'land_rover', 'label_en' => 'Land Rover', 'label_ar' => 'لاند روفر'],
-                ['value' => 'jeep', 'label_en' => 'Jeep', 'label_ar' => 'جيب'],
-            ];
-        }
-
         return CarBrand::query()
             ->orderBy('name_en')
             ->get()
@@ -64,51 +43,8 @@ class InputCarsSeeder extends Seeder
                 'value' => (string) $brand->id,
                 'label_en' => $brand->name_en,
                 'label_ar' => $brand->name_ar,
+                'endpoint' => 'carBrands/'.$brand->id.'/models',
             ])
-            ->all();
-    }
-
-    /**
-     * Choices for `category_model`: {@see CarModel} rows. `value` is the model id (string).
-     * Labels include the brand name so the same model name under different brands stays distinct.
-     *
-     * @return list<array{value: string, label_en: string, label_ar: string}>
-     */
-    private function carModelChoices(): array
-    {
-        if (! CarModel::query()->exists()) {
-            return [
-                ['value' => 'mokka', 'label_en' => 'Mokka', 'label_ar' => 'موكا'],
-                ['value' => 'corsa', 'label_en' => 'Corsa', 'label_ar' => 'كورسا'],
-                ['value' => 'gtc', 'label_en' => 'GTC', 'label_ar' => 'جي تي سي'],
-                ['value' => 'grandland', 'label_en' => 'Grandland', 'label_ar' => 'جراند لاند'],
-                ['value' => 'astra', 'label_en' => 'Astra', 'label_ar' => 'أسترا'],
-                ['value' => 'insignia', 'label_en' => 'Insignia', 'label_ar' => 'إنسيجنيا'],
-                ['value' => 'crossland', 'label_en' => 'Crossland', 'label_ar' => 'كروس لاند'],
-                ['value' => 'zafira', 'label_en' => 'Zafira', 'label_ar' => 'زافيرا'],
-                ['value' => 'adam', 'label_en' => 'Adam', 'label_ar' => 'آدم'],
-                ['value' => 'vectra', 'label_en' => 'Vectra', 'label_ar' => 'فيكترا'],
-            ];
-        }
-
-        return CarModel::query()
-            ->with('carBrand')
-            ->get()
-            ->sortBy(fn (CarModel $m) => strtolower(($m->carBrand->name_en ?? '').'|'.$m->name_en))
-            ->values()
-            ->map(function (CarModel $model) {
-                $brand = $model->carBrand;
-
-                return [
-                    'value' => (string) $model->id,
-                    'label_en' => $brand
-                        ? $model->name_en.' ('.$brand->name_en.')'
-                        : $model->name_en,
-                    'label_ar' => $brand
-                        ? $model->name_ar.' ('.$brand->name_ar.')'
-                        : $model->name_ar,
-                ];
-            })
             ->all();
     }
 
@@ -121,17 +57,15 @@ class InputCarsSeeder extends Seeder
         ], range(2026, 2000));
 
         $brandChoices = $this->carBrandChoices();
-        $modelChoices = $this->carModelChoices();
-        $modelFieldType = CarModel::query()->exists() ? 'select' : 'radio';
 
         return [
             [
                 'title_en' => 'Brand', 'title_ar' => 'الماركة',
                 'placeholder_en' => 'Select brand', 'placeholder_ar' => 'حدد الماركة',
                 'description_en' => null, 'description_ar' => null,
-                'name' => 'brand',
+                'name' => 'car_brand',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'radio', 'options' => [
+                'type' => 'brandChoices_radio', 'options' => [
                     'choices' => $brandChoices,
                 ], 'is_required' => false,
             ],
@@ -139,14 +73,14 @@ class InputCarsSeeder extends Seeder
                 'title_en' => 'Model', 'title_ar' => 'الموديل',
                 'placeholder_en' => 'Select model', 'placeholder_ar' => 'حدد الموديل',
                 'description_en' => null, 'description_ar' => null,
-                'name' => 'category_model',
+                'name' => 'car_model',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => $modelFieldType, 'options' => [
-                    'choices' => $modelChoices,
+                'type' => 'modelChoices_radio', 'options' => [
+                    'choices' => [],
                 ], 'is_required' => false,
             ],
             [
-                'title_en' => 'Type (Trim)', 'title_ar' => 'النوع (الفئة/الترِم)',
+                'title_en' => 'Type', 'title_ar' => 'النوع',
                 'placeholder_en' => 'Select type', 'placeholder_ar' => 'حدد النوع',
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'type_trim',
@@ -266,7 +200,7 @@ class InputCarsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'engine_cc',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'text', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Power (hp)', 'title_ar' => 'الطاقة (قوة حصان)',
@@ -274,7 +208,7 @@ class InputCarsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'power_hp',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'text', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Consumption (L/100km)', 'title_ar' => 'الاستهلاك (لتر/100كم)',
@@ -282,7 +216,7 @@ class InputCarsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'consumption_l_100km',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'text', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Gear type', 'title_ar' => 'نوع الجير',
@@ -293,15 +227,10 @@ class InputCarsSeeder extends Seeder
                 'type' => 'radio', 'options' => [
                     'choices' => [
                         ['value' => 'manual', 'label_en' => 'Manual', 'label_ar' => 'عادي'],
-                        ['value' => 'automatic', 'label_en' => 'Automatic', 'label_ar' => 'اوتوماتك'],
-                        ['value' => 'tiptronic', 'label_en' => 'Tiptronic', 'label_ar' => 'تيبترونيك'],
-                        ['value' => 'm1', 'label_en' => 'M1', 'label_ar' => 'ام 1'],
+                        ['value' => 'automatic', 'label_en' => 'Automatic', 'label_ar' => 'اتوماتيك'],
+                        ['value' => 'tiptronic', 'label_en' => 'Tiptronic', 'label_ar' => 'تبترونك'],
+                        ['value' => 'm1', 'label_en' => 'F1', 'label_ar' => 'ف1'],
                         ['value' => 'smg', 'label_en' => 'SMG', 'label_ar' => 'اس ام جي'],
-                        ['value' => 'cvt', 'label_en' => 'CVT', 'label_ar' => 'CVT'],
-                        ['value' => 'dct', 'label_en' => 'DCT (Dual clutch)', 'label_ar' => 'DCT (دبل كلتش)'],
-                        ['value' => 'dsg', 'label_en' => 'DSG', 'label_ar' => 'DSG'],
-                        ['value' => 'sequential', 'label_en' => 'Manual Sequential', 'label_ar' => 'Manual Sequential'],
-                        ['value' => 'ecvt', 'label_en' => 'Hybrid e-CVT', 'label_ar' => 'Hybrid e-CVT'],
                     ],
                 ], 'is_required' => false,
             ],
@@ -335,9 +264,6 @@ class InputCarsSeeder extends Seeder
                         ['value' => 'diesel', 'label_en' => 'Diesel', 'label_ar' => 'ديزل'],
                         ['value' => 'hybrid', 'label_en' => 'Hybrid', 'label_ar' => 'هايبرد'],
                         ['value' => 'electric', 'label_en' => 'Electric', 'label_ar' => 'كهربائي'],
-                        ['value' => 'plug_in_hybrid', 'label_en' => 'Plug-in Hybrid', 'label_ar' => 'Plug-in Hybrid'],
-                        ['value' => 'gas', 'label_en' => 'Gas (CNG/LPG)', 'label_ar' => 'غاز (CNG/LPG)'],
-                        ['value' => 'hydrogen', 'label_en' => 'Hydrogen', 'label_ar' => 'هيدروجين'],
                     ],
                 ], 'is_required' => false,
             ],
@@ -347,7 +273,7 @@ class InputCarsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_cylinders',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'counter', 'options' => null, 'is_required' => false,
             ],
 
             [
@@ -356,7 +282,7 @@ class InputCarsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'exterior_color',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'select', 'options' => [
+                'type' => 'radio', 'options' => [
                     'choices' => [
                         ['value' => 'white', 'label_en' => 'White', 'label_ar' => 'أبيض'],
                         ['value' => 'black', 'label_en' => 'Black', 'label_ar' => 'أسود'],
@@ -379,7 +305,7 @@ class InputCarsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'interior_color',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'select', 'options' => [
+                'type' => 'radio', 'options' => [
                     'choices' => [
                         ['value' => 'black', 'label_en' => 'Black', 'label_ar' => 'أسود'],
                         ['value' => 'beige', 'label_en' => 'Beige', 'label_ar' => 'بيج'],
@@ -410,7 +336,7 @@ class InputCarsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'extras',
                 'validation_rules' => ['nullable', 'array'],
-                'type' => 'select', 'options' => ['choices' => $extrasChoices], 'is_required' => false,
+                'type' => 'multi_select', 'options' => ['choices' => $extrasChoices], 'is_required' => false,
             ],
             [
                 'title_en' => 'Warranty period', 'title_ar' => 'مدة الضمان',
