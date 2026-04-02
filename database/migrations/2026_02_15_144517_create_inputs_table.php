@@ -22,25 +22,7 @@ return new class extends Migration
             $table->string('placeholder_ar')->nullable();
             $table->text('description_en')->nullable();
             $table->text('description_ar')->nullable();
-            $table->enum('type', [
-                'text',
-                'textarea',
-                'select',
-                'radio',
-                'checkbox',
-                'date',
-                'time',
-                'number',
-                'email',
-                'phone',
-                'url',
-                'file',
-                'image',
-                'video',
-                'audio',
-                'link',
-                'multi_file',
-            ])->nullable();
+            $table->string('type')->nullable();
             // options: one value per option (same for en/ar). select/radio: { choices: [{ value, label_en, label_ar }] }; checkbox: { label_en, label_ar }
             $table->json('options')->nullable();
             $table->boolean('is_required')->default(false);

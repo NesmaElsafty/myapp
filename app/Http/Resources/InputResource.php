@@ -63,6 +63,7 @@ class InputResource extends JsonResource
             'id' => $this->id,
             'screen_id' => $this->screen_id,
             'title' => $title,
+            'name' => $this->name,
             'title_en' => $this->title_en,
             'title_ar' => $this->title_ar,
             'placeholder' => $placeholder,

@@ -49,8 +49,12 @@ return new class extends Migration
             
             $table->string('licence_number')->nullable();
             $table->string('licence_type')->nullable();
-            
 
+            $table->boolean('is_promoted')->default(false);
+            $table->dateTime('promoted_until')->nullable();
+            $table->enum('promotion_type', ['golden', 'silver'])->nullable();
+
+            
             $table->timestamps();
         });
     }

@@ -135,7 +135,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'construction_date',
                 'validation_rules' => ['nullable', 'date'],
-                'type' => 'date', 'options' => null, 'is_required' => false,
+                'type' => 'calendar', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Area (m²)', 'title_ar' => 'مساحة (م²)',
@@ -175,7 +175,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
                 'description_en' => 'Add multiple entries as needed.', 'description_ar' => 'أضف أكثر من معلم حسب الحاجة.',
                 'name' => 'nearby_landmarks',
                 'validation_rules' => ['nullable', 'array'],
-                'type' => 'repeatable',
+                'type' => 'nearby_landmarks_input',
                 'options' => [
                     'fields' => [
                         [
@@ -197,6 +197,16 @@ class InputAnnualRentalPropertySeeder extends Seeder
                             'type' => 'text',
                             'name' => 'distance',
                             'validation_rules' => ['nullable', 'numeric'],
+                        ],
+                        [
+                            'key' => 'image',
+                            'label_en' => 'Image',
+                            'label_ar' => 'الصورة',
+                            'placeholder_en' => 'Enter distance',
+                            'placeholder_ar' => 'أرفق صورةالمعلم',
+                            'type' => 'file',
+                            'name' => 'image',
+                            'validation_rules' => ['nullable', 'file'],
                         ],
                     ],
                     'add_label_en' => 'Add',
@@ -220,7 +230,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'bedrooms',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Number of Halls', 'title_ar' => 'عدد الصالات',
@@ -228,7 +238,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_halls',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Number of Bathrooms', 'title_ar' => 'عدد دورات المياه',
@@ -236,7 +246,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_bathrooms',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Apartment Arrangement', 'title_ar' => 'ترتيب الشقة',
@@ -265,7 +275,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
                 'description_en' => 'Multi-select.', 'description_ar' => 'اختيار متعدد.',
                 'name' => 'benefits',
                 'validation_rules' => ['required', 'array'],
-                'type' => 'select',
+                'type' => 'multi_select',
                 'options' => [
                     'choices' => [
                         ['value' => 'water', 'label_en' => 'Water', 'label_ar' => 'ماء'],
@@ -325,7 +335,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
                 'description_en' => 'At least 4 photos recommended for a clearer listing.', 'description_ar' => 'يجب إضافة ٤ صور على الأقل لكي يظهر اعلانك بشكل أوضح',
                 'name' => 'property_photos_video',
                 'validation_rules' => ['required', 'array'],
-                'type' => 'image', 'options' => null, 'is_required' => true,
+                'type' => 'file', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Miniature Plan / Blueprint', 'title_ar' => 'مخطط مصغر',

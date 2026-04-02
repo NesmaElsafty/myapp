@@ -143,7 +143,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'construction_date',
                 'validation_rules' => ['required', 'date'],
-                'type' => 'date', 'options' => null, 'is_required' => true,
+                'type' => 'calendar', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Number of Units', 'title_ar' => 'عدد الوحدات',
@@ -167,7 +167,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Area range (from)', 'description_ar' => 'المساحة (من)',
                 'name' => 'area_from',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'area_from', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Area to (m²)', 'title_ar' => 'المساحة إلى (م²)',
@@ -175,7 +175,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Area range (to)', 'description_ar' => 'المساحة (إلى)',
                 'name' => 'area_to',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'area_from', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price from', 'title_ar' => 'السعر من',
@@ -183,7 +183,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Price range (from)', 'description_ar' => 'السعر (من)',
                 'name' => 'price_from',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'price_from', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price to', 'title_ar' => 'السعر إلى',
@@ -191,7 +191,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Price range (to)', 'description_ar' => 'السعر (إلى)',
                 'name' => 'price_to',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'price_to', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Facade', 'title_ar' => 'الواجهة',
@@ -224,7 +224,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Add multiple entries as needed.', 'description_ar' => 'أضف أكثر من معلم حسب الحاجة.',
                 'name' => 'nearby_landmarks',
                 'validation_rules' => ['nullable', 'array'],
-                'type' => 'repeatable',
+                'type' => 'nearby_landmarks_input',
                 'options' => [
                     'fields' => [
                         [
@@ -247,6 +247,16 @@ class InputProjectsSeeder extends Seeder
                             'name' => 'distance',
                             'validation_rules' => ['nullable', 'numeric'],
                         ],
+                        [
+                            'key' => 'image',
+                            'label_en' => 'Image',
+                            'label_ar' => 'الصورة',
+                            'placeholder_en' => 'Attach image',
+                            'placeholder_ar' => 'صورة المعلم',
+                            'type' => 'file',
+                            'name' => 'image',
+                            'validation_rules' => ['nullable', 'image'],
+                        ]
                     ],
                     'add_label_en' => 'Add',
                     'add_label_ar' => 'اضف',
@@ -259,7 +269,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Multi-select. Show more if expandable.', 'description_ar' => 'اختيار متعدد. شاهد المزيد إن وجد.',
                 'name' => 'features',
                 'validation_rules' => ['nullable', 'array'],
-                'type' => 'select', 'options' => ['choices' => $featuresChoices], 'is_required' => false,
+                'type' => 'multi_select', 'options' => ['choices' => $featuresChoices], 'is_required' => false,
             ],
             [
                 'title_en' => 'Expected Delivery Date', 'title_ar' => 'تاريخ التسليم المتوقع',
@@ -267,7 +277,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'expected_delivery_date',
                 'validation_rules' => ['required', 'date'],
-                'type' => 'date', 'options' => null, 'is_required' => true,
+                'type' => 'calendar', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Project Images and Video', 'title_ar' => 'صور وفيديو المشروع',
@@ -350,7 +360,16 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Stepper / Counter (+ / -)', 'description_ar' => 'عداد (+ / -)',
                 'name' => 'bedrooms',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
+            ],
+            
+            [
+                'title_en' => 'Number of Bathrooms', 'title_ar' => 'عدد دورات المياه',
+                'placeholder_en' => 'Number of bathrooms', 'placeholder_ar' => 'عدد دورات المياه',
+                'description_en' => 'Stepper / Counter (+ / -)', 'description_ar' => 'عداد (+ / -)',
+                'name' => 'number_of_bathrooms',
+                'validation_rules' => ['required', 'numeric'],
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Number of Halls', 'title_ar' => 'عدد الصالات',
@@ -358,15 +377,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => 'Stepper / Counter (+ / -)', 'description_ar' => 'عداد (+ / -)',
                 'name' => 'number_of_halls',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
-            ],
-            [
-                'title_en' => 'Number of Bathrooms', 'title_ar' => 'عدد دورات المياه',
-                'placeholder_en' => 'Number of bathrooms', 'placeholder_ar' => 'عدد دورات المياه',
-                'description_en' => 'Stepper / Counter (+ / -)', 'description_ar' => 'عداد (+ / -)',
-                'name' => 'number_of_bathrooms',
-                'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'counter', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Apartment Floor', 'title_ar' => 'ترتيب الشقة',
@@ -391,19 +402,19 @@ class InputProjectsSeeder extends Seeder
                 ], 'is_required' => false,
             ],
             [
-                'title_en' => 'Maintenance', 'title_ar' => 'الصيانة',
-                'placeholder_en' => 'Select maintenance', 'placeholder_ar' => 'حدد أعمال الصيانة',
-                'description_en' => 'Multi-select.', 'description_ar' => 'اختيار متعدد.',
+                'title_en' => 'Maintenance', 'title_ar' => 'الضمانات و الصيانة',
+                'placeholder_en' => 'Select maintenance', 'placeholder_ar' => 'حدد الضمانات و الصيانة',
+                'description_en' => 'Multi-select.', 'description_ar' => 'اختيار متعدد. الضمانات و الصيانة',
                 'name' => 'maintenance',
                 'validation_rules' => ['required', 'array'],
-                'type' => 'select',
+                'type' => 'multi_select',
                 'options' => [
                     'choices' => [
-                        ['value' => 'electrical_renewal', 'label_en' => 'Electrical renewal', 'label_ar' => 'تمديدات الكهرباء'],
-                        ['value' => 'plumbing_works', 'label_en' => 'Plumbing works', 'label_ar' => 'أعمال السباكة'],
-                        ['value' => 'insulation_works', 'label_en' => 'Insulation works', 'label_ar' => 'أعمال عزل'],
-                        ['value' => 'elevator_maintenance', 'label_en' => 'Elevator maintenance', 'label_ar' => 'صيانة المصعد'],
-                        ['value' => 'cleaning', 'label_en' => 'Cleaning', 'label_ar' => 'النظافة'],
+                        ['value' => 'electrical_renewal', 'label_en' => 'Electrical renewal', 'label_ar' => 'تمديدات الكهرباء', 'has_placeholder' => true],
+                        ['value' => 'plumbing_works', 'label_en' => 'Plumbing works', 'label_ar' => 'أعمال السباكة', 'has_placeholder' => true],
+                        ['value' => 'insulation_works', 'label_en' => 'Insulation works', 'label_ar' => 'أعمال عزل', 'has_placeholder' => true],
+                        ['value' => 'elevator_maintenance', 'label_en' => 'Elevator maintenance', 'label_ar' => 'صيانة المصعد', 'has_placeholder' => true],
+                        ['value' => 'cleaning', 'label_en' => 'Cleaning', 'label_ar' => 'النظافة', 'has_placeholder' => true],
                     ],
                 ],
                 'is_required' => true,
