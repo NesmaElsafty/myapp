@@ -89,7 +89,7 @@ class InputFurnitureAccessoriesSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'furniture_type',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'select', 'options' => [
+                'type' => 'radio', 'options' => [
                     'choices' => [
                         ['value' => 'sofa', 'label_en' => 'Sofa', 'label_ar' => 'كنب'],
                         ['value' => 'chair', 'label_en' => 'Chair', 'label_ar' => 'كرسي'],
@@ -125,7 +125,7 @@ class InputFurnitureAccessoriesSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'style',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'select', 'options' => [
+                'type' => 'radio', 'options' => [
                     'choices' => [
                         ['value' => 'modern', 'label_en' => 'Modern', 'label_ar' => 'مودرن'],
                         ['value' => 'contemporary', 'label_en' => 'Contemporary', 'label_ar' => 'معاصر'],
@@ -173,7 +173,7 @@ class InputFurnitureAccessoriesSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'color',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'select', 'options' => [
+                'type' => 'radio', 'options' => [
                     'choices' => [
                         ['value' => 'white', 'label_en' => 'White', 'label_ar' => 'أبيض'],
                         ['value' => 'black', 'label_en' => 'Black', 'label_ar' => 'أسود'],
@@ -223,7 +223,7 @@ class InputFurnitureAccessoriesSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'material',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'select', 'options' => [
+                'type' => 'radio', 'options' => [
                     'choices' => [
                         ['value' => 'wood', 'label_en' => 'Wood', 'label_ar' => 'خشب'],
                         ['value' => 'engineered_wood', 'label_en' => 'Engineered wood (MDF / plywood)', 'label_ar' => 'خشب مُصنّع ( MDF / خشب رقائقي )'],
@@ -274,7 +274,7 @@ class InputFurnitureAccessoriesSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_pieces',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'counter', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Dimensions (m²)', 'title_ar' => 'الابعاد (م²)',
@@ -290,7 +290,7 @@ class InputFurnitureAccessoriesSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'brand',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'select', 'options' => [
+                'type' => 'radio', 'options' => [
                     'choices' => $furnitureBrandChoices,
                 ], 'is_required' => false,
             ],
@@ -321,7 +321,7 @@ class InputFurnitureAccessoriesSeeder extends Seeder
                 'description_en' => 'At least 3 photos must be added to display the furniture more clearly.', 'description_ar' => 'يجب إضافة ٣ صور على الأقل لعرض الأثاث بشكل أوضح',
                 'name' => 'furniture_photos_videos',
                 'validation_rules' => ['nullable', 'array'],
-                'type' => 'image', 'options' => null, 'is_required' => true,
+                'type' => 'file', 'options' => null, 'is_required' => true,
             ],
         ];
     }
