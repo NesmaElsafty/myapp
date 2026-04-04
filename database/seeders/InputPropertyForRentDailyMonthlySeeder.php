@@ -37,7 +37,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'period',
                 'validation_rules' => ['required', 'in:daily,weekly,monthly'],
-                'type' => 'mu   ', 'options' => [
+                'type' => 'multi_select', 'options' => [
                     'choices' => [
                         ['value' => 'daily', 'label_en' => 'Daily', 'label_ar' => 'يومي'],
                         ['value' => 'weekly', 'label_en' => 'Weekly', 'label_ar' => 'أسبوعي'],
