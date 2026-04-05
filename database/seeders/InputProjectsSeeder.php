@@ -153,14 +153,6 @@ class InputProjectsSeeder extends Seeder
                 'validation_rules' => ['required', 'numeric'],
                 'type' => 'number', 'options' => null, 'is_required' => true,
             ],
-            // [
-            //     'title_en' => 'Number of Buildings', 'title_ar' => 'عدد العمارات',
-            //     'placeholder_en' => 'Select number of buildings', 'placeholder_ar' => 'حدد عدد العمارات',
-            //     'description_en' => null, 'description_ar' => null,
-            //     'name' => 'number_of_buildings',
-            //     'validation_rules' => ['nullable', 'numeric'],
-            //     'type' => 'select', 'options' => ['choices' => $buildingCountChoices], 'is_required' => false,
-            // ],
             [
                 'title_en' => 'Area from (m²)', 'title_ar' => 'المساحة من (م²)',
                 'placeholder_en' => 'From', 'placeholder_ar' => 'من',

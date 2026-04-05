@@ -7,15 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class InputResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    /**
-     * Resolve options so each choice has one value (same for en/ar) and a label for the request lang.
-     * Structure: select/radio => { choices: [{ value, label_en, label_ar }] }; checkbox => { label_en, label_ar }.
-     */
     private function resolveOptions(Request $request): ?array
     {
         $options = $this->options;
@@ -36,6 +27,7 @@ class InputResource extends JsonResource
                     'label_ar' => $choice['label_ar'] ?? null,
                     'label' => $choice[$labelKey] ?? null,
                     'endpoint' => $this->screen->category_id === 7 ? 'carBrands/'.$choice['value'].'/models' : null,
+                    'has_placeholder' => $choice['has_placeholder'] ?? false,
                 ];
             }
             return $resolved;
