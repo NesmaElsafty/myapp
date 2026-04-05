@@ -383,7 +383,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'name' => 'insurance_amount',
                 'validation_rules' => ['nullable', 'numeric'],
 
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price including platform services', 'title_ar' => 'السعر شامل خدمات المنصة',
@@ -392,7 +392,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'name' => 'price_including_platform_services',
                 'validation_rules' => ['nullable', 'numeric'],
 
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
         ];
     }

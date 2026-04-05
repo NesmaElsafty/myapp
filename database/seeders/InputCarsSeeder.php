@@ -122,8 +122,8 @@ class InputCarsSeeder extends Seeder
             ],
             [
                 'title_en' => 'Car photos and video', 'title_ar' => 'صور وفيديو السيارة',
-                'placeholder_en' => null, 'placeholder_ar' => null,
-                'description_en' => 'Drag & drop or browse files.', 'description_ar' => 'سحب وإفلات أو تصفح الملفات.',
+                'placeholder_en' => "upload photos and video", 'placeholder_ar' => "رفع صور و فيديو السيارة",
+                'description_en' => 'At least 4 photos must be added to display the car more clearly.', 'description_ar' => 'يجب إضافة 4 صور على الأقل لعرض السيارة بشكل أوضح.',
                 'name' => 'car_photos_video',
                 'validation_rules' => ['nullable', 'array'],
                 'type' => 'file', 'options' => null, 'is_required' => false,
