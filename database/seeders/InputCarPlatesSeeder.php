@@ -76,37 +76,49 @@ class InputCarPlatesSeeder extends Seeder
                 ], 'is_required' => false,
             ],
             [
-                'title_en' => 'Plate Number (Saudi Arabia format)', 'title_ar' => 'رقم اللوحة - السعودية',
-                'placeholder_en' => 'e.g. 123', 'placeholder_ar' => 'مثال: ١٢٣',
-                'description_en' => 'Enter plate number in Saudi Arabia format (3 numbers).', 'description_ar' => 'أدخل رقم اللوحة بصيغة السعودية.',
-                'name' => 'plate_number_ar',
+                'title_en' => 'رقم اللوحة', 'title_ar' => 'رقم اللوحة',
+                'placeholder_en' => 'Enter Plate Number', 'placeholder_ar' => 'أدخل رقم اللوحة',
+                'description_en' => null, 'description_ar' => null,
+                'name' => 'plate_number',
                 'validation_rules' => ['nullable', 'string'],
-                'type' => 'plate_number_ar', 'options' => null, 'is_required' => false,
+                'type' => 'plate_number_inputs', 'options' => [
+                    'fields' => [
+                        [
+                            'title_en' => 'Plate Number (Saudi Arabia format)', 'title_ar' => 'رقم اللوحة - السعودية',
+                            'placeholder_en' => 'e.g. 123', 'placeholder_ar' => 'مثال: ١٢٣',
+                            'description_en' => 'Enter plate number in Saudi Arabia format (3 numbers).', 'description_ar' => 'أدخل رقم اللوحة بصيغة السعودية.',
+                            'name' => 'plate_number_ar',
+                            'validation_rules' => ['nullable', 'string'],
+                            'type' => 'plate_number_ar', 'options' => null, 'is_required' => false,
+                        ],
+                        [
+                            'title_en' => 'Plate Letters (Saudi Arabia format)', 'title_ar' => 'حروف اللوحة - السعودية',
+                            'placeholder_en' => 'e.g. ABC', 'placeholder_ar' => 'مثال: أ ب ج',
+                            'description_en' => 'Enter plate letters in Saudi Arabia format (3 letters).', 'description_ar' => 'أدخل حروف اللوحة بصيغة السعودية.',
+                            'name' => 'plate_letters_ar',
+                            'validation_rules' => ['nullable', 'string'],
+                            'type' => 'plate_letters_ar', 'options' => null, 'is_required' => false,
+                        ],
+                        [
+                            'title_en' => 'Plate Number (KSA format)', 'title_ar' => 'رقم اللوحة - KSA',
+                            'placeholder_en' => 'e.g. 123', 'placeholder_ar' => 'مثال: ١٢٣',
+                            'description_en' => 'Enter plate number in KSA format.', 'description_ar' => 'أدخل رقم اللوحة بصيغة KSA.',
+                            'name' => 'plate_number_en',
+                            'validation_rules' => ['nullable', 'string'],
+                            'type' => 'plate_number_en', 'options' => null, 'is_required' => false,
+                        ],
+                        [
+                            'title_en' => 'Plate Letters (KSA format)', 'title_ar' => 'حروف اللوحة - KSA',
+                            'placeholder_en' => 'e.g. ABC', 'placeholder_ar' => 'مثال: أ ب ج',
+                            'description_en' => 'Enter plate letters in KSA format.', 'description_ar' => 'أدخل حروف اللوحة بصيغة KSA.',
+                            'name' => 'plate_letters_en',
+                            'validation_rules' => ['nullable', 'string'],
+                            'type' => 'plate_letters_en', 'options' => null, 'is_required' => false,
+                        ],
+                    ],
+                ], 'is_required' => true,
             ],
-            [
-                'title_en' => 'Plate Letters (Saudi Arabia format)', 'title_ar' => 'حروف اللوحة - السعودية',
-                'placeholder_en' => 'e.g. ABC', 'placeholder_ar' => 'مثال: أ ب ج',
-                'description_en' => 'Enter plate letters in Saudi Arabia format (3 letters).', 'description_ar' => 'أدخل حروف اللوحة بصيغة السعودية.',
-                'name' => 'plate_letters_ar',
-                'validation_rules' => ['nullable', 'string'],
-                'type' => 'plate_letters_ar', 'options' => null, 'is_required' => false,
-            ],
-            [
-                'title_en' => 'Plate Number (KSA format)', 'title_ar' => 'رقم اللوحة - KSA',
-                'placeholder_en' => 'e.g. 123', 'placeholder_ar' => 'مثال: ١٢٣',
-                'description_en' => 'Enter plate number in KSA format.', 'description_ar' => 'أدخل رقم اللوحة بصيغة KSA.',
-                'name' => 'plate_number_en',
-                'validation_rules' => ['nullable', 'string'],
-                'type' => 'plate_number_en', 'options' => null, 'is_required' => false,
-            ],
-            [
-                'title_en' => 'Plate Letters (KSA format)', 'title_ar' => 'حروف اللوحة - KSA',
-                'placeholder_en' => 'e.g. ABC', 'placeholder_ar' => 'مثال: أ ب ج',
-                'description_en' => 'Enter plate letters in KSA format.', 'description_ar' => 'أدخل حروف اللوحة بصيغة KSA.',
-                'name' => 'plate_letters_en',
-                'validation_rules' => ['nullable', 'string'],
-                'type' => 'plate_letters_en', 'options' => null, 'is_required' => false,
-            ],
+            
         ];
     }
 

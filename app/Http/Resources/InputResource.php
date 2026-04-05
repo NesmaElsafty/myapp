@@ -35,6 +35,7 @@ class InputResource extends JsonResource
                     'label_en' => $choice['label_en'] ?? null,
                     'label_ar' => $choice['label_ar'] ?? null,
                     'label' => $choice[$labelKey] ?? null,
+                    'endpoint' => $this->screen->category_id === 7 ? 'carBrands/'.$choice['value'].'/models' : null,
                 ];
             }
             return $resolved;

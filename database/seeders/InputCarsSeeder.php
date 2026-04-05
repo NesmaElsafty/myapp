@@ -43,7 +43,6 @@ class InputCarsSeeder extends Seeder
                 'value' => (string) $brand->id,
                 'label_en' => $brand->name_en,
                 'label_ar' => $brand->name_ar,
-                'endpoint' => 'carBrands/'.$brand->id.'/models',
             ])
             ->all();
     }

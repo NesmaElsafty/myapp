@@ -301,7 +301,8 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                             'description_en' => null, 'description_ar' => null,
                             'name' => 'has_insurance',
                             'validation_rules' => ['nullable', 'boolean'],
-                            'type' => 'checkbox', 'options' => null, 'is_required' => false,
+                            'type' => 'radio_boolean', 
+                            'options' => null, 'is_required' => false,
                         ],
                         [
                             'title_en' => 'Is cancellation or switch period possible', 'title_ar' => 'إمكانية إلغاء الحجز أو التأجيل',
@@ -309,7 +310,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                             'description_en' => null, 'description_ar' => null,
                             'name' => 'cancellation_or_switch_possible',
                             'validation_rules' => ['nullable', 'boolean'],
-                            'type' => 'checkbox', 'options' => null, 'is_required' => false,
+                            'type' => 'radio_boolean', 'options' => null, 'is_required' => false,
                         ],
                     ],
                     'is_required' => false,
@@ -319,17 +320,17 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'title_en' => 'Cancellation or switch period', 'title_ar' => 'مدة إلغاء الحجز أو التأجيل',
                 'placeholder_en' => 'Enter period (hours)', 'placeholder_ar' => 'أدخل المدة (ساعة)',
                 'description_en' => 'Unit: hour (ساعة)', 'description_ar' => 'الوحدة: ساعة',
-                'name' => 'cancellation_or_reschedule_period',
+                'name' => 'cancellation_or_reschedule_period_per_hour',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'number_per_hour', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price (daily)', 'title_ar' => 'السعر (يومي)',
                 'placeholder_en' => 'Enter price (﷼)', 'placeholder_ar' => 'أدخل السعر (﷼)',
                 'description_en' => null, 'description_ar' => null,
-                'name' => 'price_daily',
+                'name' => 'price_daily_',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price after discount (daily)', 'title_ar' => 'السعر بعد الخصم (يومي)',
@@ -337,7 +338,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price_after_discount_daily',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price (weekly)', 'title_ar' => 'السعر (أسبوعي)',
@@ -345,7 +346,8 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price_weekly',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price after discount (weekly)', 'title_ar' => 'السعر بعد الخصم (أسبوعي)',
@@ -353,7 +355,8 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price_after_discount_weekly',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price (monthly)', 'title_ar' => 'السعر (شهري)',
@@ -361,7 +364,8 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price_monthly',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Price after discount (monthly)', 'title_ar' => 'السعر بعد الخصم (شهري)',
@@ -369,7 +373,8 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price_after_discount_monthly',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+
+                'type' => 'price', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Insurance amount', 'title_ar' => 'مبلغ التأمين',
@@ -377,6 +382,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'insurance_amount',
                 'validation_rules' => ['nullable', 'numeric'],
+
                 'type' => 'number', 'options' => null, 'is_required' => false,
             ],
             [
@@ -385,6 +391,7 @@ class InputPropertyForRentDailyMonthlySeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price_including_platform_services',
                 'validation_rules' => ['nullable', 'numeric'],
+
                 'type' => 'number', 'options' => null, 'is_required' => false,
             ],
         ];
