@@ -37,6 +37,7 @@ Route::prefix('auth')->group(function () {
     // Public routes
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/refresh', [AuthController::class, 'refresh']);
 
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {

@@ -77,6 +77,9 @@ class AuthController extends Controller
                 'message' => __('messages.user_registered_success'),
                 'user' => $userResource,
                 'token' => $result['token'],
+                'access_token' => $result['access_token'],
+                'refresh_token' => $result['refresh_token'],
+                'expires_in' => $result['expires_in'],
             ], 201);
         } catch (ValidationException $e) {
             return response()->json([
@@ -128,6 +131,9 @@ class AuthController extends Controller
                 'message' => __('messages.login_success'),
                 'user' => $userResource,
                 'token' => $result['token'],
+                'access_token' => $result['access_token'],
+                'refresh_token' => $result['refresh_token'],
+                'expires_in' => $result['expires_in'],
             ], 200);
         } catch (ValidationException $e) {
             return response()->json([
@@ -149,6 +155,35 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => __('messages.logout_failed'),
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function refresh(Request $request)
+    {
+        try {
+            $request->validate([
+                'refresh_token' => 'required|string',
+            ]);
+
+            $result = $this->authService->refresh($request->input('refresh_token'));
+
+            return response()->json([
+                'message' => __('messages.tokens_refreshed_success'),
+                'token' => $result['token'],
+                'access_token' => $result['access_token'],
+                'refresh_token' => $result['refresh_token'],
+                'expires_in' => $result['expires_in'],
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => __('messages.invalid_refresh_token'),
+                'errors' => $e->errors(),
+            ], $e->status);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => __('messages.token_refresh_failed'),
                 'error' => $e->getMessage(),
             ], 500);
         }

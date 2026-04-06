@@ -17,6 +17,9 @@ return [
     'old_password_incorrect' => 'Old password is incorrect',
     'password_changed_success' => 'Password changed successfully',
     'failed_change_password' => 'Failed to change password',
+    'tokens_refreshed_success' => 'Tokens refreshed successfully',
+    'invalid_refresh_token' => 'Invalid or expired refresh token',
+    'token_refresh_failed' => 'Token refresh failed',
 
     // Input
     'inputs_retrieved_success' => 'Inputs retrieved successfully',
