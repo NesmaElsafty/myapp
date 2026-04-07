@@ -51,6 +51,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Access / refresh token lifetimes (API token pair)
+    |--------------------------------------------------------------------------
+    |
+    | Access tokens are Sanctum personal access tokens with expires_at set.
+    | Refresh tokens are stored hashed in refresh_tokens and rotated on use.
+    |
+    */
+
+    'access_token_expiration_minutes' => (int) env('SANCTUM_ACCESS_TOKEN_EXPIRATION_MINUTES', 60),
+
+    'refresh_token_expiration_days' => (int) env('SANCTUM_REFRESH_TOKEN_EXPIRATION_DAYS', 30),
+
+    /*
+    |--------------------------------------------------------------------------
     | Token Prefix
     |--------------------------------------------------------------------------
     |

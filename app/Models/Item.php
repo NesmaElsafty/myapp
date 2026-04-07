@@ -15,6 +15,21 @@ class Item extends Model implements HasMedia
     use InteractsWithMedia;
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'payment_options' => 'array',
+            'contact_type' => 'json',
+            'visit_datetimes' => 'array',
+            'published_at' => 'datetime',
+            'promoted_until' => 'datetime',
+            'is_active' => 'boolean',
+            'is_appeared_in_item' => 'boolean',
+            'need_licence' => 'boolean',
+            'is_promoted' => 'boolean',
+        ];
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

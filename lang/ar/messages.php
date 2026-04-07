@@ -17,6 +17,9 @@ return [
     'old_password_incorrect' => 'كلمة المرور القديمة غير صحيحة',
     'password_changed_success' => 'تم تغيير كلمة المرور بنجاح',
     'failed_change_password' => 'فشل تغيير كلمة المرور',
+    'tokens_refreshed_success' => 'تم تحديث الرموز بنجاح',
+    'invalid_refresh_token' => 'رمز التحديث غير صالح أو منتهي',
+    'token_refresh_failed' => 'فشل تحديث الرمز',
 
     // Input
     'inputs_retrieved_success' => 'تم استرجاع المدخلات بنجاح',

@@ -19,6 +19,8 @@ class ItemSeeder extends Seeder
             Item::factory()->count(5)->create([
                 'user_id' => $origin->id,
                 'category_id' => $category->id,
+                'status' => 'approved',
+                'published_at' => now(),
             ]);
         }
 
@@ -26,6 +28,8 @@ class ItemSeeder extends Seeder
             Item::factory()->count(5)->create([
                 'user_id' => $individual->id,
                 'category_id' => $category->id,
+                'status' => 'approved',
+                'published_at' => now(),
             ]);
         }
     }

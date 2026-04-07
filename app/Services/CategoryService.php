@@ -13,6 +13,8 @@ class CategoryService
     {
         $query = Category::query();
 
+        $query->where('parent_id', null);
+        
         if (isset($search) && $search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('name_en', 'like', "%{$search}%")

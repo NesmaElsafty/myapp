@@ -45,6 +45,8 @@ class DatabaseSeeder extends Seeder
             InputPropertyForSaleSeeder::class,
             InputPropertyForRentDailyMonthlySeeder::class,
             InputCarsSeeder::class,
+            ComputerInputSeeder::class,
+            PhoneInputSeeder::class,
             InputDevicesEquipmentSeeder::class,
             InputOtherCategoriesSeeder::class,
             PageSeeder::class,

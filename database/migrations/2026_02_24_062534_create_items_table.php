@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->string('price')->nullable();
+            $table->string('discount_percentage')->nullable();
             $table->string('price_after_discount')->nullable();
             $table->string('location')->nullable();
             $table->string('lat')->nullable();
@@ -29,6 +30,8 @@ return new class extends Migration
             // make city and region nullable
             $table->foreignId('city_id')->nullable()->constrained('cities');
             $table->foreignId('region_id')->nullable()->constrained('regions');
+
+            $table->json('payment_options')->nullable();
            
             $table->string('district')->nullable();
             $table->string('street')->nullable();
@@ -38,17 +41,17 @@ return new class extends Migration
             $table->string('contact_name')->nullable();
             $table->string('contact_phone')->nullable();
             $table->string('contact_email')->nullable();
-            $table->enum('contact_type', ['whatsapp', 'phone', 'email'])->nullable();
-            $table->boolean('appear_in_item')->default(false);
-            $table->enum('status', ['draft', 'in_progress', 'completed'])->default('draft');
-            $table->foreignId('current_screen_id')->nullable()->constrained('screens')->nullOnDelete();
-            $table->dateTime('completed_at')->nullable();
+            $table->json('contact_type')->nullable();
+            $table->boolean('is_appeared_in_item')->default(false);
+            $table->enum('status', ['draft' ,'pending_approval', 'approved', 'rejected', 'in_progress', 'soldout', 'expired'])->default('pending_approval');
+            $table->dateTime('published_at')->nullable();
 
             $table->boolean('need_licence')->default(false);
-            $table->boolean('has_licence')->default(false);
             
-            $table->string('licence_number')->nullable();
-            $table->string('licence_type')->nullable();
+            $table->string('val_licence_number')->nullable();
+            $table->string('tourism_licence_number')->nullable();
+
+            $table->json('visit_datetimes')->nullable();
 
             $table->boolean('is_promoted')->default(false);
             $table->dateTime('promoted_until')->nullable();

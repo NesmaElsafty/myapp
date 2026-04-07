@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\RefreshToken;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
@@ -36,12 +38,14 @@ class AuthService
             'language' => $data['language'] ?? 'ar',
         ]);
 
-        // Create token
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $tokens = $this->issueTokenPair($user);
 
         return [
             'user' => $user,
-            'token' => $token,
+            'token' => $tokens['token'],
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
+            'expires_in' => $tokens['expires_in'],
         ];
     }
 
@@ -124,11 +128,100 @@ class AuthService
             ]);
         }
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $tokens = $this->issueTokenPair($user);
 
         return [
             'user' => $user,
-            'token' => $token,
+            'token' => $tokens['token'],
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
+            'expires_in' => $tokens['expires_in'],
+        ];
+    }
+
+    /**
+     * Exchange a valid refresh token for a new access + refresh pair (rotation).
+     *
+     * @return array{token: string, access_token: string, refresh_token: string, expires_in: int}
+     */
+    public function refresh(string $plainRefreshToken): array
+    {
+        $hash = hash('sha256', $plainRefreshToken);
+
+        $record = RefreshToken::query()
+            ->where('token_hash', $hash)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (!$record) {
+            throw ValidationException::withMessages([
+                'refresh_token' => [__('messages.invalid_refresh_token')],
+            ])->status(401);
+        }
+
+        $user = $record->user;
+
+        if (!$user) {
+            $record->delete();
+            throw ValidationException::withMessages([
+                'refresh_token' => [__('messages.invalid_refresh_token')],
+            ])->status(401);
+        }
+
+        if ($user->is_active === '0' || $user->is_active === false) {
+            throw ValidationException::withMessages([
+                'refresh_token' => [__('messages.invalid_refresh_token')],
+            ])->status(401);
+        }
+
+        $oldAccessId = $record->personal_access_token_id;
+
+        $tokens = $this->issueTokenPair($user);
+
+        if ($oldAccessId) {
+            $user->tokens()->where('id', $oldAccessId)->delete();
+        } else {
+            $record->delete();
+        }
+
+        return $tokens;
+    }
+
+    /**
+     * @return array{token: string, access_token: string, refresh_token: string, expires_in: int}
+     */
+    protected function issueTokenPair(User $user): array
+    {
+        $accessMinutes = max(1, (int) config('sanctum.access_token_expiration_minutes', 60));
+        $refreshDays = max(1, (int) config('sanctum.refresh_token_expiration_days', 30));
+
+        $accessTokenResult = $user->createToken(
+            'auth-access',
+            ['*'],
+            now()->addMinutes($accessMinutes)
+        );
+
+        $plainRefresh = Str::random(64);
+
+        RefreshToken::create([
+            'user_id' => $user->id,
+            'token_hash' => hash('sha256', $plainRefresh),
+            'expires_at' => now()->addDays($refreshDays),
+            'personal_access_token_id' => $accessTokenResult->accessToken->id,
+        ]);
+
+        $expiresAt = $accessTokenResult->accessToken->expires_at;
+        $expiresIn = $expiresAt
+            ? max(1, $expiresAt->getTimestamp() - now()->getTimestamp())
+            : $accessMinutes * 60;
+
+        $plainAccess = $accessTokenResult->plainTextToken;
+
+        return [
+            'access_token' => $plainAccess,
+            'refresh_token' => $plainRefresh,
+            'expires_in' => $expiresIn,
+            'token' => $plainAccess,
         ];
     }
 

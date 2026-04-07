@@ -116,6 +116,48 @@ class CategorySeeder extends Seeder
                 'name_ar' => 'أجهزة و معدات',
                 'is_active' => true,
             ],
+            [
+                'name_en' => 'Computers',
+                'name_ar' => 'كمبيوتر',
+                'is_active' => true,
+                'parent_id' => 8,
+            ],
+            [
+                'name_en' => 'Mobile Phones',
+                'name_ar' => 'جوال',
+                'is_active' => true,
+                'parent_id' => 8,
+            ],
+            [
+                'name_en' => 'Televisions',
+                'name_ar' => 'تلفزيون',
+                'is_active' => true,
+                'parent_id' => 8,
+            ],
+            [
+                'name_en' => 'Fridges',
+                'name_ar' => 'ثلاجة',
+                'is_active' => true,
+                'parent_id' => 8,
+            ],
+            [
+                'name_en' => 'Mobile Accessories',
+                'name_ar' => 'اكسسوار جوال',
+                'is_active' => true,
+                'parent_id' => 8,
+            ],
+            [
+                'name_en' => 'Printers',
+                'name_ar' => 'طابعة',
+                'is_active' => true,
+                'parent_id' => 8,
+            ],
+            [
+                'name_en' => 'Screens / Monitors',
+                'name_ar' => 'شاشة / مسطر',
+                'is_active' => true,
+                'parent_id' => 8,
+            ],
         ];
 
         foreach ($categories as $category) {
@@ -124,6 +166,7 @@ class CategorySeeder extends Seeder
                 [
                     'name_ar' => $category['name_ar'],
                     'is_active' => $category['is_active'],
+                    'parent_id' => $category['parent_id'] ?? null,
                 ]
             );
         }

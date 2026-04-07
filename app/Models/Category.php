@@ -24,7 +24,7 @@ class Category extends Model implements HasMedia
         return $this->hasMany(Screen::class);
     }
 
-    public function items(): HasMany
+    public function items()
     {
         return $this->hasMany(Item::class);
     }
@@ -44,8 +44,13 @@ class Category extends Model implements HasMedia
         })->toArray();
     }
 
-    public function planDetails(): HasMany
+    public function planDetails()
     {
         return $this->hasMany(PlanDetails::class);
+    }
+
+    public function subCategories()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
     }
 }
