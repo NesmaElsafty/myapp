@@ -13,13 +13,13 @@ class ComputerInputSeeder extends Seeder
 
     public function run(): void
     {
-        if (! Category::find(10)) {
+        if (! Category::find(9)) {
             return;
         }
 
         $this->registerInputCreatingHook();
 
-        $screen = Screen::where('category_id', 10)
+        $screen = Screen::where('category_id', 9)
             ->orderBy('position')
             ->first();
 

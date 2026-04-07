@@ -480,8 +480,8 @@ class ScreenSeeder extends Seeder
             if (empty($screens)) {
                 $screens = [
                     [
-                        'name_en' => $category->name_en . ' - Main',
-                        'name_ar' => $category->name_ar . ' - رئيسي',
+                        'name_en' => $category->name_en,
+                        'name_ar' => $category->name_ar,
                         'description_en' => 'Main screen for this category.',
                         'description_ar' => 'الشاشة الرئيسية لهذا التصنيف.',
                     ],
