@@ -150,7 +150,6 @@ class AuthService
 
         $record = RefreshToken::query()
             ->where('token_hash', $hash)
-            ->where('expires_at', '>', now())
             ->first();
 
         if (!$record) {

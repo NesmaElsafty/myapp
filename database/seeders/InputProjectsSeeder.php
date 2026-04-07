@@ -204,7 +204,7 @@ class InputProjectsSeeder extends Seeder
 
             [
                 'title_en' => 'Street Width (m)', 'title_ar' => 'عرض الشارع (م)',
-                'placeholder_en' => 'Enter street width', 'placeholder_ar' => 'أدخل عرض الشارع',
+                'placeholder_en' => 'Enter street width (m)', 'placeholder_ar' => 'أدخل عرض الشارع (م)',
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'street_width',
                 'validation_rules' => ['nullable', 'numeric'],
@@ -265,7 +265,7 @@ class InputProjectsSeeder extends Seeder
             ],
             [
                 'title_en' => 'Expected Delivery Date', 'title_ar' => 'تاريخ التسليم المتوقع',
-                'placeholder_en' => 'Enter expected delivery date', 'placeholder_ar' => 'أدخل تاريخ التسليم المتوقع',
+                'placeholder_en' => 'Select expected delivery date', 'placeholder_ar' => 'حدد تاريخ التسليم المتوقع',
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'expected_delivery_date',
                 'validation_rules' => ['required', 'date'],
@@ -273,15 +273,15 @@ class InputProjectsSeeder extends Seeder
             ],
             [
                 'title_en' => 'Project Images and Video', 'title_ar' => 'صور وفيديو المشروع',
-                'placeholder_en' => null, 'placeholder_ar' => null,
-                'description_en' => 'Drag & drop or browse. List of uploaded files with delete/view actions.', 'description_ar' => 'سحب وإفلات أو تصفح الملفات. قائمة الملفات المرفوعة مع حذف/عرض.',
+                'placeholder_en' => 'upload photos and video', 'placeholder_ar' => 'أرفق صور و فيديو المشروع',
+                'description_en' => 'Drag & drop or browse. Minimum 4 images required.', 'description_ar' => 'يجب إضافة 4 صور على الأقل لعرض المشروع بشكل أوضح.',
                 'name' => 'project_images_video',
                 'validation_rules' => ['nullable', 'array'],
                 'type' => 'file', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Project Brochure', 'title_ar' => 'كتيب المشروع',
-                'placeholder_en' => null, 'placeholder_ar' => null,
+                'placeholder_en' => 'upload brochure', 'placeholder_ar' => 'أرفق كتيب المشروع',
                 'description_en' => 'Upload file (e.g. PDF).', 'description_ar' => 'تحميل الملف (مثل PDF).',
                 'name' => 'project_brochure',
                 'validation_rules' => ['nullable', 'file'],
@@ -289,7 +289,7 @@ class InputProjectsSeeder extends Seeder
             ],
             [
                 'title_en' => 'Company Logo', 'title_ar' => 'شعار الشركة',
-                'placeholder_en' => null, 'placeholder_ar' => null,
+                'placeholder_en' => 'upload logo', 'placeholder_ar' => 'أرفق شعار الشركة',
                 'description_en' => 'Upload image.', 'description_ar' => 'تحميل صورة الشعار.',
                 'name' => 'company_logo',
                 'validation_rules' => ['nullable', 'file'],
@@ -328,7 +328,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'price', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Price after discount', 'title_ar' => 'السعر بعد الخصم',
@@ -336,7 +336,7 @@ class InputProjectsSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'price_after_discount',
                 'validation_rules' => ['required', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => true,
+                'type' => 'price', 'options' => null, 'is_required' => true,
             ],
             [
                 'title_en' => 'Area (m²)', 'title_ar' => 'مساحة (م²)',
@@ -427,7 +427,7 @@ class InputProjectsSeeder extends Seeder
             ],
             [
                 'title_en' => 'Property Images and Video', 'title_ar' => 'صور وفيديو العقار',
-                'placeholder_en' => null, 'placeholder_ar' => null,
+                'placeholder_en' => 'upload photos and video', 'placeholder_ar' => 'أرفق صور و فيديو العقار',
                 'description_en' => 'Drag & drop or browse. Minimum 4 images required. List of files with delete/view actions.', 'description_ar' => 'سحب وإفلات أو تصفح الملفات. حد أدنى 4 صور. قائمة الملفات مع حذف/عرض.',
                 'name' => 'property_images_video',
                 'validation_rules' => ['nullable', 'array'],

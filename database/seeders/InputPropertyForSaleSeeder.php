@@ -216,7 +216,7 @@ class InputPropertyForSaleSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'bedrooms',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'counter', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Number of Halls', 'title_ar' => 'عدد الصالات',
@@ -224,7 +224,7 @@ class InputPropertyForSaleSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_halls',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'counter', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Number of Bathrooms', 'title_ar' => 'عدد دورات المياه',
@@ -232,7 +232,7 @@ class InputPropertyForSaleSeeder extends Seeder
                 'description_en' => null, 'description_ar' => null,
                 'name' => 'number_of_bathrooms',
                 'validation_rules' => ['nullable', 'numeric'],
-                'type' => 'number', 'options' => null, 'is_required' => false,
+                'type' => 'counter', 'options' => null, 'is_required' => false,
             ],
             [
                 'title_en' => 'Apartment Arrangement', 'title_ar' => 'ترتيب الشقة',
@@ -310,8 +310,8 @@ class InputPropertyForSaleSeeder extends Seeder
             ],
             [
                 'title_en' => 'Property Photos & Video', 'title_ar' => 'صور و فيديو العقار',
-                'placeholder_en' => null, 'placeholder_ar' => null,
-                'description_en' => 'At least 4 photos recommended for a clearer listing.', 'description_ar' => 'يجب إضافة ٤ صور على الأقل لكي يظهر اعلانك بشكل أوضح',
+                'placeholder_en' => 'upload photos and video', 'placeholder_ar' => 'أرفق صور و فيديو العقار على الأقل 4 صور',
+                'description_en' => 'At least 4 photos recommended for a clearer listing.', 'description_ar' => 'يجب إضافة 4 صور على الأقل لعرض العقار بشكل أوضح.',
                 'name' => 'property_photos_video',
                 'validation_rules' => ['nullable', 'array'],
                 'type' => 'image', 'options' => null, 'is_required' => false,

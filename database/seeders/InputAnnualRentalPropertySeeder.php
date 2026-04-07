@@ -331,7 +331,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
             ],
             [
                 'title_en' => 'Property Photos & Video', 'title_ar' => 'صور و فيديو العقار',
-                'placeholder_en' => null, 'placeholder_ar' => null,
+                'placeholder_en' => 'upload photos and video', 'placeholder_ar' => 'ارفق صور و فيديو العقار',
                 'description_en' => 'At least 4 photos recommended for a clearer listing.', 'description_ar' => 'يجب إضافة ٤ صور على الأقل لكي يظهر اعلانك بشكل أوضح',
                 'name' => 'property_photos_video',
                 'validation_rules' => ['required', 'array'],
@@ -339,7 +339,7 @@ class InputAnnualRentalPropertySeeder extends Seeder
             ],
             [
                 'title_en' => 'Miniature Plan / Blueprint', 'title_ar' => 'مخطط مصغر',
-                'placeholder_en' => null, 'placeholder_ar' => null,
+                'placeholder_en' => 'upload blueprint', 'placeholder_ar' => 'أرفق مخطط مصغر',
                 'description_en' => 'Upload blueprint or floor plan.', 'description_ar' => 'ارفع المخطط أو المسقط الأفقي.',
                 'name' => 'miniature_plan_blueprint',
                 'validation_rules' => ['required', 'file'],
