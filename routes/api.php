@@ -57,10 +57,10 @@ Route::prefix('cities')->group(function () {
 });
 
 // Public regions routes (index and show)
-Route::prefix('regions')->group(function () {
-    Route::get('/', [RegionController::class, 'index']);
-    Route::get('/{id}', [RegionController::class, 'show']);
-});
+// Route::prefix('regions')->group(function () {
+//     Route::get('/', [RegionController::class, 'index']);
+//     Route::get('/{id}', [RegionController::class, 'show']);
+// });
 
 // Public contact info routes (index and show)
 Route::prefix('contact-info')->group(function () {
@@ -161,6 +161,13 @@ Route::prefix('promotions')->group(function () {
     Route::get('/', [PublicPromotionController::class, 'index']);
     Route::get('/{id}', [PublicPromotionController::class, 'show']);
 });
+
+// districts routes (get by region id)
+Route::get('districts/{regionId}', [CityController::class, 'getDistrictsByRegionId']);
+
+// regions routes (get by city id)
+Route::get('regions/{cityId}', [CityController::class, 'getRegionsByCityId']);
+
 
 // Admin routes
 Route::prefix('admin')->middleware(['auth:sanctum', 'type:admin'])->group(function () {

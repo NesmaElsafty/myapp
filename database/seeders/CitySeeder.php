@@ -23,10 +23,16 @@ class CitySeeder extends Seeder
             ['name_en' => 'Abha', 'name_ar' => 'أبها'],
             ['name_en' => 'Tabuk', 'name_ar' => 'تبوك'],
             ['name_en' => 'Buraidah', 'name_ar' => 'بريدة'],
+            ['name_en' => 'Hail', 'name_ar' => 'حائل'],
+            ['name_en' => 'Jazan', 'name_ar' => 'جازان'],
+            ['name_en' => 'Najran', 'name_ar' => 'نجران'],
         ];
 
         foreach ($cities as $city) {
-            City::create($city);
+            City::updateOrCreate(
+                ['name_en' => $city['name_en']],
+                ['name_ar' => $city['name_ar']]
+            );
         }
     }
 }

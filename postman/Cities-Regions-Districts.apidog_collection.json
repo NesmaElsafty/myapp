@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "cities-regions-districts-apidog",
+		"name": "Cities Regions Districts (Apidog)",
+		"description": "Apidog importable tests for city -> regions -> districts flow. Uses admin auth for write routes.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create City with Regions and Districts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"const data = pm.response.json().data;",
+							"pm.test(\"City/Region/District structure exists\", function () {",
+							"    pm.expect(data).to.have.property('id');",
+							"    pm.expect(data).to.have.property('regions');",
+							"    pm.expect(data.regions.length).to.be.greaterThan(0);",
+							"    pm.expect(data.regions[0]).to.have.property('districts');",
+							"});",
+							"",
+							"pm.environment.set('city_id', data.id);",
+							"if (data.regions[0] && data.regions[0].id) {",
+							"    pm.environment.set('region_id', data.regions[0].id);",
+							"}",
+							"if (data.regions[0] && data.regions[0].districts && data.regions[0].districts[0]) {",
+							"    pm.environment.set('district_id', data.regions[0].districts[0].id);",
+							"}"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name_en\": \"Test Riyadh City\",\n  \"name_ar\": \"مدينة الرياض التجريبية\",\n  \"regions\": [\n    {\n      \"name_en\": \"North Test Region\",\n      \"name_ar\": \"منطقة تجريبية شمالية\",\n      \"districts\": [\n        {\n          \"name_en\": \"District One\",\n          \"name_ar\": \"الحي الأول\"\n        },\n        {\n          \"name_en\": \"District Two\",\n          \"name_ar\": \"الحي الثاني\"\n        }\n      ]\n    },\n    {\n      \"name_en\": \"South Test Region\",\n      \"name_ar\": \"منطقة تجريبية جنوبية\",\n      \"districts\": [\n        {\n          \"name_en\": \"District Three\",\n          \"name_ar\": \"الحي الثالث\"\n        }\n      ]\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities/with-regions-districts",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities",
+						"with-regions-districts"
+					]
+				}
+			}
+		},
+		{
+			"name": "Get City by ID (Public)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const data = pm.response.json().data;",
+							"pm.test(\"City has regions and districts\", function () {",
+							"    pm.expect(data).to.have.property('id');",
+							"    pm.expect(data).to.have.property('regions');",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/cities/{{city_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"cities",
+						"{{city_id}}"
+					]
+				}
+			}
+		},
+		{
+			"name": "List Cities (Public)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const jsonData = pm.response.json();",
+							"pm.test(\"Response includes data and pagination\", function () {",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('pagination');",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/cities?search=Test&sorted_by=name",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"cities"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "Test"
+						},
+						{
+							"key": "sorted_by",
+							"value": "name"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "Update City with New Regions and Districts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const data = pm.response.json().data;",
+							"pm.test(\"Updated city structure exists\", function () {",
+							"    pm.expect(data).to.have.property('id');",
+							"    pm.expect(data).to.have.property('regions');",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name_en\": \"Test Riyadh City Updated\",\n  \"name_ar\": \"مدينة الرياض التجريبية المحدثة\",\n  \"regions\": [\n    {\n      \"name_en\": \"Central Test Region\",\n      \"name_ar\": \"منطقة تجريبية وسطى\",\n      \"districts\": [\n        {\n          \"name_en\": \"District A\",\n          \"name_ar\": \"الحي أ\"\n        },\n        {\n          \"name_en\": \"District B\",\n          \"name_ar\": \"الحي ب\"\n        }\n      ]\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities/{{city_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities",
+						"{{city_id}}"
+					]
+				}
+			}
+		},
+		{
+			"name": "Delete City",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has message\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin/cities/{{city_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"admin",
+						"cities",
+						"{{city_id}}"
+					]
+				}
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "city_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "region_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "district_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

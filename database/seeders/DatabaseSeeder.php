@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             CitySeeder::class,
             RegionSeeder::class, // Must be after CitySeeder
+            DistrictSeeder::class, // Must be after RegionSeeder
             CarBrandsAndModelsSeeder::class,
             ContactInfoSeeder::class,
             SocialMediaSeeder::class,

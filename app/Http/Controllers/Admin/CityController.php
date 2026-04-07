@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CityResource;
+use App\Http\Resources\RegionResource;
+use App\Http\Resources\DistrictResource;
 use App\Services\CityService;
 use Illuminate\Http\Request;
 use App\Helpers\PaginationHelper;
-use App\Models\Region;
 use Exception;
 
 class CityController extends Controller
@@ -49,27 +50,20 @@ class CityController extends Controller
             $request->validate([
                 'name_en' => 'required|string|max:255',
                 'name_ar' => 'required|string|max:255',
-                'regions' => 'required|array',
+                'regions' => 'required|array|min:1',
                 'regions.*.name_en' => 'required|string|max:255',
                 'regions.*.name_ar' => 'required|string|max:255',
-                'regions.*.district_en' => 'required|string|max:255',
-                'regions.*.district_ar' => 'required|string|max:255',
+                'regions.*.district_en' => 'nullable|string|max:255',
+                'regions.*.district_ar' => 'nullable|string|max:255',
+                'regions.*.districts' => 'nullable|array',
+                'regions.*.districts.*.name_en' => 'required_with:regions.*.districts|string|max:255',
+                'regions.*.districts.*.name_ar' => 'required_with:regions.*.districts|string|max:255',
             ]);
             $city = $this->cityService->create($request->all());
 
-            foreach ($request->regions as $region) {
-                $region = Region::create([
-                    'name_en' => $region['name_en'],
-                    'name_ar' => $region['name_ar'],
-                    'district_en' => $region['district_en'],
-                    'district_ar' => $region['district_ar'],
-                    'city_id' => $city->id,
-                ]);
-            }
-
             return response()->json([
                 'message' => __('messages.city_created_success'),
-                'data' => new CityResource($city->load('regions')),
+                'data' => new CityResource($city),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
@@ -113,29 +107,15 @@ class CityController extends Controller
                 'regions.*.name_ar' => 'nullable|string|max:255',
                 'regions.*.district_en' => 'nullable|string|max:255',
                 'regions.*.district_ar' => 'nullable|string|max:255',
+                'regions.*.districts' => 'nullable|array',
+                'regions.*.districts.*.name_en' => 'required_with:regions.*.districts|string|max:255',
+                'regions.*.districts.*.name_ar' => 'required_with:regions.*.districts|string|max:255',
             ]);
 
-            $city = $this->cityService->update($id, $request->all());   
-            // delete all regions
-            if($request->has('regions')) {
-                foreach ($city->regions as $region) {
-                    $region->delete();
-                }
-
-                // create new regions
-                foreach ($request->regions as $region) {
-                    $region = Region::create([
-                        'name_en' => $region['name_en'],
-                        'name_ar' => $region['name_ar'],
-                        'district_en' => $region['district_en'],
-                        'district_ar' => $region['district_ar'],
-                        'city_id' => $city->id,
-                    ]);
-                }
-            }
+            $city = $this->cityService->update($id, $request->all());
             return response()->json([
                 'message' => __('messages.city_updated_success'),
-                'data' => new CityResource($city->load('regions')),
+                'data' => new CityResource($city),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
@@ -157,6 +137,40 @@ class CityController extends Controller
             return response()->json([
                 'message' => __('messages.failed_delete_city'),
                 'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // get regions by city id
+    public function getRegionsByCityId($cityId)
+    {
+        try {
+            $regions = $this->cityService->getRegionsByCityId($cityId);
+            return response()->json([
+                'message' => __('messages.regions_retrieved_success'),
+                'data' => RegionResource::collection($regions),
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => __('messages.failed_retrieve_regions'),
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    // get districts by region id
+    public function getDistrictsByRegionId($regionId)
+    {
+        try {
+        $districts = $this->cityService->getDistrictsByRegionId($regionId);
+        return response()->json([
+            'message' => __('messages.districts_retrieved_success'),
+            'data' => DistrictResource::collection($districts),
+        ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+                'message' => __('messages.failed_retrieve_districts'),
             ], 500);
         }
     }
