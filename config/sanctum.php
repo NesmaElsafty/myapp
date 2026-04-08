@@ -61,7 +61,8 @@ return [
 
     'access_token_expiration_minutes' => (int) env('SANCTUM_ACCESS_TOKEN_EXPIRATION_MINUTES', 60),
 
-    'refresh_token_expiration_days' => (int) env('SANCTUM_REFRESH_TOKEN_EXPIRATION_DAYS', 30),
+    // Set <= 0 for unlimited (no refresh token expiry).
+    'refresh_token_expiration_days' => (int) env('SANCTUM_REFRESH_TOKEN_EXPIRATION_DAYS', 0),
 
     /*
     |--------------------------------------------------------------------------

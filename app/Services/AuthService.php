@@ -173,6 +173,17 @@ class AuthService
             ])->status(401);
         }
 
+        if ($record->expires_at && $record->expires_at->isPast()) {
+            if ($record->personal_access_token_id) {
+                $user->tokens()->where('id', $record->personal_access_token_id)->delete();
+            }
+            $record->delete();
+
+            throw ValidationException::withMessages([
+                'refresh_token' => [__('messages.invalid_refresh_token')],
+            ])->status(401);
+        }
+
         $oldAccessId = $record->personal_access_token_id;
 
         $tokens = $this->issueTokenPair($user);
@@ -192,7 +203,8 @@ class AuthService
     protected function issueTokenPair(User $user): array
     {
         $accessMinutes = max(1, (int) config('sanctum.access_token_expiration_minutes', 60));
-        $refreshDays = max(1, (int) config('sanctum.refresh_token_expiration_days', 30));
+        $refreshDays = (int) config('sanctum.refresh_token_expiration_days', 0);
+        $refreshExpiresAt = $refreshDays > 0 ? now()->addDays($refreshDays) : null;
 
         $accessTokenResult = $user->createToken(
             'auth-access',
@@ -205,7 +217,7 @@ class AuthService
         RefreshToken::create([
             'user_id' => $user->id,
             'token_hash' => hash('sha256', $plainRefresh),
-            'expires_at' => now()->addDays($refreshDays),
+            'expires_at' => $refreshExpiresAt,
             'personal_access_token_id' => $accessTokenResult->accessToken->id,
         ]);
 
